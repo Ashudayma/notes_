@@ -184,6 +184,12 @@
   <li><a href="#video-1">Introduction to Java: Why Java Exists (Portability, Simplicity, Security)</a></li>
   <li><a href="#video-2">JVM, JRE &amp; JDK, Compiler vs Interpreter, JIT, Java SE/EE/ME &amp; First Program</a></li>
   <li><a href="#video-3">Variables, Identifiers, Literals, Primitive Data Types, Keywords &amp; Comments</a></li>
+  <li><a href="#video-4">How Negative &amp; Floating-Point Numbers Are Stored: 2's Complement, IEEE 754, Bias &amp; Precision Loss</a></li>
+  <li><a href="#video-5">Type Conversion: Widening, Narrowing (Casting), Truncation &amp; Automatic Type Promotion</a></li>
+  <li><a href="#video-6">Operators: Arithmetic, Increment/Decrement, Relational, Bitwise &amp; Shifts, Logical (Short-Circuit), Assignment, Precedence</a></li>
+  <li><a href="#video-7">Flow of Control &amp; Selection: if, if-else, Nested if, if-else-if Ladder, switch (Fall-through, Jump Tables)</a></li>
+  <li><a href="#video-8">Loops &amp; Jumps: while, do-while, for, Infinite Loops, Nested Loops, break, continue, Labels</a></li>
+  <li><a href="#video-9">Arrays (1D, 2D, Jagged, 3D) &amp; Intro to Strings</a></li>
 </ol>
 </div>
 
@@ -958,6 +964,1547 @@ y = 4;       // definition / assignment: gives it a literal value (e.g. later, f
 • Can a boolean be 0 or 1 in Java? → No, only true or false.<br>
 • Literal prefixes? → <code>0b</code> binary, <code>0</code> octal, <code>0x</code> hex. Scientific notation uses <code>e</code>, and <code>_</code> can separate digits.<br>
 • Unused reserved keywords? → <code>goto</code> and <code>const</code>.</div>
+
+</section>
+
+<section class="video-section" id="video-4">
+<h2>Video 4: How Negative &amp; Floating-Point Numbers Are Stored</h2>
+<p>A positive integer is stored as its plain binary. This video covers the other two cases: <strong>negative integers</strong>, which use <strong>2's complement</strong>, and <strong>floating-point numbers</strong>, which use <strong>IEEE 754</strong>. It also explains why some decimals come back slightly wrong.</p>
+
+<h3>The Hidden Problem with Floats</h3>
+<pre><code>float f = 0.7f;
+System.out.println(f);          // 0.7
+System.out.printf("%.20f%n", f); // 0.69999998807907100000   ← not 0.7!
+
+float g = 8.125f;
+System.out.printf("%.20f%n", g); // 8.12500000000000000000   ← exact</code></pre>
+<ul>
+<li><code>%.20f</code> means "print this floating-point value to 20 decimal places".</li>
+<li><code>println</code> hides the error. <code>Float.toString</code> prints the <strong>shortest decimal that maps back to the same float</strong>, which is "0.7". The value actually in memory is <strong>0.699999988079071044921875</strong>. (The video describes this as Java "rounding it off".)</li>
+<li>So 8.125 is stored exactly, but 0.7 is not. The reason is explained <a href="#v4-non-exact">below</a>.</li>
+</ul>
+
+<hr>
+
+<h3>Decimal → Binary (integer part)</h3>
+<p>Keep dividing by 2 and write down each remainder. Then read the remainders <strong>bottom to top</strong>.</p>
+<pre><code>42 ÷ 2 = 21  r 0
+21 ÷ 2 = 10  r 1
+10 ÷ 2 =  5  r 0
+ 5 ÷ 2 =  2  r 1
+ 2 ÷ 2 =  1  r 0
+ 1 → 1              read upward → 101010 → padded to 8 bits: 00101010  (32 + 8 + 2)</code></pre>
+<p>Adding zeros on the left never changes an integer's value, so padding to the type's width is safe.</p>
+
+<h3>Negative Integers: 2's Complement</h3>
+<p>Take <code>byte b = -42;</code> (8 bits, range −128 to 127). To store it:</p>
+<ol>
+<li>Ignore the sign and write the binary of <strong>+42</strong>.</li>
+<li><strong>1's complement</strong>: invert every bit (0→1, 1→0).</li>
+<li><strong>2's complement</strong>: add 1 to that result. <strong>This is what gets stored.</strong></li>
+</ol>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 240" role="img" aria-label="Two's complement of minus 42: 00101010 inverted gives 11010101, adding 1 gives 11010110, which is stored; its MSB of 1 marks it negative">
+  <defs>
+    <marker id="j7-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="16" y="47" font-size="13" fill="currentColor">+42</text>
+  <text x="16" y="123" font-size="13" fill="currentColor">1's complement</text>
+  <text x="16" y="199" font-size="13" fill="currentColor">2's complement</text>
+
+  <g fill="none" stroke="currentColor">
+    <rect x="170" y="24" width="40" height="36"/><rect x="210" y="24" width="40" height="36"/><rect x="250" y="24" width="40" height="36"/><rect x="290" y="24" width="40" height="36"/>
+    <rect x="330" y="24" width="40" height="36"/><rect x="370" y="24" width="40" height="36"/><rect x="410" y="24" width="40" height="36"/><rect x="450" y="24" width="40" height="36"/>
+    <rect x="170" y="100" width="40" height="36"/><rect x="210" y="100" width="40" height="36"/><rect x="250" y="100" width="40" height="36"/><rect x="290" y="100" width="40" height="36"/>
+    <rect x="330" y="100" width="40" height="36"/><rect x="370" y="100" width="40" height="36"/><rect x="410" y="100" width="40" height="36"/><rect x="450" y="100" width="40" height="36"/>
+    <rect x="210" y="176" width="40" height="36"/><rect x="250" y="176" width="40" height="36"/><rect x="290" y="176" width="40" height="36"/>
+    <rect x="330" y="176" width="40" height="36"/><rect x="370" y="176" width="40" height="36"/><rect x="410" y="176" width="40" height="36"/><rect x="450" y="176" width="40" height="36"/>
+  </g>
+  <rect x="170" y="176" width="40" height="36" fill="none" style="stroke:var(--important-border)" stroke-width="2.2"/>
+
+  <g font-size="15" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="190" y="48">0</text><text x="230" y="48">0</text><text x="270" y="48">1</text><text x="310" y="48">0</text><text x="350" y="48">1</text><text x="390" y="48">0</text><text x="430" y="48">1</text><text x="470" y="48">0</text>
+    <text x="190" y="124">1</text><text x="230" y="124">1</text><text x="270" y="124">0</text><text x="310" y="124">1</text><text x="350" y="124">0</text><text x="390" y="124">1</text><text x="430" y="124">0</text><text x="470" y="124">1</text>
+    <text x="190" y="200">1</text><text x="230" y="200">1</text><text x="270" y="200">0</text><text x="310" y="200">1</text><text x="350" y="200">0</text><text x="390" y="200">1</text><text x="430" y="200">1</text><text x="470" y="200">0</text>
+  </g>
+
+  <line x1="330" y1="62" x2="330" y2="96" stroke="currentColor" marker-end="url(#j7-arrow)"/>
+  <text x="342" y="84" font-size="11" fill="currentColor" opacity="0.75">invert every bit</text>
+  <line x1="330" y1="138" x2="330" y2="172" stroke="currentColor" marker-end="url(#j7-arrow)"/>
+  <text x="342" y="160" font-size="11" fill="currentColor" opacity="0.75">add 1</text>
+
+  <text x="506" y="47" font-size="13" fill="currentColor">= 42</text>
+  <text x="506" y="199" font-size="13" style="fill:var(--important-border)">stored for −42</text>
+  <text x="170" y="230" font-size="11" style="fill:var(--important-border)">MSB = 1 → negative</text>
+</svg>
+<figcaption>byte b = −42 is stored as 11010110.</figcaption>
+</figure>
+
+<h4>Reading it back (<code>System.out.println(b)</code>)</h4>
+<ul>
+<li>The MSB is 1, so the number is negative. The same two steps recover the magnitude: invert (<code>00101001</code>), then add 1 (<code>00101010</code>) = 42. Put the minus sign on to get <strong>−42</strong>.</li>
+<li>Shortcut: in 2's complement, the MSB has <strong>weight −128</strong> instead of +128. For <code>11010110</code>: −128 + 64 + 16 + 4 + 2 = <strong>−42</strong>.</li>
+<li>Correction: the video says the Java <em>compiler</em> does this when printing. The literal <code>-42</code> is encoded at compile time, but printing happens at <strong>runtime</strong>. The JVM and library code (<code>Integer.toString</code>) turn the bits back into text.</li>
+</ul>
+
+<h3>MSB &amp; LSB</h3>
+<ul>
+<li><strong>MSB (Most Significant Bit)</strong> is the leftmost bit. It carries the most weight, like the thousands digit in 2321, where +1 there adds 1000.</li>
+<li><strong>LSB (Least Significant Bit)</strong> is the rightmost bit. +1 there changes the value by only 1.</li>
+<li>In signed integers, the <strong>MSB is the sign bit</strong>: <strong>0 → positive (or zero), 1 → negative</strong>.</li>
+</ul>
+<div class="important"><strong>⭐ Interview Important: why can't a positive byte have MSB = 1?</strong><br>
+The largest byte is +127 = <code>01111111</code>. Setting the MSB alone (<code>10000000</code>) would be 128 unsigned, which is outside the byte range. So every positive value has MSB 0. Negatives get their MSB flipped to 1 by the inversion step, and the +1 only changes it back in the zero case (see below). In practice, <code>10000000</code> is <strong>−128</strong>.</div>
+
+<h3>Why 2's Complement and Not Just 1's Complement?</h3>
+<p>With 1's complement, zero would have <strong>two representations</strong>. Adding 1 removes the second one.</p>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 250" role="img" aria-label="Minus zero: 00000000 inverted gives 11111111, which 1's complement would keep as minus zero; adding 1 carries through every bit into a ninth bit that is dropped, leaving 00000000">
+  <defs>
+    <marker id="j8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="16" y="47" font-size="13" fill="currentColor">0</text>
+  <text x="16" y="123" font-size="13" fill="currentColor">1's complement</text>
+  <text x="16" y="199" font-size="13" fill="currentColor">2's complement</text>
+
+  <g fill="none" stroke="currentColor">
+    <rect x="170" y="24" width="40" height="36"/><rect x="210" y="24" width="40" height="36"/><rect x="250" y="24" width="40" height="36"/><rect x="290" y="24" width="40" height="36"/>
+    <rect x="330" y="24" width="40" height="36"/><rect x="370" y="24" width="40" height="36"/><rect x="410" y="24" width="40" height="36"/><rect x="450" y="24" width="40" height="36"/>
+    <rect x="170" y="100" width="40" height="36"/><rect x="210" y="100" width="40" height="36"/><rect x="250" y="100" width="40" height="36"/><rect x="290" y="100" width="40" height="36"/>
+    <rect x="330" y="100" width="40" height="36"/><rect x="370" y="100" width="40" height="36"/><rect x="410" y="100" width="40" height="36"/><rect x="450" y="100" width="40" height="36"/>
+    <rect x="170" y="176" width="40" height="36"/><rect x="210" y="176" width="40" height="36"/><rect x="250" y="176" width="40" height="36"/><rect x="290" y="176" width="40" height="36"/>
+    <rect x="330" y="176" width="40" height="36"/><rect x="370" y="176" width="40" height="36"/><rect x="410" y="176" width="40" height="36"/><rect x="450" y="176" width="40" height="36"/>
+  </g>
+  <rect x="126" y="176" width="40" height="36" fill="none" stroke="currentColor" stroke-dasharray="4 3" opacity="0.6"/>
+  <line x1="130" y1="208" x2="162" y2="180" stroke="currentColor" opacity="0.6"/>
+
+  <g font-size="15" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="190" y="48">0</text><text x="230" y="48">0</text><text x="270" y="48">0</text><text x="310" y="48">0</text><text x="350" y="48">0</text><text x="390" y="48">0</text><text x="430" y="48">0</text><text x="470" y="48">0</text>
+    <text x="190" y="124">1</text><text x="230" y="124">1</text><text x="270" y="124">1</text><text x="310" y="124">1</text><text x="350" y="124">1</text><text x="390" y="124">1</text><text x="430" y="124">1</text><text x="470" y="124">1</text>
+    <text x="190" y="200">0</text><text x="230" y="200">0</text><text x="270" y="200">0</text><text x="310" y="200">0</text><text x="350" y="200">0</text><text x="390" y="200">0</text><text x="430" y="200">0</text><text x="470" y="200">0</text>
+    <text x="146" y="200" opacity="0.6">1</text>
+  </g>
+
+  <line x1="330" y1="62" x2="330" y2="96" stroke="currentColor" marker-end="url(#j8-arrow)"/>
+  <text x="342" y="84" font-size="11" fill="currentColor" opacity="0.75">invert (for "−0")</text>
+  <line x1="330" y1="138" x2="330" y2="172" stroke="currentColor" marker-end="url(#j8-arrow)"/>
+  <text x="342" y="160" font-size="11" fill="currentColor" opacity="0.75">add 1: carry ripples through all 8 bits</text>
+
+  <text x="506" y="123" font-size="13" fill="currentColor" opacity="0.75">1's comp: a "−0" ✗</text>
+  <text x="506" y="199" font-size="13" style="fill:var(--important-border)">= 0 ✓ (one zero)</text>
+  <text x="146" y="232" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">9th bit: no room, dropped</text>
+</svg>
+<figcaption>−0 in 2's complement: the carry overflows into a 9th bit that a byte can't hold, so the result is plain 0.</figcaption>
+</figure>
+
+<div class="important"><strong>⭐ Interview Important: advantages of 2's complement</strong><br>
+• <strong>Only one zero</strong>. 1's complement has both +0 (<code>00000000</code>) and −0 (<code>11111111</code>). This is the reason the video gives.<br>
+• Not covered in the video: the freed pattern gives one <strong>extra negative number</strong>, which is why the range is <strong>−128 to +127</strong> (asymmetric).<br>
+• Not covered in the video: the CPU can use the <strong>same adder circuit</strong> for addition and subtraction (a − b = a + (−b)), with no special sign handling.<br>
+• Java identity: <code>-x == ~x + 1</code>. For example, <code>~42 + 1</code> is <code>-42</code>.</div>
+<p>Not covered in the video: because of the asymmetric range, <code>Math.abs(Integer.MIN_VALUE)</code> returns <code>-2147483648</code>. +2,147,483,648 doesn't fit in an int, so it overflows back to itself. This is a classic trick question.</p>
+
+<hr>
+
+<h3>Floating-Point Numbers: IEEE 754 Layout</h3>
+<p>Java's <code>float</code> and <code>double</code> follow the <strong>IEEE 754</strong> standard. The bits are split into three fields.</p>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 195" role="img" aria-label="IEEE 754 layout: float is 1 sign bit, 8 exponent bits with bias 127, and 23 mantissa bits; double is 1 sign bit, 11 exponent bits with bias 1023, and 52 mantissa bits">
+  <text x="16" y="60" font-size="13" fill="currentColor">float</text>
+  <text x="16" y="76" font-size="11" fill="currentColor" opacity="0.75">32 bits</text>
+  <rect x="90" y="40" width="30" height="44" fill="none" stroke="currentColor"/>
+  <rect x="120" y="40" width="137" height="44" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <rect x="257" y="40" width="393" height="44" fill="none" stroke="currentColor"/>
+  <text x="105" y="66" font-size="11" text-anchor="middle" fill="currentColor">S</text>
+  <text x="188.5" y="66" font-size="12" text-anchor="middle" fill="currentColor">exponent · 8 bits</text>
+  <text x="453.5" y="66" font-size="12" text-anchor="middle" fill="currentColor">mantissa (fraction) · 23 bits</text>
+  <text x="105" y="100" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">1 bit</text>
+  <text x="188.5" y="100" font-size="11" text-anchor="middle" style="fill:var(--important-border)">bias 127</text>
+  <text x="453.5" y="100" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">≈ 7 significant decimal digits</text>
+
+  <text x="16" y="140" font-size="13" fill="currentColor">double</text>
+  <text x="16" y="156" font-size="11" fill="currentColor" opacity="0.75">64 bits</text>
+  <rect x="90" y="120" width="30" height="44" fill="none" stroke="currentColor"/>
+  <rect x="120" y="120" width="92" height="44" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <rect x="212" y="120" width="438" height="44" fill="none" stroke="currentColor"/>
+  <text x="105" y="146" font-size="11" text-anchor="middle" fill="currentColor">S</text>
+  <text x="166" y="146" font-size="12" text-anchor="middle" fill="currentColor">exp · 11 bits</text>
+  <text x="431" y="146" font-size="12" text-anchor="middle" fill="currentColor">mantissa (fraction) · 52 bits</text>
+  <text x="166" y="180" font-size="11" text-anchor="middle" style="fill:var(--important-border)">bias 1023</text>
+  <text x="431" y="180" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">≈ 15–16 significant decimal digits</text>
+</svg>
+<figcaption>S is the sign bit (0 = +, 1 = −). Exponent widths are drawn roughly to scale.</figcaption>
+</figure>
+
+<h3>Storing a Float: 4 Steps (example: <code>8.125f</code>)</h3>
+<ol>
+<li><strong>Convert to binary.</strong> The integer part 8 is <code>1000</code>. For the fractional part, <strong>multiply by 2</strong> repeatedly, take the integer digit each time, and read <strong>top to bottom</strong>:
+<pre><code>0.125 × 2 = 0.25  → 0
+0.25  × 2 = 0.5   → 0
+0.5   × 2 = 1.0   → 1   (fraction is now 0 → stop)
+0.125 = .001   →   8.125 = 1000.001₂</code></pre></li>
+<li><strong>Normalize to <code>1.x × 2<sup>exp</sup></code></strong> (binary scientific notation). Moving the point 3 places left gives <code>1.000001 × 2<sup>3</sup></code>. The base is 2, not 10, because this is binary. (The video writes "1.0001" at one point, but the mantissa it stores, <code>000001</code>, matches the correct <code>1.000001</code>.)</li>
+<li><strong>Add the bias</strong> to the exponent: 3 + 127 = 130 = <code>10000010</code>.</li>
+<li><strong>Place the fields in memory</strong>: sign = 0 (positive), exponent = <code>10000010</code>, and mantissa = the bits <strong>after</strong> "1.", padded with zeros to 23 bits. The leading 1 is <strong>not stored</strong>, because every normalized number starts with it (the "implicit/hidden bit").</li>
+</ol>
+
+<h4>Retrieving it: the decode formula</h4>
+<pre><code>value = (−1)<sup>sign</sup> × (1 + mantissa) × 2<sup>(exponent − bias)</sup></code></pre>
+<ul>
+<li><code>(−1)<sup>0</sup> = 1</code> keeps the value positive, and <code>(−1)<sup>1</sup> = −1</code> makes it negative.</li>
+<li><code>1 +</code> restores the hidden leading 1, and <code>− bias</code> undoes step 3.</li>
+<li>Mantissa bits after the point have weights 2<sup>−1</sup>, 2<sup>−2</sup>, 2<sup>−3</sup>, and so on. For 8.125, only the 6th bit is set: 2<sup>−6</sup> = 1/64 = 0.015625.</li>
+<li>So: 1 × (1 + 0.015625) × 2<sup>130−127</sup> = 1.015625 × 8 = <strong>8.125</strong>. The value comes back exactly.</li>
+</ul>
+
+<h3 id="v4-non-exact">Why 0.7f Is Not Exact</h3>
+<pre><code>0.7 × 2 = 1.4 → 1
+0.4 × 2 = 0.8 → 0
+0.8 × 2 = 1.6 → 1
+0.6 × 2 = 1.2 → 1
+0.2 × 2 = 0.4 → 0   ← 0.4 again: the cycle 0.4 → 0.8 → 0.6 → 0.2 repeats forever
+0.4 × 2 = 0.8 → 0
+...
+0.7 = 0.1 0110 0110 0110 …₂   (never terminates)</code></pre>
+<ol>
+<li>Normalize: <code>1.0110 0110 0110… × 2<sup>−1</sup></code>.</li>
+<li>Exponent: −1 + 127 = 126 = <code>01111110</code>. (The bias is what lets a negative exponent be stored as a positive number.)</li>
+<li>The mantissa has only 23 bits, so the infinite pattern is <strong>cut off</strong>.</li>
+</ol>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 210" role="img" aria-label="Actual float bits: 8.125f is 0 10000010 00000100000000000000000, exactly 8.125; 0.7f is 0 01111110 01100110011001100110011, the repeating pattern cut at 23 bits, about 0.699999988">
+  <text x="105" y="28" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">sign</text>
+  <text x="188.5" y="28" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">exponent (8)</text>
+  <text x="453.5" y="28" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">mantissa (23)</text>
+
+  <text x="16" y="65" font-size="13" fill="currentColor">8.125f</text>
+  <rect x="90" y="40" width="30" height="40" fill="none" stroke="currentColor"/>
+  <rect x="120" y="40" width="137" height="40" fill="none" stroke="currentColor"/>
+  <rect x="257" y="40" width="393" height="40" fill="none" stroke="currentColor"/>
+  <g font-size="13" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="105" y="65">0</text><text x="188.5" y="65">10000010</text><text x="453.5" y="65">00000100000000000000000</text>
+  </g>
+  <text x="650" y="98" font-size="11" text-anchor="end" fill="currentColor" opacity="0.75">0x41020000 → exactly 8.125</text>
+
+  <text x="16" y="145" font-size="13" fill="currentColor">0.7f</text>
+  <rect x="90" y="120" width="30" height="40" fill="none" stroke="currentColor"/>
+  <rect x="120" y="120" width="137" height="40" fill="none" stroke="currentColor"/>
+  <rect x="257" y="120" width="393" height="40" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <g font-size="13" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="105" y="145">0</text><text x="188.5" y="145">01111110</text><text x="453.5" y="145">01100110011001100110011</text>
+  </g>
+  <text x="650" y="178" font-size="11" text-anchor="end" style="fill:var(--important-border)">true 0.7 continues …0011 0011 … forever → cut at 23 bits</text>
+  <text x="650" y="196" font-size="11" text-anchor="end" fill="currentColor" opacity="0.75">0x3F333333 → 0.699999988079071044921875</text>
+</svg>
+<figcaption>The real bit patterns (checked with Float.floatToIntBits). 8.125 fits in the mantissa, and 0.7 doesn't.</figcaption>
+</figure>
+
+<ul>
+<li>Decoding those 23 bits gives the nearest float to 0.7, <strong>not 0.7 itself</strong>. That's the <code>0.69999998…</code> seen with <code>%.20f</code>.</li>
+<li>Precise version: IEEE 754 <strong>rounds to the nearest</strong> representable value, which is not quite the same as truncating. For 0.7 the next bit is 0, so rounding and truncation give the same result here.</li>
+</ul>
+<div class="important"><strong>⭐ Interview Important: which decimals are exact?</strong><br>
+A fraction is exact in binary only if it's a <strong>sum of powers of ½</strong> (denominator a power of 2) and fits in the mantissa: 0.5, 0.25, 0.125, 8.125 ✓. Numbers like 0.1, 0.2, and 0.7 repeat forever in binary, so they are always approximations, in <strong>both float and double</strong>. Classic example: <code>0.1 + 0.2</code> prints <code>0.30000000000000004</code>, so <code>0.1 + 0.2 == 0.3</code> is <strong>false</strong>.<br>
+→ Never compare floats/doubles with <code>==</code>. Compare with a tolerance (<code>Math.abs(a - b) &lt; 1e-9</code>).<br>
+→ For money or exact decimals, use <strong><code>BigDecimal</code></strong> (covered later in the series).</div>
+<p>Not covered in the video: create a <code>BigDecimal</code> from a <strong>String</strong>, e.g. <code>new BigDecimal("0.7")</code>. <code>new BigDecimal(0.7)</code> captures the double's binary error: <code>0.69999999999999995559…</code>.</p>
+
+<h3>The Bias</h3>
+<ul>
+<li>The exponent can be negative (0.7 needs 2<sup>−1</sup>). IEEE 754 doesn't store a signed exponent. Instead it adds a fixed <strong>bias</strong> so the stored field is always a <strong>non-negative, unsigned</strong> number. This makes the hardware simpler and lets floats be compared almost like integers.</li>
+<li><strong>Formula: bias = 2<sup>(k−1)</sup> − 1</strong>, where k is the number of exponent bits.
+  <ul>
+  <li>float: k = 8 → 2<sup>7</sup> − 1 = <strong>127</strong></li>
+  <li>double: k = 11 → 2<sup>10</sup> − 1 = <strong>1023</strong></li>
+  </ul></li>
+<li>8 exponent bits hold stored values 0–255, and 127 sits at the middle. The video says the exact choice of 127 over 128 is a hardware detail it doesn't cover.</li>
+<li>Correction: stored exponents <strong>0 and 255 are reserved</strong>. 0 is used for zero and very tiny "subnormal" numbers, and 255 for <code>Infinity</code> and <code>NaN</code>. So normal float exponents run from <strong>−126 to +127</strong>, not down to −127 as the video implies.</li>
+</ul>
+
+<h3>double in Memory</h3>
+<ul>
+<li>It works exactly the same as float, but uses <strong>64 bits</strong>: 1 sign + <strong>11 exponent</strong> + <strong>52 mantissa</strong>, with <strong>bias 1023</strong>.</li>
+<li>More mantissa bits make the error smaller, but numbers like 0.7 are <strong>still not exact</strong>. <code>double</code> only pushes the error further out.</li>
+</ul>
+<p>Not covered in the video: unlike integers, IEEE floats <strong>do have −0.0</strong>, because the sign bit is separate. <code>0.0 == -0.0</code> is <code>true</code>, but <code>Double.valueOf(0.0).equals(-0.0)</code> is <code>false</code>, and <code>1 / -0.0</code> is <code>-Infinity</code>.</p>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• How are negative integers stored in Java? → 2's complement: binary of |x|, invert all bits, add 1. For example, −42 as a byte = <code>11010110</code>.<br>
+• How does the CPU know a value is negative? → MSB (sign bit) = 1.<br>
+• Why 2's complement over 1's complement? → Only one zero (no −0), one extra negative (−128..127), and the same adder works for subtraction.<br>
+• <code>Math.abs(Integer.MIN_VALUE)</code>? → Still negative (overflow).<br>
+• float layout? → 1 sign + 8 exponent + 23 mantissa, bias 127. double → 1 + 11 + 52, bias 1023.<br>
+• Decode formula? → (−1)<sup>S</sup> × (1 + M) × 2<sup>(E − bias)</sup>.<br>
+• Why is the leading 1 not stored? → Every normalized number is 1.x, so it's implicit, which gives a free extra bit of precision.<br>
+• Why is there a bias? → To store negative exponents as unsigned numbers. Formula 2<sup>k−1</sup> − 1.<br>
+• Why does <code>printf("%.20f", 0.7f)</code> show 0.6999…? → 0.7 repeats forever in binary, so the mantissa is cut off. <code>println</code> just prints the shortest round-tripping decimal.<br>
+• Is <code>0.1 + 0.2 == 0.3</code>? → false. Use a tolerance, or BigDecimal (with the String constructor) for exact decimals.</div>
+
+</section>
+
+<section class="video-section" id="video-5">
+<h2>Video 5: Type Conversion, Casting &amp; Type Promotion</h2>
+<p>Type conversion means putting a value of one primitive type into a variable of another type, e.g. byte → int or int → byte. There are two kinds.</p>
+<table>
+<tr><th>Kind</th><th>Who does it</th><th>Direction</th><th>Also called</th></tr>
+<tr><td><strong>Implicit</strong></td><td>Java does it automatically</td><td>Smaller → <strong>wider</strong> type</td><td><strong>Widening</strong> conversion</td></tr>
+<tr><td><strong>Explicit</strong></td><td>You must write a <strong>cast</strong></td><td>Wider → <strong>smaller</strong> type</td><td><strong>Narrowing</strong> conversion</td></tr>
+</table>
+
+<h3>1. Implicit (Widening) Conversion</h3>
+<div class="important"><strong>⭐ Interview Important: rule for implicit conversion</strong><br>
+The <strong>destination type must be wider than the source type</strong>. Every value the source can hold then fits in the destination, so no data can be lost and Java converts silently.</div>
+<pre><code>byte b = 24;
+int i;
+i = b;                   // OK: byte (8-bit, −128..127) always fits in int (32-bit)
+System.out.println(i);   // 24
+
+char c = 'a';
+int x = c;               // OK: char (16-bit) → int (32-bit)
+System.out.println(x);   // 97, the Unicode value of 'a'</code></pre>
+<p>A <code>char</code> is stored internally as its Unicode number, so it widens to int like any number. The <code>char</code> type only tells Java to show the character instead of the number when printing.</p>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 170" role="img" aria-label="Widening chain: byte to short to int to long to float to double, with char joining at int; these directions are implicit, and the reverse needs a cast">
+  <defs>
+    <marker id="j9-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="14" font-size="11" fill="currentColor" opacity="0.75">implicit (widening) direction →</text>
+
+  <g fill="none" stroke="currentColor">
+    <rect x="20" y="24" width="80" height="44" rx="4"/>
+    <rect x="130" y="24" width="80" height="44" rx="4"/>
+    <rect x="240" y="24" width="80" height="44" rx="4"/>
+    <rect x="350" y="24" width="80" height="44" rx="4"/>
+    <rect x="460" y="24" width="80" height="44" rx="4"/>
+    <rect x="570" y="24" width="80" height="44" rx="4"/>
+    <rect x="130" y="104" width="80" height="44" rx="4"/>
+  </g>
+  <g font-size="13" text-anchor="middle" fill="currentColor">
+    <text x="60" y="44">byte</text><text x="170" y="44">short</text><text x="280" y="44">int</text>
+    <text x="390" y="44">long</text><text x="500" y="44">float</text><text x="610" y="44">double</text>
+    <text x="170" y="124">char</text>
+  </g>
+  <g font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">
+    <text x="60" y="60">8</text><text x="170" y="60">16</text><text x="280" y="60">32</text>
+    <text x="390" y="60">64</text><text x="500" y="60">32</text><text x="610" y="60">64</text>
+    <text x="170" y="140">16 (unsigned)</text>
+  </g>
+
+  <g stroke="currentColor" fill="none">
+    <line x1="100" y1="46" x2="128" y2="46" marker-end="url(#j9-arrow)"/>
+    <line x1="210" y1="46" x2="238" y2="46" marker-end="url(#j9-arrow)"/>
+    <line x1="320" y1="46" x2="348" y2="46" marker-end="url(#j9-arrow)"/>
+    <line x1="540" y1="46" x2="568" y2="46" marker-end="url(#j9-arrow)"/>
+    <polyline points="210,126 280,126 280,70" marker-end="url(#j9-arrow)"/>
+  </g>
+  <line x1="430" y1="46" x2="458" y2="46" style="stroke:var(--important-border)" stroke-dasharray="4 3" marker-end="url(#j9-arrow)"/>
+  <text x="445" y="86" font-size="10" text-anchor="middle" style="fill:var(--important-border)">may lose precision</text>
+
+  <text x="330" y="122" font-size="12" fill="currentColor">Reverse (to a narrower type) needs a cast: (byte) i</text>
+  <text x="330" y="142" font-size="12" fill="currentColor" opacity="0.75">boolean: no conversion to or from any type</text>
+</svg>
+<figcaption>Following the arrows is automatic. Numbers are bit widths. short and char don't convert into each other without a cast.</figcaption>
+</figure>
+
+<ul>
+<li>Not covered in the video: <strong>int/long → float</strong> and <strong>long → double</strong> are implicit but <strong>can lose precision</strong>, because the mantissa is smaller than 32 or 64 bits. <code>(float) 16777217</code> becomes <code>1.6777216E7</code>. The range still fits, so Java allows it.</li>
+<li>Not covered in the video: <code>byte b = 24;</code> compiles even though <code>24</code> is an int literal, because it's a <strong>compile-time constant</strong> that fits in a byte. The same works for <code>final int k = 10; byte bb = k;</code>. A non-final int variable needs a cast.</li>
+</ul>
+
+<h3>2. Explicit (Narrowing) Conversion: Casting</h3>
+<pre><code>int i = 300;
+byte b = i;            // ✗ compile error: "incompatible types: possible lossy conversion from int to byte"
+byte b = (byte) i;     // ✓ cast: "I know data may be lost, do it anyway"
+System.out.println(b); // 44</code></pre>
+<p>Syntax: <code>(targetType) value</code>. The cast tells the compiler the narrowing is intentional. Other narrowing examples: <code>long → int</code> and <code>double → float</code>.</p>
+
+<h4>Why 300 becomes 44</h4>
+<figure class="diagram">
+<svg viewBox="0 0 680 190" role="img" aria-label="Casting int 300 to byte: the 32-bit value 00000000 00000000 00000001 00101100 keeps only its lowest 8 bits 00101100, which is 44">
+  <defs>
+    <marker id="j10-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="255" y="30" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">upper 24 bits: dropped</text>
+  <text x="515" y="30" font-size="11" text-anchor="middle" style="fill:var(--important-border)">lowest 8 bits: kept</text>
+
+  <text x="50" y="65" font-size="13" text-anchor="end" fill="currentColor">int i</text>
+  <g fill="none" stroke="currentColor" stroke-dasharray="4 3" opacity="0.6">
+    <rect x="60" y="40" width="130" height="40"/><rect x="190" y="40" width="130" height="40"/><rect x="320" y="40" width="130" height="40"/>
+  </g>
+  <rect x="450" y="40" width="130" height="40" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <g font-size="14" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="125" y="65" opacity="0.6">00000000</text><text x="255" y="65" opacity="0.6">00000000</text><text x="385" y="65" opacity="0.6">00000001</text>
+    <text x="515" y="65">00101100</text>
+  </g>
+  <text x="595" y="65" font-size="12" fill="currentColor" opacity="0.75">= 300</text>
+
+  <line x1="515" y1="82" x2="515" y2="116" stroke="currentColor" marker-end="url(#j10-arrow)"/>
+  <text x="440" y="145" font-size="13" text-anchor="end" fill="currentColor">byte b = (byte) i</text>
+  <rect x="450" y="120" width="130" height="40" fill="none" stroke="currentColor"/>
+  <text x="515" y="145" font-size="14" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">00101100</text>
+  <text x="595" y="145" font-size="13" style="fill:var(--important-border)">= 44</text>
+  <text x="515" y="180" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">32 + 8 + 4 = 44</text>
+</svg>
+<figcaption>Narrowing keeps the lowest 8 bits (the LSB end) and throws away the rest.</figcaption>
+</figure>
+
+<div class="important"><strong>⭐ Interview Important: shortcut for narrowing an int to a byte</strong><br>
+The video's shortcut is <code>300 % 256 = 44</code>. <code>%</code> is the <strong>modulo (remainder) operator</strong>, and 256 = 2<sup>8</sup> is the number of values a byte can hold.<br>
+Correction: that shortcut only works when the remainder is ≤ 127. The kept 8 bits are read as a <strong>signed</strong> 2's-complement byte, so if the remainder is <strong>128–255, subtract 256</strong>. For example, <code>(byte) 200</code> is <strong>−56</strong>, not 200, because 200 = <code>11001000</code> and its MSB is 1.</div>
+
+<h3>3. Truncating Conversion (float/double → integer)</h3>
+<p>This is a special case of narrowing.</p>
+<pre><code>float f = 15.678f;
+int i = f;          // ✗ error, even though float and int are both 32 bits
+int i = (int) f;    // ✓ 15  (the fractional part is chopped off)</code></pre>
+<ul>
+<li>A cast is required even though both are 32-bit, because int can't hold a fractional part.</li>
+<li>It <strong>truncates toward zero</strong>, it does <strong>not round</strong>: <code>(int) 15.678f</code> is 15 and <code>(int) -15.9</code> is −15. To round, use <code>Math.round(15.678f)</code>, which gives 16.</li>
+<li>Not covered in the video: out-of-range values clamp to the limit (<code>(int) 1e20f</code> is <code>Integer.MAX_VALUE</code>), and <code>NaN</code> becomes 0.</li>
+</ul>
+
+<h3>boolean: No Conversion At All</h3>
+<pre><code>boolean bool = false;
+int i = bool;        // ✗ incompatible types
+int i = (int) bool;  // ✗ still an error, even with a cast</code></pre>
+<div class="important"><strong>⭐ Interview Important:</strong> <code>boolean</code> can't be converted to or from <strong>any</strong> other type, implicitly or with a cast. <code>true</code>/<code>false</code> are not numbers in Java, unlike C/C++ where 0 means false.</div>
+
+<hr>
+
+<h3>Automatic Type Promotion (in expressions)</h3>
+<pre><code>byte a = 50, b = 40, c = 100;
+int i = a * b / c;   // 50*40 = 2000 (outside byte range!) → /100 = 20 → fits in int ✓</code></pre>
+<p>During arithmetic, Java <strong>automatically promotes</strong> byte/short/char operands to <strong>int</strong>. Otherwise an intermediate result like 2000 wouldn't fit in a byte.</p>
+
+<h4>The classic surprise</h4>
+<pre><code>byte b = 50;
+b = b * 2;            // ✗ error: possible lossy conversion from int to byte
+                      //   b is promoted to int, so b * 2 is an int (100), and int → byte needs a cast
+b = (byte) (b * 2);   // ✓ 100
+b = (byte) b * 2;     // ✗ still an error: the cast applies only to b, then * 2 makes it an int again</code></pre>
+<ul>
+<li>The parentheses are needed because the <strong>cast has higher precedence than <code>*</code></strong>. Operators are covered in a later video.</li>
+<li>Not covered in the video: <strong>compound assignment includes a hidden cast</strong>, so <code>b *= 2;</code> compiles. This can overflow silently: with <code>b = 100</code>, <code>b += 100</code> gives <strong>−56</strong>.</li>
+</ul>
+
+<h3>Type Promotion Rules</h3>
+<ol>
+<li><strong>byte, short, char → int</strong> in any arithmetic expression, even <code>byte + byte</code>.</li>
+<li>If any operand is <strong>long</strong>, the operation is done in <strong>long</strong>.</li>
+<li>If any operand is <strong>float</strong>, the operation is done in <strong>float</strong>. Float beats long because it covers a wider range of values.</li>
+<li>If any operand is <strong>double</strong>, the operation is done in <strong>double</strong>.</li>
+</ol>
+<p>In short, <strong>the result takes the widest type involved</strong>, and the minimum is int. Priority: double &gt; float &gt; long &gt; int.</p>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 210" role="img" aria-label="Expression tree for f*b + i/c - d*s: float times byte is float, int divided by char is int, double times short is double; float plus int is float; float minus double is double">
+  <g fill="none" stroke="currentColor">
+    <rect x="20" y="170" width="80" height="30" rx="4"/><rect x="120" y="170" width="80" height="30" rx="4"/>
+    <rect x="240" y="170" width="80" height="30" rx="4"/><rect x="340" y="170" width="80" height="30" rx="4"/>
+    <rect x="460" y="170" width="80" height="30" rx="4"/><rect x="560" y="170" width="80" height="30" rx="4"/>
+    <rect x="45" y="110" width="130" height="30" rx="4"/><rect x="265" y="110" width="130" height="30" rx="4"/><rect x="485" y="110" width="130" height="30" rx="4"/>
+    <rect x="155" y="55" width="130" height="30" rx="4"/>
+  </g>
+  <rect x="315" y="5" width="140" height="30" rx="4" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+
+  <g font-size="12" text-anchor="middle" fill="currentColor">
+    <text x="60" y="190">f : float</text><text x="160" y="190">b : byte</text>
+    <text x="280" y="190">i : int</text><text x="380" y="190">c : char</text>
+    <text x="500" y="190">d : double</text><text x="600" y="190">s : short</text>
+    <text x="110" y="130">f * b → float</text><text x="330" y="130">i / c → int</text><text x="550" y="130">d * s → double</text>
+    <text x="220" y="75">+ → float</text>
+  </g>
+  <text x="385" y="25" font-size="12" text-anchor="middle" style="fill:var(--important-border)">− → double (result)</text>
+
+  <g stroke="currentColor" fill="none">
+    <polyline points="60,170 60,155 160,155 160,170"/><line x1="110" y1="155" x2="110" y2="140"/>
+    <polyline points="280,170 280,155 380,155 380,170"/><line x1="330" y1="155" x2="330" y2="140"/>
+    <polyline points="500,170 500,155 600,155 600,170"/><line x1="550" y1="155" x2="550" y2="140"/>
+    <polyline points="110,110 110,98 330,98 330,110"/><line x1="220" y1="98" x2="220" y2="85"/>
+    <polyline points="220,55 220,45 550,45 550,110"/><line x1="385" y1="45" x2="385" y2="35"/>
+  </g>
+</svg>
+<figcaption>The video's example <code>f * b + i / c - d * s</code>. Promotion happens <strong>per operation</strong>, bottom-up, and the result type is double.</figcaption>
+</figure>
+
+<p>Not covered in the video: because promotion is per operation, <code>i / c</code> is <strong>integer division</strong> (the fraction is dropped) before it ever meets the float. Another classic: <code>1 / 2 * 2.0</code> is <strong>0.0</strong>, because <code>1 / 2</code> is int division and gives 0 first.</p>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• Implicit vs explicit conversion? → Widening happens automatically (destination wider than source). Narrowing needs a cast <code>(type)</code>.<br>
+• Widening order? → byte → short → int → long → float → double. char → int.<br>
+• <code>(byte) 300</code>? → 44 (the lowest 8 bits). <code>(byte) 200</code>? → −56 (the value is read as signed).<br>
+• <code>(int) 15.678f</code>? → 15 (truncated, not rounded). Use <code>Math.round</code> to round.<br>
+• Can boolean be cast to int? → No, not even explicitly.<br>
+• Why does <code>byte b = 50; b = b * 2;</code> fail? → b is promoted to int, so the result is an int. Fix it with <code>(byte)(b * 2)</code>, or use <code>b *= 2</code>, which has a hidden cast.<br>
+• Result type of <code>byte + byte</code>? → int.<br>
+• Result type of a mixed expression? → The widest operand type, and at least int (double &gt; float &gt; long &gt; int).<br>
+• Can widening lose data? → The range always fits, but int/long → float and long → double can lose precision.</div>
+
+</section>
+
+<section class="video-section" id="video-6">
+<h2>Video 6: Operators in Java</h2>
+<p>Operator families covered: <strong>arithmetic</strong>, <strong>increment/decrement</strong>, <strong>relational</strong>, <strong>bitwise &amp; shift</strong>, <strong>logical</strong>, <strong>assignment</strong>, and <strong>precedence</strong>. The ternary operator is postponed to the conditionals video.</p>
+<ul>
+<li><strong>Unary</strong> operators take 1 operand (<code>++a</code>, <code>!x</code>, <code>~a</code>). <strong>Binary</strong> operators take 2 (<code>a + b</code>). <strong>Ternary</strong> takes 3, and <code>?:</code> is Java's only ternary operator.</li>
+</ul>
+
+<h3>1. Arithmetic Operators</h3>
+<table>
+<tr><th>Operator</th><th>Meaning</th><th>a = 5, b = 10</th></tr>
+<tr><td><code>+ - *</code></td><td>add, subtract, multiply</td><td><code>a + b</code> = 15, <code>a - b</code> = −5, <code>a * b</code> = 50</td></tr>
+<tr><td><code>/</code></td><td>divide</td><td><code>b / a</code> = 2</td></tr>
+<tr><td><code>%</code></td><td>modulus: the <strong>remainder</strong> after division</td><td><code>b % a</code> = 0</td></tr>
+</table>
+<p>Not covered in the video, but common interview traps:</p>
+<ul>
+<li><strong>int / int is integer division</strong> and drops the fraction: <code>5 / 2</code> is <code>2</code>.</li>
+<li>The <strong>sign of <code>%</code> follows the left operand (the dividend)</strong>: <code>-7 % 3</code> is <code>-1</code>, and <code>7 % -3</code> is <code>1</code>.</li>
+<li><strong>Division by zero</strong>: <code>5 / 0</code> (int) throws <code>ArithmeticException</code>, but <code>5.0 / 0</code> gives <code>Infinity</code>.</li>
+</ul>
+
+<h4>Compound assignment: <code>+= -= *= /= %=</code></h4>
+<pre><code>int h = 7;
+h = h + 2;   // in programming, = means "assign the right side to the left", not "equals"
+h += 2;      // shortcut for the same thing
+h -= 2;  h *= 3;  h /= 5;  h %= 5;</code></pre>
+<ul>
+<li>Not covered in the video: the right side is evaluated <strong>first, as a whole</strong>, so <code>h *= 3 + 2</code> means <code>h = h * (3 + 2)</code>, not <code>h * 3 + 2</code>.</li>
+<li>Compound assignment also hides a cast, so <code>byte b; b += 1;</code> compiles (see <a href="#video-5">Video 5</a>).</li>
+</ul>
+
+<h3>2. Increment / Decrement: <code>++ --</code></h3>
+<p><code>i++</code> is <code>i = i + 1</code> (the same as <code>i += 1</code>), and <code>i--</code> is <code>i = i - 1</code>. They exist because stepping by 1 is very common, e.g. in loops and array indexes. There is no <code>**</code> or <code>//</code> operator.</p>
+
+<div class="important"><strong>⭐ Interview Important: prefix vs postfix</strong>
+<table>
+<tr><th>Form</th><th>Name</th><th>What happens</th><th>j = 9 first</th></tr>
+<tr><td><code>k = j++;</code></td><td><strong>Postfix</strong></td><td><strong>Use the old value, then increment</strong>. This is <code>k = j; j = j + 1;</code></td><td>k = <strong>9</strong>, j = 10</td></tr>
+<tr><td><code>l = ++j;</code></td><td><strong>Prefix</strong></td><td><strong>Increment first, then use the new value</strong>. This is <code>j = j + 1; l = j;</code></td><td>l = <strong>11</strong>, j = 11 (continuing)</td></tr>
+</table>
+On a line of its own (<code>j++;</code> vs <code>++j;</code>) there's no difference. It only matters when the value is <strong>used</strong> in the same expression. <code>--</code> behaves the same way.</div>
+<p>Not covered in the video: a classic trick question is <code>int j = 5; j = j++;</code>. The result is <strong>still 5</strong>. The old value (5) is saved, j becomes 6, and then the assignment writes the saved 5 back.</p>
+
+<hr>
+
+<h3>3. Relational Operators: <code>== != &lt; &gt; &lt;= &gt;=</code></h3>
+<ul>
+<li>Relational operators compare two values and <strong>always produce a <code>boolean</code></strong> (true/false).</li>
+<li><code>a == b</code> asks "is a equal to b?". <code>a = b</code> is <strong>assignment</strong>: it copies b into a.</li>
+<li><code>&lt;=</code> is true if <em>either</em> less than or equal holds, so with a = b = 10, <code>a &lt;= b</code> is true and <code>a &lt; b</code> is false.</li>
+<li>Code that produces a value, like <code>a == b</code> or <code>a + b</code>, is called an <strong>expression</strong>.</li>
+</ul>
+<pre><code>int a = 5, b = 10;
+boolean c = (a == b);   // false
+boolean d = (a != b);   // true</code></pre>
+<p>Not covered in the video: in Java, <code>if (a = b)</code> with ints <strong>doesn't compile</strong>, because an int isn't a boolean. This prevents the classic C bug of assigning where you meant to compare. (It does compile for booleans: <code>if (flag = true)</code>.)</p>
+
+<hr>
+
+<h3>4. Bitwise Operators: <code>&amp; | ^ ~</code></h3>
+<p>These work on the <strong>individual bits</strong> of integer values, and the result is an integer.</p>
+<table>
+<tr><th>A</th><th>B</th><th>A &amp; B (AND)</th><th>A | B (OR)</th><th>A ^ B (XOR)</th><th>~A (NOT)</th></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+</table>
+<ul>
+<li><strong>AND</strong> is 1 only if <strong>both</strong> bits are 1. <strong>OR</strong> is 1 if <strong>at least one</strong> is 1. <strong>XOR</strong> is 1 if there's an <strong>odd number of 1s</strong> (the bits differ). <strong>NOT</strong> (unary) flips every bit.</li>
+<li>A table like this is called a <strong>truth table</strong>. These are the same logic gates the CPU is built from.</li>
+<li>Compound forms also exist: <code>&amp;= |= ^= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;=</code>.</li>
+</ul>
+<pre><code>int a = 2, b = 3;       // 2 = ...0010, 3 = ...0011
+a &amp; b   // 2  (0010)
+a | b   // 3  (0011)
+a ^ b   // 1  (0001)
+~a      // -3 (all 32 bits flipped: 1111…1101)</code></pre>
+<div class="important"><strong>⭐ Interview Important: why <code>~2</code> is −3</strong><br>
+An int has 32 bits, so NOT flips all the leading zeros to 1 as well. The result starts with 1, which makes it negative in 2's complement. Shortcut: <strong><code>~x == -x - 1</code></strong>.</div>
+
+<h3>5. Shift Operators: <code>&lt;&lt;  &gt;&gt;  &gt;&gt;&gt;</code></h3>
+
+<h4>Left shift <code>&lt;&lt;</code></h4>
+<figure class="diagram">
+<svg viewBox="0 0 680 190" role="img" aria-label="Left shift of 8 by 1: 00001000 becomes 00010000, which is 16; the leftmost bit falls off and a 0 fills in on the right">
+  <defs>
+    <marker id="j11-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="16" y="53" font-size="13" fill="currentColor">b</text>
+  <text x="16" y="143" font-size="13" fill="currentColor">b &lt;&lt; 1</text>
+  <g fill="none" stroke="currentColor">
+    <rect x="170" y="30" width="40" height="36"/><rect x="210" y="30" width="40" height="36"/><rect x="250" y="30" width="40" height="36"/><rect x="290" y="30" width="40" height="36"/>
+    <rect x="330" y="30" width="40" height="36"/><rect x="370" y="30" width="40" height="36"/><rect x="410" y="30" width="40" height="36"/><rect x="450" y="30" width="40" height="36"/>
+    <rect x="170" y="120" width="40" height="36"/><rect x="210" y="120" width="40" height="36"/><rect x="250" y="120" width="40" height="36"/><rect x="290" y="120" width="40" height="36"/>
+    <rect x="330" y="120" width="40" height="36"/><rect x="370" y="120" width="40" height="36"/><rect x="410" y="120" width="40" height="36"/>
+  </g>
+  <rect x="450" y="120" width="40" height="36" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <rect x="126" y="120" width="40" height="36" fill="none" stroke="currentColor" stroke-dasharray="4 3" opacity="0.6"/>
+  <g font-size="15" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="190" y="54">0</text><text x="230" y="54">0</text><text x="270" y="54">0</text><text x="310" y="54">0</text><text x="350" y="54">1</text><text x="390" y="54">0</text><text x="430" y="54">0</text><text x="470" y="54">0</text>
+    <text x="190" y="144">0</text><text x="230" y="144">0</text><text x="270" y="144">0</text><text x="310" y="144">1</text><text x="350" y="144">0</text><text x="390" y="144">0</text><text x="430" y="144">0</text><text x="470" y="144">0</text>
+    <text x="146" y="144" opacity="0.6">0</text>
+  </g>
+  <line x1="460" y1="93" x2="200" y2="93" stroke="currentColor" marker-end="url(#j11-arrow)"/>
+  <text x="330" y="86" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">every bit moves 1 place left</text>
+  <text x="506" y="53" font-size="13" fill="currentColor">= 8</text>
+  <text x="506" y="143" font-size="13" style="fill:var(--important-border)">= 16  (× 2)</text>
+  <text x="146" y="178" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">falls off</text>
+  <text x="470" y="178" font-size="11" text-anchor="middle" style="fill:var(--important-border)">0 fills in</text>
+</svg>
+<figcaption>Each 1 moves to a place worth double, so <code>x &lt;&lt; n</code> equals <code>x × 2<sup>n</sup></code> (as long as nothing overflows). 8 → 16 → 32 → 64.</figcaption>
+</figure>
+
+<div class="important"><strong>⭐ Interview Important: shifts only happen on int or long</strong><br>
+Because of type promotion, a <code>byte</code>/<code>short</code>/<code>char</code> is <strong>promoted to int first</strong>. The shift happens on all 32 bits, and a cast back to byte just <strong>truncates</strong> to the lowest 8 bits. So <code>b = b &lt;&lt; 1;</code> doesn't compile for a byte. You need <code>b = (byte)(b &lt;&lt; 1);</code>.</div>
+
+<p>Why this matters: take <code>byte b = 1;</code> and shift it left 7 times. As a byte it looks like <code>10000000</code> = −128. Shift it once more:</p>
+<figure class="diagram">
+<svg viewBox="0 0 680 256" role="img" aria-label="byte minus 128 is promoted to int by sign extension into 24 ones followed by 10000000; shifting left by 1 gives 24 ones followed by 00000000, which is minus 256 as an int, but casting to byte keeps only 00000000, which is 0">
+  <defs>
+    <marker id="j12-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g font-size="12" text-anchor="end" fill="currentColor">
+    <text x="140" y="53">byte b = −128</text>
+    <text x="140" y="113">promoted to int</text>
+    <text x="140" y="173">b &lt;&lt; 1 = −256</text>
+    <text x="140" y="233">(byte)(b &lt;&lt; 1) = 0</text>
+  </g>
+
+  <rect x="540" y="30" width="130" height="36" fill="none" stroke="currentColor"/>
+
+  <g fill="none" style="stroke:var(--important-border)" stroke-width="2">
+    <rect x="150" y="90" width="130" height="36"/><rect x="280" y="90" width="130" height="36"/><rect x="410" y="90" width="130" height="36"/>
+  </g>
+  <rect x="540" y="90" width="130" height="36" fill="none" stroke="currentColor"/>
+
+  <g fill="none" stroke="currentColor">
+    <rect x="150" y="150" width="130" height="36"/><rect x="280" y="150" width="130" height="36"/><rect x="410" y="150" width="130" height="36"/><rect x="540" y="150" width="130" height="36"/>
+  </g>
+
+  <g fill="none" stroke="currentColor" stroke-dasharray="4 3" opacity="0.5">
+    <rect x="150" y="210" width="130" height="36"/><rect x="280" y="210" width="130" height="36"/><rect x="410" y="210" width="130" height="36"/>
+  </g>
+  <rect x="540" y="210" width="130" height="36" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+
+  <g font-size="13" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="605" y="53">10000000</text>
+    <text x="215" y="113">11111111</text><text x="345" y="113">11111111</text><text x="475" y="113">11111111</text><text x="605" y="113">10000000</text>
+    <text x="215" y="173">11111111</text><text x="345" y="173">11111111</text><text x="475" y="173">11111111</text><text x="605" y="173">00000000</text>
+    <text x="215" y="233" opacity="0.5">dropped</text><text x="345" y="233" opacity="0.5">dropped</text><text x="475" y="233" opacity="0.5">dropped</text><text x="605" y="233">00000000</text>
+  </g>
+
+  <g stroke="currentColor">
+    <line x1="605" y1="67" x2="605" y2="87" marker-end="url(#j12-arrow)"/>
+    <line x1="605" y1="127" x2="605" y2="147" marker-end="url(#j12-arrow)"/>
+    <line x1="605" y1="187" x2="605" y2="207" marker-end="url(#j12-arrow)"/>
+  </g>
+</svg>
+<figcaption>Promotion <strong>sign-extends</strong>: a negative byte fills the upper 24 bits with 1s (highlighted) so the int is still −128. The bits aren't lost when shifting. The byte cast just hides them.</figcaption>
+</figure>
+<ul>
+<li>With a <code>byte</code> result it looks like shifting "stops working" and stays 0. With <code>int i = b &lt;&lt; 1;</code> you see the real value, <strong>−256</strong>, and further shifts give −512, −1024, and so on.</li>
+<li>When an int or long is widened, the upper bits are filled with <strong>copies of the sign bit</strong> (0 for positive, 1 for negative). This keeps the value the same.</li>
+</ul>
+
+<h4>How far can you shift? (the shift distance is taken mod 32)</h4>
+<pre><code>1 &lt;&lt; 30   // 1073741824      (the 1 is at bit 30, just below the sign bit)
+1 &lt;&lt; 31   // -2147483648     = Integer.MIN_VALUE (the 1 is now the sign bit)
+1 &lt;&lt; 32   // 1   ← not 0!   (32 % 32 = 0, so it's a shift by 0)
+1 &lt;&lt; 33   // 2               (33 % 32 = 1)</code></pre>
+<div class="important"><strong>⭐ Interview Important: the shift distance is masked</strong><br>
+For an <strong>int</strong>, Java uses only the low 5 bits of the shift distance, i.e. <strong><code>n % 32</code></strong>, so the useful range is 0–31. Moving a bit from the LSB (bit 0) to the MSB (bit 31) takes at most 31 shifts, and anything beyond that is pointless.<br>
+Correction: for a <strong>long</strong> it's <strong><code>n % 64</code></strong> (0–63), not 32 as the video implies. <code>1L &lt;&lt; 32</code> is 4294967296, and <code>1L &lt;&lt; 64</code> is 1.</div>
+<p>Correction: the video calls <code>Integer.MIN_VALUE</code> "negative infinity". It is the <strong>smallest int</strong>, −2,147,483,648. Algorithms often use it as a "−∞" placeholder, but it isn't a real infinity (only float and double have <code>-Infinity</code>).</p>
+
+<h4>Right shifts: <code>&gt;&gt;</code> (signed) vs <code>&gt;&gt;&gt;</code> (unsigned / zero-fill)</h4>
+<ul>
+<li><code>x &gt;&gt; n</code> moves bits right. The LSBs fall off, and the <strong>new MSBs are copies of the sign bit</strong>, so the sign is kept. This is roughly <strong><code>x / 2<sup>n</sup></code></strong>: 8 → 4 → 2 → 1, and −128 → −64 → −32.</li>
+<li><code>x &gt;&gt;&gt; n</code> <strong>always fills with 0</strong>, whatever the sign (the video calls it the "dumb shift"). A negative number becomes a large positive one. It's useful when the bits are just data with no sign, e.g. pixel values, hashes, or unsigned math.</li>
+</ul>
+<figure class="diagram">
+<svg viewBox="0 0 680 210" role="img" aria-label="Int minus 128 shifted right by 1: the signed shift fills a 1 in from the left giving minus 64; the unsigned shift fills a 0 giving 2147483584">
+  <g font-size="12" text-anchor="end" fill="currentColor">
+    <text x="140" y="53">n = −128</text>
+    <text x="140" y="113">n &gt;&gt; 1 = −64</text>
+    <text x="140" y="173">n &gt;&gt;&gt; 1 = 2147483584</text>
+  </g>
+  <g fill="none" stroke="currentColor">
+    <rect x="150" y="30" width="130" height="36"/><rect x="280" y="30" width="130" height="36"/><rect x="410" y="30" width="130" height="36"/><rect x="540" y="30" width="130" height="36"/>
+    <rect x="150" y="90" width="130" height="36"/><rect x="280" y="90" width="130" height="36"/><rect x="410" y="90" width="130" height="36"/><rect x="540" y="90" width="130" height="36"/>
+    <rect x="150" y="150" width="130" height="36"/><rect x="280" y="150" width="130" height="36"/><rect x="410" y="150" width="130" height="36"/><rect x="540" y="150" width="130" height="36"/>
+  </g>
+  <g font-size="13" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="215" y="53">11111111</text><text x="345" y="53">11111111</text><text x="475" y="53">11111111</text><text x="605" y="53">10000000</text>
+    <text x="215" y="113"><tspan style="fill:var(--important-border)" font-weight="700">1</tspan>1111111</text><text x="345" y="113">11111111</text><text x="475" y="113">11111111</text><text x="605" y="113">11000000</text>
+    <text x="215" y="173"><tspan style="fill:var(--important-border)" font-weight="700">0</tspan>1111111</text><text x="345" y="173">11111111</text><text x="475" y="173">11111111</text><text x="605" y="173">11000000</text>
+  </g>
+  <text x="150" y="142" font-size="10" fill="currentColor" opacity="0.75">&gt;&gt; copies the sign bit in → stays negative</text>
+  <text x="150" y="202" font-size="10" fill="currentColor" opacity="0.75">&gt;&gt;&gt; always puts 0 in → becomes positive</text>
+</svg>
+<figcaption>The same 32-bit int shifted right by 1. The only difference is the bit that enters at the top.</figcaption>
+</figure>
+<div class="important"><strong>⭐ Correction: <code>&gt;&gt;&gt;</code> on a byte does NOT give +64</strong><br>
+The video's 8-bit example says −128 <code>&gt;&gt;&gt; 1</code> is +64. In Java, the byte is first <strong>promoted to int</strong> (<code>1111…10000000</code>). The zero-fill happens at <strong>bit 31</strong>, so it gives 2147483584, and casting back to a byte keeps <code>11000000</code> = <strong>−64</strong>, the same as <code>&gt;&gt;</code>. Verified: <code>(byte)(b &gt;&gt;&gt; 1)</code> with <code>b = -128</code> prints −64. <code>&gt;&gt;&gt;</code> only behaves as "unsigned" on the full int or long.</div>
+<ul>
+<li>Right shifts on byte/short look correct after a cast, because <code>&gt;&gt;</code> drops the LSBs and the kept low 8 bits still match. Left shifts are where the truncation surprises you.</li>
+<li>The mod-32 (int) and mod-64 (long) rule applies to right shifts as well.</li>
+</ul>
+
+<hr>
+
+<h3>6. Logical Operators: <code>&amp;&amp; || !</code></h3>
+<p>Logical operators work on <strong>boolean expressions</strong>, not bits. They use the same truth table with true/false in place of 1/0: <code>&amp;&amp;</code> is true only if both sides are true, <code>||</code> is true if at least one is, and <code>!</code> flips the value.</p>
+<pre><code>int a = 5, b = 10, c = 15;
+boolean d = (a &lt; b) &amp;&amp; (b &lt; c);   // true
+boolean e = (a &lt; b) || (a &gt; c);   // true</code></pre>
+
+<h4>Short-circuit evaluation</h4>
+<table>
+<tr><th>Expression</th><th>If the left side is…</th><th>Right side</th><th>Result</th></tr>
+<tr><td><code>A &amp;&amp; B</code></td><td>false</td><td><strong>never evaluated</strong></td><td>false</td></tr>
+<tr><td><code>A || B</code></td><td>true</td><td><strong>never evaluated</strong></td><td>true</td></tr>
+<tr><td><code>A &amp; B</code>, <code>A | B</code> (on booleans)</td><td>anything</td><td><strong>always evaluated</strong></td><td>same logical result</td></tr>
+</table>
+<ul>
+<li>Once the left side decides the answer, Java skips the right side. This is used to guard risky checks, e.g. <code>obj != null &amp;&amp; obj.isValid()</code>, so the second part never runs on null (null is covered later).</li>
+</ul>
+<div class="important"><strong>⭐ Interview Important: how to avoid short-circuiting</strong><br>
+<code>&amp;</code> and <code>|</code> also work on <strong>boolean</strong> operands. They give the same logical result but <strong>always evaluate both sides</strong>. The difference shows up when the right side has a side effect:
+<pre><code>int c = 0;
+boolean r1 = (a &gt; b) &amp;&amp; (++c &gt; 0);   // false, c stays 0 (right side skipped)
+boolean r2 = (a &gt; b) &amp;  (++c &gt; 0);   // false, c becomes 1 (right side ran)</code></pre>
+This is rarely used in real code (about 99% of the time you want <code>&amp;&amp;</code>/<code>||</code>), but it's a favourite interview question. Also, <code>^</code> on booleans is logical XOR, and <code>~</code> works only on integers, while <code>!</code> works only on booleans.</div>
+
+<hr>
+
+<h3>7. Assignment Operator: <code>=</code></h3>
+<ul>
+<li><code>=</code> puts the <strong>right-hand value into the left-hand variable</strong>. It's evaluated <strong>right to left</strong> and has the <strong>lowest precedence</strong>, so everything on the right is computed first.</li>
+<li>Assignments can be <strong>chained</strong>: <code>a = b = c = 10;</code> assigns 10 to c, then c's value to b, then b's value to a.</li>
+</ul>
+<p>Correction: the video says <code>int a = b = c = 10;</code> declares all three. It <strong>doesn't</strong>. It declares only <code>a</code>, and it fails with "cannot find symbol: b" unless b and c already exist. Correct forms are <code>int a, b, c; a = b = c = 10;</code> or <code>int a = 10, b = 10, c = 10;</code>.</p>
+
+<h3>8. Operator Precedence</h3>
+<p>Highest precedence is at the top. Operators in the same row are evaluated left to right, except the ones marked ←.</p>
+<table>
+<tr><th>#</th><th>Operators</th><th>Group</th></tr>
+<tr><td>1</td><td><code>( )</code>, then <code>x++ x--</code></td><td>parentheses, postfix</td></tr>
+<tr><td>2</td><td><code>++x --x +x -x ~ !</code>, <code>(type)</code> ←</td><td>unary / prefix, cast</td></tr>
+<tr><td>3</td><td><code>* / %</code></td><td>multiplicative</td></tr>
+<tr><td>4</td><td><code>+ -</code></td><td>additive</td></tr>
+<tr><td>5</td><td><code>&lt;&lt; &gt;&gt; &gt;&gt;&gt;</code></td><td>shift</td></tr>
+<tr><td>6</td><td><code>&lt; &gt; &lt;= &gt;= instanceof</code></td><td>relational</td></tr>
+<tr><td>7</td><td><code>== !=</code></td><td>equality</td></tr>
+<tr><td>8–10</td><td><code>&amp;</code> then <code>^</code> then <code>|</code></td><td>bitwise</td></tr>
+<tr><td>11–12</td><td><code>&amp;&amp;</code> then <code>||</code></td><td>logical</td></tr>
+<tr><td>13</td><td><code>? :</code> ←</td><td>ternary</td></tr>
+<tr><td>14</td><td><code>= += -= *= /= %= &amp;= |= ^= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;=</code> ←</td><td>assignment (lowest)</td></tr>
+</table>
+<ul>
+<li>Correction to the video's "BODMAS: division before multiplication": <code>*</code>, <code>/</code> and <code>%</code> have the <strong>same</strong> precedence and are evaluated <strong>left to right</strong>. <code>8 / 2 * 4</code> is 16, not 1. The same goes for <code>+</code> and <code>-</code>: <code>10 - 4 - 3</code> is 3.</li>
+<li>In practice, nobody memorizes this table. Use <strong>parentheses</strong>, which have the highest precedence: <code>(b + c) * d</code> vs <code>b + c * d</code>. It's worth remembering that <code>=</code> comes last, and roughly that postfix/unary come before arithmetic, then shifts, relational, bitwise, and logical.</li>
+</ul>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• <code>i++</code> vs <code>++i</code>? → Postfix uses the old value, then increments. Prefix increments, then uses the new value. <code>j = j++</code> leaves j unchanged.<br>
+• <code>=</code> vs <code>==</code>? → Assignment vs comparison. Relational operators always return boolean.<br>
+• <code>5 / 2</code>? → 2. <code>-7 % 3</code>? → −1.<br>
+• <code>~2</code>? → −3 (<code>~x = -x - 1</code>).<br>
+• <code>x &lt;&lt; n</code> / <code>x &gt;&gt; n</code>? → × 2<sup>n</sup> / ÷ 2<sup>n</sup> (roughly).<br>
+• <code>&gt;&gt;</code> vs <code>&gt;&gt;&gt;</code>? → Sign-fill vs zero-fill. <code>&gt;&gt;&gt;</code> makes negatives positive, but only on int or long.<br>
+• Why does <code>b = b &lt;&lt; 1</code> fail for a byte? → Shifts promote to int, so you need <code>(byte)(b &lt;&lt; 1)</code>.<br>
+• <code>1 &lt;&lt; 32</code>? → 1, because an int shift distance is taken mod 32 (mod 64 for long).<br>
+• <code>1 &lt;&lt; 31</code>? → <code>Integer.MIN_VALUE</code>.<br>
+• <code>&amp;&amp;</code> vs <code>&amp;</code> on booleans? → Same result, but <code>&amp;&amp;</code> short-circuits and <code>&amp;</code> always evaluates both sides.<br>
+• Precedence of <code>=</code>? → Lowest, evaluated right to left. Use parentheses for anything complex.</div>
+
+</section>
+
+<section class="video-section" id="video-7">
+<h2>Video 7: Flow of Control &amp; Selection Statements</h2>
+
+<h3>Flow of Control</h3>
+<p><strong>Flow of control</strong> is the order in which statements run. By default it is <strong>sequential</strong>: line 1, then line 2, then line 3. Some keywords change that order. Java has three kinds:</p>
+<table>
+<tr><th>Kind</th><th>What it does</th><th>Statements</th></tr>
+<tr><td><strong>Selection</strong></td><td>Chooses <em>which</em> block runs</td><td><code>if</code>, <code>if-else</code>, <code>if-else-if</code> ladder, <code>switch</code></td></tr>
+<tr><td><strong>Iteration</strong></td><td>Repeats a block</td><td>loops (next video)</td></tr>
+<tr><td><strong>Jumps</strong></td><td>Transfers control elsewhere</td><td><code>break</code>, <code>continue</code>, <code>return</code></td></tr>
+</table>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 260" role="img" aria-label="Sequential flow runs statement 1, 2, 3 in order; selection flow tests a condition and runs either the if block or the else block, then both paths rejoin at the next statement">
+  <defs>
+    <marker id="j13-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="110" y="14" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">sequential (default)</text>
+  <g fill="none" stroke="currentColor">
+    <rect x="40" y="40" width="140" height="34" rx="4"/>
+    <rect x="40" y="100" width="140" height="34" rx="4"/>
+    <rect x="40" y="160" width="140" height="34" rx="4"/>
+  </g>
+  <g font-size="12" text-anchor="middle" fill="currentColor">
+    <text x="110" y="61">statement 1</text><text x="110" y="121">statement 2</text><text x="110" y="181">statement 3</text>
+  </g>
+  <g stroke="currentColor">
+    <line x1="110" y1="74" x2="110" y2="97" marker-end="url(#j13-arrow)"/>
+    <line x1="110" y1="134" x2="110" y2="157" marker-end="url(#j13-arrow)"/>
+  </g>
+
+  <text x="460" y="14" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">selection (if / else)</text>
+  <line x1="460" y1="22" x2="460" y2="37" stroke="currentColor" marker-end="url(#j13-arrow)"/>
+  <polygon points="460,40 535,70 460,100 385,70" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <text x="460" y="74" font-size="12" text-anchor="middle" fill="currentColor">condition?</text>
+
+  <polyline points="385,70 330,70 330,127" fill="none" stroke="currentColor" marker-end="url(#j13-arrow)"/>
+  <text x="352" y="63" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">true</text>
+  <polyline points="535,70 590,70 590,127" fill="none" stroke="currentColor" marker-end="url(#j13-arrow)"/>
+  <text x="566" y="63" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">false</text>
+
+  <g fill="none" stroke="currentColor">
+    <rect x="270" y="130" width="120" height="34" rx="4"/>
+    <rect x="530" y="130" width="120" height="34" rx="4"/>
+    <rect x="390" y="220" width="140" height="34" rx="4"/>
+  </g>
+  <g font-size="12" text-anchor="middle" fill="currentColor">
+    <text x="330" y="151">if block</text><text x="590" y="151">else block</text><text x="460" y="241">next statement</text>
+  </g>
+  <g fill="none" stroke="currentColor">
+    <polyline points="330,164 330,200 460,200"/>
+    <polyline points="590,164 590,200 460,200"/>
+  </g>
+  <line x1="460" y1="200" x2="460" y2="217" stroke="currentColor" marker-end="url(#j13-arrow)"/>
+</svg>
+<figcaption>Selection is like reaching a fork on the way home. The condition decides which road you take, and both roads lead to the same place afterwards.</figcaption>
+</figure>
+
+<h3>1. <code>if</code> and <code>if-else</code></h3>
+<pre><code>int i = 9;
+if (i % 2 == 0) {            // condition MUST evaluate to a boolean
+    System.out.println("i is even");
+} else {                     // runs only when the condition is false
+    System.out.println("i is odd");
+}</code></pre>
+<ul>
+<li>The expression inside <code>if ( … )</code> must be a <strong>boolean</strong> (true or false). It can combine operators, e.g. <code>if (i &gt; 5 &amp;&amp; i &lt; 10)</code>.</li>
+<li>A plain <code>if</code> means "run this block or skip it". <code>if-else</code> means "exactly one of the two blocks runs".</li>
+<li>Without <code>else</code>, two separate <code>if</code>s are independent, so both can run. The video's first demo printed both "i is 5" and "i is not 5" for this reason.</li>
+<li>Odd/even check: <code>i % 2 == 0</code> means even.</li>
+<li><strong>Braces are optional for a single statement</strong>, but best practice is to always use them.</li>
+<li>Style (not in the video): <code>if (b == true)</code> can simply be written <code>if (b)</code>.</li>
+</ul>
+
+<h3>2. Nested if</h3>
+<pre><code>if (i &gt; 5) {
+    if (i &lt; 10) { … }   // inner if
+    else { … }          // belongs to the inner if
+} else { … }            // belongs to the outer if</code></pre>
+<ul>
+<li>An <code>else</code> always pairs with the <strong>nearest preceding unmatched <code>if</code></strong>.</li>
+<li>Every <code>if</code> may or may not have its own <code>else</code>.</li>
+<li>Java has no limit on nesting depth, but good practice is <strong>2 levels at most</strong> for readability. You can often flatten nesting with <code>&amp;&amp;</code>: <code>if (i &gt; 5 &amp;&amp; i &lt; 10)</code>.</li>
+<li>Nested-if trace from the video: with i = 8, <code>i &gt; 5</code> and <code>i &lt; 10</code> are both true, and the innermost <code>i == 7</code> is false. The outer <code>else</code> blocks still don't run, because their own <code>if</code>s were true.</li>
+</ul>
+<div class="important"><strong>⭐ Interview Important: the dangling else</strong> (not covered in the video)
+<pre><code>int x = 12;
+if (x &gt; 5)
+    if (x &lt; 10) System.out.println("5-10");
+else System.out.println("dangling else ran");   // prints! The indentation lies</code></pre>
+Without braces, this <code>else</code> attaches to the <strong>inner</strong> <code>if (x &lt; 10)</code>, not the outer one. That's another reason to always use braces.</div>
+
+<h3>3. if-else-if Ladder</h3>
+<pre><code>int age = 50;
+if (age &gt; 80)       System.out.println("You are very old");
+else if (age &gt; 60)  System.out.println("You are old");
+else if (age &gt; 40)  System.out.println("You are becoming old");   // ← this runs
+else if (age &gt; 20)  System.out.println("You are young");          // never checked
+else                System.out.println("You are a child");        // final fallback</code></pre>
+<ul>
+<li>This handles <strong>more than two choices</strong>. Conditions are checked <strong>top to bottom</strong>. The first true one runs, and control <strong>leaves the whole ladder</strong> without checking the rest.</li>
+<li>The final <code>else</code> is optional and runs only if nothing matched.</li>
+<li>The ladder matters: if these were separate <code>if</code>s, age 50 would print both "becoming old" (&gt; 40) and "young" (&gt; 20). <strong>Order the conditions from most to least specific.</strong></li>
+</ul>
+
+<hr>
+
+<h3>4. switch Statement</h3>
+<pre><code>int i = 3;
+switch (i) {                 // compares i against each case label
+    case 1:
+        System.out.println("i is 1");
+        break;
+    case 2:
+        System.out.println("i is 2");
+        break;
+    case 3:
+        System.out.println("i is 3");
+        break;
+    default:                 // like the final else: nothing matched
+        System.out.println("i is greater than 3");
+        break;
+}</code></pre>
+
+<h4><code>break</code> and fall-through</h4>
+<ul>
+<li><code>break</code> exits the switch. <strong>Without <code>break</code>, execution falls through</strong> into the <em>next</em> case's code, <strong>without checking its label</strong>, and keeps going until it hits a <code>break</code> or the end.</li>
+<li>The video demo removed every <code>break</code> with i = 1, and it printed "i is 1", "i is 2", "i is 3", and the default message.</li>
+<li>Fall-through exists on purpose, for when several cases should share code or run cumulatively. The most common use (not in the video) is grouping labels: <code>case 1: case 2: case 3: System.out.println("small"); break;</code>.</li>
+</ul>
+
+<h4>switch rules and limitations</h4>
+<ul>
+<li>The selector must be <strong><code>byte</code>, <code>short</code>, <code>char</code>, <code>int</code></strong> (or their wrapper classes), an <strong>enum</strong>, or a <strong>String</strong> (since JDK 7).</li>
+<li><strong>Not allowed</strong>: <code>long</code>, <code>float</code>, <code>double</code>, <code>boolean</code>. <code>switch (i &gt; 4)</code> fails because the selector is boolean, and <code>switch (someLong)</code> fails with "selector type long is not allowed".</li>
+<li><strong>No duplicate case labels</strong>: two <code>case 1:</code> labels give a compile error. An if-else-if ladder <em>does</em> allow a repeated condition. The second one is simply never reached.</li>
+<li>Case labels must be <strong>compile-time constants</strong> (not in the video).</li>
+<li><strong>JDK 14+</strong> greatly enhanced switch with <code>case 1 -&gt; …</code> arrow labels (no fall-through) and switch <em>expressions</em> that return a value. This is covered later. The classic switch is still fully supported.</li>
+<li>switch statements can be <strong>nested</strong> (a switch inside a case), like nested ifs. Again, avoid deep nesting.</li>
+</ul>
+
+<h3>switch vs if-else-if Ladder</h3>
+<table>
+<tr><th></th><th>switch</th><th>if-else-if ladder</th></tr>
+<tr><td>What it can test</td><td>Only <strong>equality</strong> against constant values</td><td>Any boolean condition: <code>&gt;</code>, <code>&lt;</code>, ranges, <code>&amp;&amp;</code>…</td></tr>
+<tr><td>Selector types</td><td>byte/short/char/int, enum, String</td><td>Anything that gives a boolean</td></tr>
+<tr><td>Duplicate conditions</td><td>Compile error</td><td>Allowed (later ones are unreachable)</td></tr>
+<tr><td>How it finds the match</td><td><strong>Jumps</strong> via a table: O(1) or O(log n)</td><td>Checks conditions <strong>one by one</strong>: O(n)</td></tr>
+</table>
+<p>So switch exists because it is <strong>more efficient</strong> for many equality checks, and the ladder exists because switch <strong>can't express</strong> ranges or complex conditions.</p>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 320" role="img" aria-label="An if-else-if ladder tests i equals 1, then i equals 2, then i equals 3 one by one before reaching the matching block; a switch looks up i in a jump table once and goes straight to the block">
+  <defs>
+    <marker id="j14-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="215" y="16" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">if-else-if: checks conditions one by one, O(n)</text>
+
+  <g fill="none" stroke="currentColor">
+    <rect x="30" y="30" width="150" height="34" rx="4"/><rect x="30" y="90" width="150" height="34" rx="4"/><rect x="30" y="150" width="150" height="34" rx="4"/>
+    <rect x="240" y="30" width="130" height="34" rx="4"/><rect x="240" y="90" width="130" height="34" rx="4"/><rect x="240" y="150" width="130" height="34" rx="4"/><rect x="240" y="210" width="130" height="34" rx="4"/>
+    <rect x="240" y="270" width="130" height="34" rx="4"/>
+  </g>
+  <rect x="30" y="210" width="150" height="34" rx="4" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
+  <g font-size="12" text-anchor="middle" fill="currentColor">
+    <text x="105" y="51">i == 1 ?</text><text x="105" y="111">i == 2 ?</text><text x="105" y="171">i == 3 ?</text><text x="105" y="231">none matched</text>
+    <text x="305" y="51">block 1</text><text x="305" y="111">block 2</text><text x="305" y="171">block 3</text><text x="305" y="231">else block</text>
+    <text x="305" y="291">next statement</text>
+  </g>
+  <g stroke="currentColor">
+    <line x1="105" y1="64" x2="105" y2="87" marker-end="url(#j14-arrow)"/>
+    <line x1="105" y1="124" x2="105" y2="147" marker-end="url(#j14-arrow)"/>
+    <line x1="105" y1="184" x2="105" y2="207" marker-end="url(#j14-arrow)"/>
+    <line x1="180" y1="47" x2="237" y2="47" marker-end="url(#j14-arrow)"/>
+    <line x1="180" y1="107" x2="237" y2="107" marker-end="url(#j14-arrow)"/>
+    <line x1="180" y1="167" x2="237" y2="167" marker-end="url(#j14-arrow)"/>
+    <line x1="180" y1="227" x2="237" y2="227" marker-end="url(#j14-arrow)"/>
+  </g>
+  <g font-size="10" fill="currentColor" opacity="0.75">
+    <text x="112" y="80">no</text><text x="112" y="140">no</text><text x="112" y="200">no</text>
+    <text x="196" y="41">yes</text><text x="196" y="101">yes</text><text x="196" y="161">yes</text>
+  </g>
+  <g fill="none" stroke="currentColor">
+    <polyline points="370,47 400,47"/><polyline points="370,107 400,107"/><polyline points="370,167 400,167"/><polyline points="370,227 400,227"/>
+    <polyline points="400,47 400,287 373,287" marker-end="url(#j14-arrow)"/>
+  </g>
+
+  <text x="565" y="16" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">switch: one jump via a table</text>
+  <rect x="490" y="30" width="150" height="34" rx="4" fill="none" stroke="currentColor"/>
+  <text x="565" y="51" font-size="12" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">switch (i)</text>
+  <line x1="565" y1="64" x2="565" y2="87" stroke="currentColor" marker-end="url(#j14-arrow)"/>
+  <rect x="490" y="90" width="150" height="104" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <g stroke="currentColor" opacity="0.5">
+    <line x1="490" y1="116" x2="640" y2="116"/><line x1="490" y1="142" x2="640" y2="142"/><line x1="490" y1="168" x2="640" y2="168"/>
+    <line x1="535" y1="90" x2="535" y2="194"/>
+  </g>
+  <g font-size="12" fill="currentColor">
+    <text x="512" y="108" text-anchor="middle">1</text><text x="545" y="108">→ block 1</text>
+    <text x="512" y="134" text-anchor="middle">2</text><text x="545" y="134">→ block 2</text>
+    <text x="512" y="160" text-anchor="middle">3</text><text x="545" y="160">→ block 3</text>
+    <text x="512" y="186" text-anchor="middle">else</text><text x="545" y="186">→ default</text>
+  </g>
+  <text x="565" y="214" font-size="11" text-anchor="middle" style="fill:var(--important-border)">jump table</text>
+  <text x="565" y="232" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">one lookup, straight to the block</text>
+</svg>
+<figcaption>For i = 3, the ladder evaluates 3 conditions, while the switch does one table lookup.</figcaption>
+</figure>
+
+<h3>Why switch Is Faster: Jump Tables (<code>tableswitch</code> vs <code>lookupswitch</code>)</h3>
+<p>The compiler doesn't turn a switch into a chain of comparisons. It generates a <strong>jump table</strong> in the bytecode, in one of two forms:</p>
+<table>
+<tr><th>Bytecode</th><th>When</th><th>How it works</th><th>Cost</th></tr>
+<tr><td><code>tableswitch</code></td><td>Case values are <strong>dense</strong> (close together, e.g. 1, 2, 3)</td><td>An array-like table from <code>low</code> to <code>high</code>. The target is found by index (<code>i − low</code>). Anything outside the range goes to <code>default</code>.</td><td><strong>O(1)</strong></td></tr>
+<tr><td><code>lookupswitch</code></td><td>Case values are <strong>sparse</strong> (far apart, e.g. 1, 1000, 100000)</td><td>Only the existing <strong>keys, sorted</strong>, with their targets. The JVM searches them, typically with <strong>binary search</strong>.</td><td><strong>O(log n)</strong></td></tr>
+</table>
+<ul>
+<li>Sparse values would make a <code>tableswitch</code> huge (100,000 slots, almost all empty), so the compiler picks the compact form instead.</li>
+<li>Both forms beat the ladder's <strong>O(n)</strong> when there are many cases.</li>
+</ul>
+<p>Checked with <code>javap -c</code> on real code:</p>
+<pre><code>switch(i) { case 1: … case 2: … case 3: … default: … }
+  → tableswitch  { // 1 to 3
+        1: 28   2: 31   3: 34   default: 37 }
+
+switch(i) { case 1: … case 1000: … case 100000: … default: … }
+  → lookupswitch { // 3
+        1: 36   1000: 39   100000: 42   default: 45 }</code></pre>
+<ul>
+<li>Correction: the video draws <code>default</code> as a slot inside the table. It is really a <strong>separate target</strong>, used when the value is outside the table's range or isn't one of its keys.</li>
+<li>Correction: the choice is a <strong>cost heuristic</strong> in <code>javac</code> (table size vs. search time), not strictly "dense means tableswitch". A dense switch with only 2 cases still compiled to <code>lookupswitch</code>.</li>
+<li>For a handful of cases the speed difference is negligible, and the JIT may optimize either form. Choose switch mainly for <strong>clarity</strong> when many equality checks run on one value.</li>
+<li>Not covered in the video: a <strong>String switch</strong> first switches on <code>hashCode()</code> and then confirms the match with <code>equals()</code>.</li>
+</ul>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• Three kinds of control flow? → Selection (if/switch), iteration (loops), jumps (break/continue/return).<br>
+• What must an if condition be? → A boolean expression.<br>
+• Which if does an else belong to? → The nearest unmatched if (the dangling else), so always use braces.<br>
+• if-else-if ladder vs separate ifs? → The ladder runs only the first true branch, while separate ifs can all run.<br>
+• What happens without break in a switch? → Fall-through: the following cases run without their labels being checked.<br>
+• Allowed switch selector types? → byte, short, char, int (and wrappers), enum, String (JDK 7+). Not long, float, double, or boolean.<br>
+• Can switch test ranges like <code>i &gt; 5</code>? → No, only equality. Use if-else for ranges.<br>
+• Duplicate case labels? → Compile error.<br>
+• Why is switch faster than an if-else ladder? → The compiler builds a jump table: tableswitch (dense values, O(1)) or lookupswitch (sparse values, sorted keys with binary search, O(log n)), vs the ladder's O(n).</div>
+
+</section>
+
+<section class="video-section" id="video-8">
+<h2>Video 8: Loops (Iteration) &amp; Jump Statements</h2>
+<p>A <strong>loop</strong> runs a block of code <strong>repeatedly</strong> while a condition stays true. Each pass is one <strong>iteration</strong>. Java has three loops: <code>while</code>, <code>do-while</code>, and <code>for</code>. It has two jump statements for use inside loops: <code>break</code> and <code>continue</code>.</p>
+<p>Why loops: printing 1 to 10 with ten <code>println</code> calls (or <code>println(i); i++;</code> ten times) doesn't scale. A loop writes it once.</p>
+
+<h3>1. while Loop</h3>
+<pre><code>int i = 1;
+while (i &lt;= 10) {           // condition must be a boolean, checked BEFORE every iteration
+    System.out.println(i);
+    i++;                    // update. Forget it and the loop never ends
+}                           // prints 1..10, then the condition fails at i = 11
+// Reverse: start i = 10, use while (i &gt;= 1), and i--</code></pre>
+<ul>
+<li>Braces are optional for a single statement, but then only that one statement is in the loop. Always use braces.</li>
+<li>If the condition never becomes false, you get an <strong>infinite loop</strong>. It runs until you kill the program.</li>
+</ul>
+
+<h4>Trap: increment inside the condition</h4>
+<pre><code>int i = 1;
+while (i++ &lt;= 10) System.out.print(i + " ");   // prints 2 3 … 11 (!)
+int i = 0;
+while (i++ &lt; 10)  System.out.print(i + " ");   // prints 1 2 … 10 ✓</code></pre>
+<p>Postfix <code>i++</code> compares the <strong>old</strong> value and increments <strong>before</strong> the body runs, so the body sees the new value. To fix it, start one lower and use <code>&lt;</code> instead of <code>&lt;=</code> (see prefix vs postfix in <a href="#video-6">Video 6</a>).</p>
+
+<h3>2. do-while Loop</h3>
+<pre><code>int i = 11;
+do {
+    System.out.println(i);   // runs once and prints 11, even though 11 &lt;= 10 is false
+    i++;
+} while (i &lt;= 10);           // ← semicolon required here</code></pre>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 290" role="img" aria-label="while checks the condition first and may run the body zero times; do-while runs the body first and then checks, so it always runs at least once">
+  <defs>
+    <marker id="j15-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="170" y="14" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">while: check first (0 or more runs)</text>
+  <line x1="170" y1="22" x2="170" y2="45" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <polygon points="170,48 245,78 170,108 95,78" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <text x="170" y="82" font-size="12" text-anchor="middle" fill="currentColor">condition?</text>
+  <line x1="170" y1="108" x2="170" y2="137" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <text x="178" y="127" font-size="11" fill="currentColor" opacity="0.75">true</text>
+  <rect x="110" y="140" width="120" height="34" rx="4" fill="none" stroke="currentColor"/>
+  <text x="170" y="161" font-size="12" text-anchor="middle" fill="currentColor">loop body</text>
+  <polyline points="170,174 170,196 60,196 60,78 92,78" fill="none" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <polyline points="245,78 290,78 290,257 233,257" fill="none" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <text x="264" y="72" font-size="11" fill="currentColor" opacity="0.75">false</text>
+  <rect x="110" y="240" width="120" height="34" rx="4" fill="none" stroke="currentColor"/>
+  <text x="170" y="261" font-size="12" text-anchor="middle" fill="currentColor">after loop</text>
+
+  <text x="500" y="14" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">do-while: body first (at least 1 run)</text>
+  <line x1="500" y1="22" x2="500" y2="43" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <rect x="440" y="46" width="120" height="34" rx="4" fill="none" stroke="currentColor"/>
+  <text x="500" y="67" font-size="12" text-anchor="middle" fill="currentColor">loop body</text>
+  <line x1="500" y1="80" x2="500" y2="105" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <polygon points="500,108 575,138 500,168 425,138" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <text x="500" y="142" font-size="12" text-anchor="middle" fill="currentColor">condition?</text>
+  <polyline points="425,138 390,138 390,63 437,63" fill="none" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <text x="397" y="131" font-size="11" fill="currentColor" opacity="0.75">true</text>
+  <line x1="500" y1="168" x2="500" y2="237" stroke="currentColor" marker-end="url(#j15-arrow)"/>
+  <text x="508" y="205" font-size="11" fill="currentColor" opacity="0.75">false</text>
+  <rect x="440" y="240" width="120" height="34" rx="4" fill="none" stroke="currentColor"/>
+  <text x="500" y="261" font-size="12" text-anchor="middle" fill="currentColor">after loop</text>
+</svg>
+<figcaption>The only difference is <strong>where the check happens</strong>. With i = 11, the while loop prints nothing and the do-while loop prints 11 once.</figcaption>
+</figure>
+
+<div class="important"><strong>⭐ Interview Important: while vs do-while</strong><br>
+<code>while</code> is <strong>entry-controlled</strong>: it checks first, so the body may run <strong>0 times</strong>. <code>do-while</code> is <strong>exit-controlled</strong>: it checks after, so the body always runs <strong>at least once</strong>.<br>
+Classic use case for do-while: a <strong>menu</strong> (Play / Load saved game / Exit). You must show the menu once before knowing the user's choice, and you repeat until they pick Exit.</div>
+
+<h3>3. for Loop</h3>
+<pre><code>for (int i = 1; i &lt;= 10; i++) {      // (init; condition; update)
+    System.out.println(i);
+}
+for (int i = 10; i &gt;= 1; i--) { … }  // reverse</code></pre>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 215" role="img" aria-label="for loop order: 1 init runs once; 2 the condition is checked; if true, 3 the body runs, then 4 the update runs and control returns to the condition; if false the loop exits">
+  <defs>
+    <marker id="j16-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="20" y="60" width="130" height="36" rx="4" fill="none" stroke="currentColor"/>
+  <text x="85" y="76" font-size="12" text-anchor="middle" fill="currentColor">① int i = 1</text>
+  <text x="85" y="90" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">runs once</text>
+  <line x1="150" y1="78" x2="177" y2="78" stroke="currentColor" marker-end="url(#j16-arrow)"/>
+
+  <polygon points="180,78 250,48 320,78 250,108" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <text x="250" y="82" font-size="11" text-anchor="middle" fill="currentColor">② i &lt;= 10 ?</text>
+
+  <line x1="320" y1="78" x2="377" y2="78" stroke="currentColor" marker-end="url(#j16-arrow)"/>
+  <text x="348" y="71" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">true</text>
+  <rect x="380" y="60" width="120" height="36" rx="4" fill="none" stroke="currentColor"/>
+  <text x="440" y="82" font-size="12" text-anchor="middle" fill="currentColor">③ loop body</text>
+  <line x1="500" y1="78" x2="537" y2="78" stroke="currentColor" marker-end="url(#j16-arrow)"/>
+  <rect x="540" y="60" width="120" height="36" rx="4" fill="none" stroke="currentColor"/>
+  <text x="600" y="82" font-size="12" text-anchor="middle" fill="currentColor">④ i++</text>
+
+  <polyline points="600,60 600,26 250,26 250,45" fill="none" stroke="currentColor" marker-end="url(#j16-arrow)"/>
+  <text x="425" y="20" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">back to ② for the next iteration</text>
+
+  <line x1="250" y1="108" x2="250" y2="167" stroke="currentColor" marker-end="url(#j16-arrow)"/>
+  <text x="258" y="142" font-size="11" fill="currentColor" opacity="0.75">false</text>
+  <rect x="190" y="170" width="120" height="34" rx="4" fill="none" stroke="currentColor"/>
+  <text x="250" y="191" font-size="12" text-anchor="middle" fill="currentColor">exit loop</text>
+</svg>
+<figcaption>① runs once, then ② → ③ → ④ repeats until ② is false. This is the most commonly used loop.</figcaption>
+</figure>
+
+<ul>
+<li>Declare the loop variable <strong>inside</strong> <code>for (int i …)</code> when it's only needed in the loop. Its <strong>scope</strong> is then just the loop, so it can't be used after the loop ends (compile error: "cannot find symbol"). Declare it before the loop if you need it afterwards.</li>
+<li>All three parts are <strong>optional</strong>, but both semicolons are required: <code>for (;;)</code> is an infinite loop.</li>
+<li><strong>Comma-separated variables</strong>: <code>for (int i = 1, j = 1; i &lt;= 10 &amp;&amp; j &lt;= 5; i++, j += 2)</code>.
+  <ul>
+  <li>Several variables of the <strong>same type</strong> can be declared, and each can be updated its own way (<code>i++, j += 2, k *= 2</code>).</li>
+  <li>The <strong>condition can't use a comma</strong> (that's a syntax error). Combine conditions with <code>&amp;&amp;</code> or <code>||</code>.</li>
+  <li>With <code>&amp;&amp;</code>, the loop stops as soon as either condition fails. With <code>||</code>, it stops only when both fail.</li>
+  </ul></li>
+<li>The condition can be <strong>any boolean</strong>, not just a counter check. For example, <code>for (…; flag == true; …)</code> with <code>flag</code> set to false inside an <code>if</code> ends the loop from within.</li>
+<li>The <strong>for-each</strong> loop (enhanced for) is covered with arrays and strings.</li>
+</ul>
+
+<h3>Infinite Loops &amp; Empty Bodies</h3>
+<pre><code>while (true) { … }           for (;;) { … }          for (int i = 1; i &lt; 10; ) { … }   // no update
+int i = 5;  while (i &lt; 10) { }   // empty body: i never changes, so it never ends</code></pre>
+<p>Not covered in the video, but common traps:</p>
+<ul>
+<li><strong>A stray semicolon</strong>: <code>while (i &lt; 3);</code> makes the <code>;</code> the whole (empty) body, so the program hangs. Verified: it ran until the timeout killed it.</li>
+<li>Any statement after <code>while (true) { }</code> (with no <code>break</code>) is a compile error: <strong>"unreachable statement"</strong>. The compiler knows a constant-true loop never ends. The video's <code>while (i &lt; 10) { }</code> still compiles because <code>i</code> isn't a constant.</li>
+</ul>
+
+<h3>Why Loop Counters Are int (Not byte/short)</h3>
+<ul>
+<li>Most loops would fit in a <code>byte</code> or <code>short</code>, but the convention is always <code>int</code> (or <code>long</code> when needed). Arithmetic promotes byte/short to int anyway (<a href="#video-5">Video 5</a>). In the JVM, a local byte or short takes a full <strong>32-bit slot</strong>, so there's <strong>no memory saving</strong>.</li>
+<li>Not covered in the video: <code>for (byte b = 0; b &lt; 200; b++)</code> <strong>never ends</strong>. <code>b++</code> wraps from 127 to −128, so <code>b &lt; 200</code> is always true. Verified: after 300 iterations b was 44 and still going.</li>
+</ul>
+
+<h3>Nested Loops</h3>
+<pre><code>for (int i = 1; i &lt;= 5; i++) {        // outer: which ROW
+    for (int j = 1; j &lt;= i; j++) {    // inner: how many stars in this row (depends on i)
+        System.out.print("* ");       // print() stays on the same line
+    }
+    System.out.println();             // new line after each row
+}</code></pre>
+<pre><code>*
+* *
+* * *
+* * * *
+* * * * *</code></pre>
+<ul>
+<li>For <strong>every</strong> iteration of the outer loop, the inner loop runs <strong>completely</strong>. The outer loop can't move on until the inner one finishes.</li>
+<li><code>print</code> vs <code>println</code>: <code>println</code> adds a newline after printing, and <code>print</code> doesn't. A bare <code>System.out.println()</code> just moves to a new line.</li>
+<li>Pattern problems are the standard way to practice nested loops. The outer loop handles rows, and the inner bound usually depends on <code>i</code>.</li>
+</ul>
+<div class="important"><strong>⭐ Interview Important: iteration count and time complexity</strong><br>
+An outer loop of n iterations with an inner loop of m gives <strong>n × m</strong> total iterations. With n = m that's <strong>O(n²)</strong> (5 × 5 = 25), and three nested loops give <strong>O(n³)</strong>.<br>
+Correction: the video says "O(n)" for the triple-nested case, but it's <strong>O(n³)</strong>.</div>
+
+<hr>
+
+<h3>Jump Statements: <code>break</code> &amp; <code>continue</code></h3>
+<figure class="diagram">
+<svg viewBox="0 0 680 300" role="img" aria-label="Inside a loop body: break jumps out of the loop to the code after it; continue skips the rest of the body and goes straight to the next iteration, the same place the body normally ends up">
+  <defs>
+    <marker id="j17-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <polyline points="75,58 75,20 325,20 325,67" fill="none" stroke="currentColor" marker-end="url(#j17-arrow)"/>
+  <text x="200" y="14" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">condition still true → next pass</text>
+
+  <rect x="10" y="58" width="130" height="50" rx="4" fill="none" stroke="currentColor"/>
+  <text x="75" y="80" font-size="12" text-anchor="middle" fill="currentColor">next iteration</text>
+  <text x="75" y="97" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">(update, re-check)</text>
+
+  <rect x="150" y="40" width="350" height="212" rx="8" fill="none" stroke="currentColor" stroke-dasharray="5 4" opacity="0.6"/>
+  <text x="160" y="56" font-size="10" fill="currentColor" opacity="0.75">loop body</text>
+
+  <g fill="none" stroke="currentColor">
+    <rect x="190" y="70" width="270" height="30" rx="4"/>
+    <rect x="190" y="158" width="270" height="30" rx="4"/>
+    <rect x="190" y="202" width="270" height="30" rx="4"/>
+  </g>
+  <rect x="190" y="114" width="270" height="30" rx="4" fill="none" style="stroke:var(--important-border)" stroke-width="2"/>
+  <g font-size="12" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="325" y="90">statement A</text>
+    <text x="325" y="134">if (x) break;</text>
+    <text x="325" y="178">if (y) continue;</text>
+    <text x="325" y="222">statement B</text>
+  </g>
+  <g stroke="currentColor">
+    <line x1="325" y1="100" x2="325" y2="111" marker-end="url(#j17-arrow)"/>
+    <line x1="325" y1="144" x2="325" y2="155" marker-end="url(#j17-arrow)"/>
+    <line x1="325" y1="188" x2="325" y2="199" marker-end="url(#j17-arrow)"/>
+  </g>
+
+  <polyline points="460,129 600,129 600,263" fill="none" style="stroke:var(--important-border)" stroke-width="1.8" marker-end="url(#j17-arrow)"/>
+  <text x="530" y="122" font-size="11" text-anchor="middle" style="fill:var(--important-border)">break</text>
+  <rect x="530" y="266" width="140" height="30" rx="4" fill="none" stroke="currentColor"/>
+  <text x="600" y="286" font-size="12" text-anchor="middle" fill="currentColor">after the loop</text>
+
+  <polyline points="325,232 325,262 75,262 75,111" fill="none" stroke="currentColor" marker-end="url(#j17-arrow)"/>
+  <polyline points="190,173 75,173" fill="none" stroke="currentColor"/>
+  <text x="132" y="166" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">continue</text>
+</svg>
+<figcaption><code>break</code> leaves the loop entirely. <code>continue</code> skips statement B and goes straight to the next iteration. For a <code>for</code> loop, the update <code>i++</code> still runs.</figcaption>
+</figure>
+
+<h4>break example: primality test</h4>
+<pre><code>int p = 9;
+int i;                              // declared outside so it can be used after the loop (scope)
+for (i = 2; i &lt; p; i++) {
+    if (p % i == 0) {               // found a divisor
+        System.out.println("The number is not prime");
+        break;                      // no need to check further divisors
+    }
+}
+if (i == p) System.out.println("The number is prime");   // the loop finished without a break</code></pre>
+<ul>
+<li><code>i == p</code> after the loop means no <code>break</code> happened, so no divisor was found. With p = 9 the loop breaks at i = 3. With p = 7 it runs to the end.</li>
+<li><code>break</code> lets you exit a loop <strong>dynamically</strong>, based on something found while it runs, instead of changing the loop's condition.</li>
+<li>The video mentions a faster version. You only need to check divisors up to <strong>√p</strong> (<code>i * i &lt;= p</code>). It also skips edge cases: this code prints nothing for p ≤ 1.</li>
+</ul>
+
+<h4>continue example: odd numbers</h4>
+<pre><code>for (int i = 1; i &lt;= 10; i++) {
+    if (i % 2 == 0) continue;   // even: skip the print and move to the next i
+    System.out.println(i);      // prints 1 3 5 7 9
+}</code></pre>
+
+<h4>break and continue in nested loops</h4>
+<ul>
+<li>A plain <code>break</code> or <code>continue</code> affects only the <strong>innermost loop it's written in</strong>. In the star pattern, adding <code>if (j &gt;= 5) break;</code> to the inner loop caps every row at 5 stars. The outer loop still runs all 10 rows, so the triangle "flattens" after row 5.</li>
+<li>Not covered in the video: a <code>break</code> inside a <code>switch</code> that's inside a loop exits only the <strong>switch</strong>, not the loop.</li>
+</ul>
+
+<h3>Labels: break/continue an Outer Loop</h3>
+<pre><code>outer:
+for (int i = 1; i &lt;= 10; i++) {
+    inner:
+    for (int j = 1; j &lt;= i; j++) {
+        System.out.print("* ");
+        if (j &gt;= 5) break outer;     // exits BOTH loops: output stops after the 5th row
+    }
+    System.out.println();
+}</code></pre>
+<ul>
+<li>Syntax: <code>labelName:</code> before the loop. Then use <code>break labelName;</code> or <code>continue labelName;</code>. This is useful for escaping deeply nested loops.</li>
+<li><code>continue outer;</code> skips the rest of the inner loop <em>and</em> the rest of the outer body, and goes to the outer loop's next iteration. Verified: <code>if (y == 2) continue outer;</code> prints <code>11 21 31</code>.</li>
+<li>Java also allows standalone labelled <strong>code blocks</strong>: <code>first: { second: { … break first; } }</code>. <code>break</code> can exit a labelled block. <strong><code>continue</code> can't</strong>: <code>continue first;</code> on a block fails with "not a loop label" (not mentioned in the video). These blocks are rarely used, apart from grouping code.</li>
+<li>Unlike C, Java has <strong>no <code>goto</code></strong>. Labelled break and continue are the structured replacement (<code>goto</code> is reserved but unused; see <a href="#video-3">Video 3</a>).</li>
+</ul>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• Three loops in Java? → while, do-while, for (plus for-each for arrays and collections).<br>
+• while vs do-while? → Entry-controlled (0+ runs) vs exit-controlled (at least 1 run). do-while suits menus.<br>
+• for loop order? → init once, then condition → body → update, repeated. All three parts are optional: <code>for(;;)</code> is infinite.<br>
+• Can a for loop have multiple variables? → Yes, comma-separated in init and update. The condition must combine them with &amp;&amp; or ||.<br>
+• Scope of <code>i</code> in <code>for (int i…)</code>? → Only inside the loop.<br>
+• Why use int counters and not byte? → No memory benefit (promotion, 32-bit slots), and a byte counter can wrap around and loop forever.<br>
+• Nested loop cost? → n × m iterations: O(n²) for two, O(n³) for three.<br>
+• break vs continue? → break exits the loop, continue skips to the next iteration. Both affect only the innermost loop unless labelled.<br>
+• How do you exit an outer loop from an inner one? → A labelled break: <code>break outer;</code>.<br>
+• Does Java have goto? → No, it's a reserved but unused keyword. Use labelled break and continue instead.</div>
+
+</section>
+
+<section class="video-section" id="video-9">
+<h2>Video 9: Arrays &amp; Intro to Strings</h2>
+
+<h3>Why Arrays?</h3>
+<p>Storing 100 students' roll numbers as <code>int rollNo1</code>, <code>int rollNo2</code>, and so on means 100 separate variables and 100 separate memory allocations. An <strong>array</strong> instead allocates <strong>one contiguous block</strong> of memory divided into equal cells, all under one name.</p>
+<div class="important"><strong>⭐ Definition:</strong> An array is a <strong>fixed-size collection of elements of the same data type</strong>, stored in <strong>contiguous memory</strong> and accessed by <strong>index</strong>.</div>
+
+<h3>Declaring &amp; Creating a 1D Array</h3>
+<pre><code>int[] rollNumbers;                 // declaration: "rollNumbers will refer to an array of ints"
+rollNumbers = new int[3];          // definition: allocate 3 int cells
+int[] rollNumbers = new int[3];    // both in one line
+int rollNumbers[] = new int[3];    // also legal: C/C++ style, kept for legacy. Java prefers int[]</code></pre>
+<ul>
+<li><code>int</code> is the element type, <code>[]</code> marks it as an array, <code>rollNumbers</code> is the name, and <code>3</code> is the <strong>size</strong>.</li>
+<li><code>new</code> allocates the array's memory on the <strong>heap</strong> (heap and objects are covered with OOP). The compiler needs the element type to know each cell's size, e.g. 3 × 32 bits for <code>int</code>.</li>
+<li>The size is <strong>fixed</strong> once created (not in the video).</li>
+</ul>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 150" role="img" aria-label="rollNumbers refers to one contiguous block of three int cells holding 1001, 1002, 1003 at indexes 0, 1, 2, at addresses base plus 0, 4 and 8 bytes">
+  <defs>
+    <marker id="j18-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="78" font-size="13" fill="currentColor" font-family="Consolas, monospace">rollNumbers</text>
+  <line x1="120" y1="73" x2="196" y2="73" stroke="currentColor" marker-end="url(#j18-arrow)"/>
+  <g fill="none" stroke="currentColor">
+    <rect x="200" y="53" width="100" height="40"/><rect x="300" y="53" width="100" height="40"/><rect x="400" y="53" width="100" height="40"/>
+  </g>
+  <g font-size="14" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="250" y="78">1001</text><text x="350" y="78">1002</text><text x="450" y="78">1003</text>
+  </g>
+  <g font-size="12" text-anchor="middle" style="fill:var(--important-border)" font-family="Consolas, monospace">
+    <text x="250" y="44">[0]</text><text x="350" y="44">[1]</text><text x="450" y="44">[2]</text>
+  </g>
+  <g font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">
+    <text x="250" y="110">base + 0</text><text x="350" y="110">base + 4</text><text x="450" y="110">base + 8</text>
+  </g>
+  <text x="520" y="70" font-size="11" fill="currentColor">3 × 32-bit ints</text>
+  <text x="520" y="86" font-size="11" fill="currentColor" opacity="0.75">one contiguous block</text>
+  <text x="340" y="138" font-size="11" text-anchor="middle" fill="currentColor">address of a[i] = base + i × 4 bytes → direct O(1) access to any element</text>
+</svg>
+<figcaption>Indexes start at <strong>0</strong>, because the index is the <em>offset</em> from the start. Consecutive ints are 4 bytes apart, so addresses aren't 1001, 1002, … as the video first sketches.</figcaption>
+</figure>
+
+<h3>Storing &amp; Reading Elements</h3>
+<pre><code>rollNumbers[0] = 1001;                  // write to index 0
+rollNumbers[1] = 1002;
+rollNumbers[2] = 1003;
+System.out.println(rollNumbers[2]);     // read: 1003</code></pre>
+<p>Not covered in the video: a new array's cells hold <strong>default values</strong> until you assign them: <code>0</code> for int/long/…, <code>0.0</code> for float/double, <code>false</code> for boolean, <code>'\u0000'</code> for char, and <code>null</code> for objects such as String.</p>
+
+<h3>Loops + <code>.length</code></h3>
+<pre><code>int x = 1001;
+for (int i = 0; i &lt; rollNumbers.length; i++) {   // don't hard-code 3
+    rollNumbers[i] = x++;                        // fill 1001, 1002, 1003
+}
+for (int i = 0; i &lt; rollNumbers.length; i++) {
+    System.out.println(rollNumbers[i]);          // print them
+}</code></pre>
+<ul>
+<li><code>arr.length</code> gives the number of elements. Use it rather than hard-coding the size, since the size may be unknown or change later.</li>
+<li>Correction: the video calls <code>length</code> a <em>method</em>. For arrays it's a <strong>field</strong>, so there are <strong>no parentheses</strong>: <code>arr.length</code>. For Strings it's a method, <code>str.length()</code>. Mixing these up is a classic interview trap.</li>
+<li>Valid indexes are <code>0</code> to <code>length − 1</code>, so the loop condition is <code>i &lt; arr.length</code>, not <code>&lt;=</code>.</li>
+</ul>
+
+<h3>Out-of-Bounds Access</h3>
+<pre><code>System.out.println(rollNumbers[3]);
+// java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</code></pre>
+<ul>
+<li>An <strong>exception</strong> is Java's way of signalling at <strong>runtime</strong> that something went wrong. Exceptions get their own video later.</li>
+<li>Correction: the exact name is <strong><code>ArrayIndexOutOfBoundsException</code></strong>, not "IndexOutOfBoundException". It is a subclass of <code>IndexOutOfBoundsException</code>.</li>
+<li>It happens at runtime, not compile time: the compiler doesn't check index values. Unlike C, Java never lets you read past the end into random memory.</li>
+<li>Not covered in the video: a negative size, <code>new int[-1]</code>, throws <code>NegativeArraySizeException</code>.</li>
+</ul>
+
+<h3>Array Initializer (values known up front)</h3>
+<pre><code>int[] rollNumbers = {1001, 1002, 1003};      // size inferred as 3, no 'new' needed
+int[][] marks = { {12, 14, 56}, {34, 45, 67}, {45, 67, 78} };</code></pre>
+<p>Not covered in the video: the <code>{…}</code> shortcut works <strong>only in the declaration statement</strong>. <code>arr = {1, 2};</code> on a later line doesn't compile. Use <code>arr = new int[]{1, 2};</code> instead.</p>
+
+<hr>
+
+<h3>Multi-Dimensional Arrays</h3>
+<p>A <strong>2D array is an array of arrays</strong>: each element of the outer array is itself an array. Use case: the marks of 3 students (rows) in 3 subjects (columns: Hindi, English, CSc).</p>
+<pre><code>int[][] marks = new int[3][3];   // [rows][columns]
+marks[0][0] = 50;  marks[0][1] = 30;  marks[0][2] = 90;   // student 1
+marks[1][0] = 60;  marks[1][1] = 40;  marks[1][2] = 80;   // student 2
+marks[2][0] = 70;  marks[2][1] = 50;  marks[2][2] = 70;   // student 3</code></pre>
+
+<figure class="diagram">
+<svg viewBox="0 0 680 250" role="img" aria-label="Left: the conceptual view of marks as a 3 by 3 grid of rows and columns. Right: how Java stores it, an outer array of three references, each pointing to a separate row array of three ints">
+  <defs>
+    <marker id="j19-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="150" y="16" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">how we picture it (conceptual)</text>
+  <g font-size="11" text-anchor="middle" fill="currentColor" opacity="0.75">
+    <text x="90" y="42">col 0</text><text x="150" y="42">col 1</text><text x="210" y="42">col 2</text>
+  </g>
+  <g font-size="11" text-anchor="end" fill="currentColor" opacity="0.75">
+    <text x="54" y="73">row 0</text><text x="54" y="109">row 1</text><text x="54" y="145">row 2</text>
+  </g>
+  <g fill="none" stroke="currentColor">
+    <rect x="60" y="50" width="60" height="36"/><rect x="120" y="50" width="60" height="36"/><rect x="180" y="50" width="60" height="36"/>
+    <rect x="60" y="86" width="60" height="36"/><rect x="120" y="86" width="60" height="36"/>
+    <rect x="60" y="122" width="60" height="36"/><rect x="120" y="122" width="60" height="36"/><rect x="180" y="122" width="60" height="36"/>
+  </g>
+  <rect x="180" y="86" width="60" height="36" fill="none" style="stroke:var(--important-border)" stroke-width="2.2"/>
+  <g font-size="13" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="90" y="73">50</text><text x="150" y="73">30</text><text x="210" y="73">90</text>
+    <text x="90" y="109">60</text><text x="150" y="109">40</text><text x="210" y="109">80</text>
+    <text x="90" y="145">70</text><text x="150" y="145">50</text><text x="210" y="145">70</text>
+  </g>
+  <text x="150" y="185" font-size="12" text-anchor="middle" style="fill:var(--important-border)" font-family="Consolas, monospace">marks[1][2] = 80</text>
+  <text x="150" y="203" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">first index = row, second = column</text>
+
+  <text x="500" y="16" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.75">how Java stores it (array of arrays)</text>
+  <text x="390" y="42" font-size="12" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">marks</text>
+  <g fill="none" stroke="currentColor">
+    <rect x="360" y="50" width="60" height="36"/><rect x="360" y="110" width="60" height="36"/><rect x="360" y="170" width="60" height="36"/>
+    <rect x="470" y="50" width="60" height="36"/><rect x="530" y="50" width="60" height="36"/><rect x="590" y="50" width="60" height="36"/>
+    <rect x="470" y="110" width="60" height="36"/><rect x="530" y="110" width="60" height="36"/>
+    <rect x="470" y="170" width="60" height="36"/><rect x="530" y="170" width="60" height="36"/><rect x="590" y="170" width="60" height="36"/>
+  </g>
+  <rect x="590" y="110" width="60" height="36" fill="none" style="stroke:var(--important-border)" stroke-width="2.2"/>
+  <g font-size="11" text-anchor="end" fill="currentColor" font-family="Consolas, monospace">
+    <text x="352" y="72">[0]</text><text x="352" y="132">[1]</text><text x="352" y="192">[2]</text>
+  </g>
+  <g fill="currentColor">
+    <circle cx="390" cy="68" r="4"/><circle cx="390" cy="128" r="4"/><circle cx="390" cy="188" r="4"/>
+  </g>
+  <g stroke="currentColor">
+    <line x1="394" y1="68" x2="467" y2="68" marker-end="url(#j19-arrow)"/>
+    <line x1="394" y1="128" x2="467" y2="128" marker-end="url(#j19-arrow)"/>
+    <line x1="394" y1="188" x2="467" y2="188" marker-end="url(#j19-arrow)"/>
+  </g>
+  <g font-size="13" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="500" y="73">50</text><text x="560" y="73">30</text><text x="620" y="73">90</text>
+    <text x="500" y="133">60</text><text x="560" y="133">40</text><text x="620" y="133">80</text>
+    <text x="500" y="193">70</text><text x="560" y="193">50</text><text x="620" y="193">70</text>
+  </g>
+  <text x="560" y="232" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.75">each row is its own separate array</text>
+</svg>
+<figcaption>The machine has no rows or columns, only memory. <code>marks[1][2]</code> means go to the outer array's slot 1, follow it to that row array, and take index 2.</figcaption>
+</figure>
+
+<h4>Traversing a 2D array (nested loops)</h4>
+<pre><code>for (int row = 0; row &lt; marks.length; row++) {           // number of rows
+    for (int col = 0; col &lt; marks[row].length; col++) {  // length of THIS row
+        System.out.print(marks[row][col] + " ");
+    }
+    System.out.println();                                // new line after each row
+}</code></pre>
+<div class="important"><strong>⭐ Interview Important: <code>marks.length</code> vs <code>marks[row].length</code></strong><br>
+<code>marks.length</code> is the number of <strong>rows</strong> (the outer array's length). <code>marks[row].length</code> is the number of <strong>columns in that row</strong>. Using <code>marks.length</code> for columns only works when the array is square, and breaks for jagged arrays.</div>
+
+<h3>Jagged Arrays (rows of different lengths)</h3>
+<pre><code>int[][] marks = new int[3][];   // number of rows required; column size can be left out
+marks[0] = new int[1];          // each row created separately
+marks[1] = new int[2];
+marks[2] = new int[3];</code></pre>
+<figure class="diagram">
+<svg viewBox="0 0 680 200" role="img" aria-label="Jagged array: the outer array has three slots pointing to row arrays of length 1, 2 and 3 holding 23; 24, 90; and 12, 78, 45">
+  <defs>
+    <marker id="j20-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="currentColor">
+    <rect x="150" y="30" width="60" height="36"/><rect x="150" y="85" width="60" height="36"/><rect x="150" y="140" width="60" height="36"/>
+    <rect x="260" y="30" width="70" height="36"/>
+    <rect x="260" y="85" width="70" height="36"/><rect x="330" y="85" width="70" height="36"/>
+    <rect x="260" y="140" width="70" height="36"/><rect x="330" y="140" width="70" height="36"/><rect x="400" y="140" width="70" height="36"/>
+  </g>
+  <g font-size="11" text-anchor="end" fill="currentColor" font-family="Consolas, monospace">
+    <text x="142" y="52">marks[0]</text><text x="142" y="107">marks[1]</text><text x="142" y="162">marks[2]</text>
+  </g>
+  <g fill="currentColor">
+    <circle cx="180" cy="48" r="4"/><circle cx="180" cy="103" r="4"/><circle cx="180" cy="158" r="4"/>
+  </g>
+  <g stroke="currentColor">
+    <line x1="184" y1="48" x2="257" y2="48" marker-end="url(#j20-arrow)"/>
+    <line x1="184" y1="103" x2="257" y2="103" marker-end="url(#j20-arrow)"/>
+    <line x1="184" y1="158" x2="257" y2="158" marker-end="url(#j20-arrow)"/>
+  </g>
+  <g font-size="13" text-anchor="middle" fill="currentColor" font-family="Consolas, monospace">
+    <text x="295" y="53">23</text>
+    <text x="295" y="108">24</text><text x="365" y="108">90</text>
+    <text x="295" y="163">12</text><text x="365" y="163">78</text><text x="435" y="163">45</text>
+  </g>
+  <g font-size="11" style="fill:var(--important-border)">
+    <text x="342" y="53">length 1</text><text x="412" y="108">length 2</text><text x="482" y="163">length 3</text>
+  </g>
+</svg>
+<figcaption>Use case: students with different numbers of subjects. Accessing <code>marks[0][1]</code> here throws ArrayIndexOutOfBoundsException, because row 0 has only one element.</figcaption>
+</figure>
+<ul>
+<li>Not covered in the video: <code>new int[][3]</code> (column size but no row size) <strong>doesn't compile</strong>. Only the first dimension is required.</li>
+<li>Not covered in the video: after <code>new int[3][]</code>, each <code>marks[i]</code> is <code>null</code> until you assign a row to it.</li>
+</ul>
+
+<h3>3D and Higher Arrays</h3>
+<pre><code>int[][][] arr = new int[3][3][3];   // an array of arrays of arrays</code></pre>
+<ul>
+<li>Conceptually it's a <strong>cube</strong>: 3 stacked 3×3 matrices (rows, columns, depth). Logically it's an outer array whose slots point to arrays, whose slots point to int arrays. <code>arr[0][0]</code> is itself an int array.</li>
+<li>Java supports any number of dimensions, but in practice 2D is common, 3D is rare, and beyond that almost never.</li>
+</ul>
+
+<div class="important"><strong>⭐ Declaration traps</strong> (not covered in the video)<br>
+• <code>int[] a, b;</code> makes <strong>both</strong> a and b arrays, but <code>int a[], b;</code> makes only <code>a</code> an array and <strong><code>b</code> a plain int</strong>. This is one reason to prefer the <code>int[]</code> style.<br>
+• <code>System.out.println(arr)</code> doesn't print the elements. It prints a type code plus a hash, e.g. <code>[I@1b6d3586</code>. Use <code>Arrays.toString(arr)</code> for 1D and <code>Arrays.deepToString(arr)</code> for 2D and beyond.</div>
+
+<hr>
+
+<h3>Intro to Strings</h3>
+<ul>
+<li>Data types are either <strong>primitive</strong> (byte, short, int, long, float, double, char, boolean) or <strong>non-primitive</strong>: arrays, <strong>String</strong>, and objects in general. Strings are covered in depth after OOP.</li>
+<li>A <code>String</code> is a sequence of characters written in <strong>double quotes</strong>. A <code>char</code> uses single quotes: <code>'a'</code>. <code>String</code> has a <strong>capital S</strong> because it's a class, not a primitive.</li>
+<li>Everything you've been printing with <code>println("Hello")</code> was already a String. <code>""</code> (an empty string) and <code>" "</code> (a space) are both valid Strings.</li>
+</ul>
+<pre><code>String firstName = "Aditya";
+String lastName  = "Tandon";
+String fullName  = firstName + " " + lastName;   // + joins strings (concatenation)
+System.out.println(fullName);                   // Aditya Tandon
+System.out.println(firstName + lastName);       // AdityaTandon (no space is added for you)</code></pre>
+<div class="important"><strong>⭐ Interview Important: <code>+</code> is evaluated left to right</strong> (not covered in the video)<br>
+<code>"1" + 2 + 3</code> gives <strong><code>"123"</code></strong>: once a String appears, every later <code>+</code> is concatenation.<br>
+<code>1 + 2 + "3"</code> gives <strong><code>"33"</code></strong>: 1 + 2 is integer addition first, then the result is concatenated with "3".</div>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• What is an array? → A fixed-size, same-type collection in contiguous memory, accessed by index.<br>
+• Why do indexes start at 0? → The index is the offset from the start: address = base + i × element size.<br>
+• <code>arr.length</code> vs <code>str.length()</code>? → A field for arrays, a method for Strings.<br>
+• Default values in <code>new int[3]</code>? → All 0 (false for boolean, null for objects).<br>
+• Accessing <code>arr[arr.length]</code>? → Runtime <code>ArrayIndexOutOfBoundsException</code>.<br>
+• What really is a 2D array? → An array of arrays. Rows are separate arrays, so they can have different lengths (jagged).<br>
+• Which dimension is mandatory in <code>new int[3][]</code>? → The first (rows).<br>
+• Loop bounds for 2D? → <code>marks.length</code> for rows, <code>marks[row].length</code> for columns.<br>
+• <code>int a[], b;</code>? → b is an int, not an array.<br>
+• How do you print an array? → <code>Arrays.toString</code> / <code>Arrays.deepToString</code>.<br>
+• Is String primitive? → No, it's a non-primitive class. <code>+</code> concatenates, left to right.</div>
 
 </section>
 
