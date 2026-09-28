@@ -216,6 +216,8 @@
   <li><a href="#video-33">Set &amp; Map Internals: HashSet-on-HashMap, Buckets &amp; Collisions, Load Factor, Treeification, LinkedHashMap, TreeMap, Nulls</a></li>
   <li><a href="#video-34">Set &amp; Map Methods: TreeSet Navigation, the Map API, TreeMap, Hashtable/Properties/WeakHashMap/IdentityHashMap/EnumMap/ConcurrentHashMap</a></li>
   <li><a href="#video-35">Queue, Deque &amp; ArrayDeque (Queue and Stack), PriorityQueue &amp; Binary Heaps</a></li>
+  <li><a href="#video-36">The Comparable Interface: compareTo Sign Rule, Tie-Breaking, Dangers of Returning Zero, Collections Utility Methods</a></li>
+  <li><a href="#video-37">Comparator, Behaviour Passing, Anonymous Classes &rarr; Functional Interfaces &amp; Lambda Expressions, Target Typing</a></li>
 </ol>
 </div>
 
@@ -7720,6 +7722,419 @@ PriorityQueue&lt;Integer&gt; max = new PriorityQueue&lt;&gt;((a, b) -&gt; b - a)
 • What is a binary heap? → A complete binary tree with the heap property, stored in an array. Children are at 2i+1 and 2i+2, the parent at (i-1)/2.<br>
 • What are offer and poll in a heap? → Sift-up and sift-down, both O(log n). peek is O(1).<br>
 • Is a PriorityQueue's iteration sorted? → No, only the poll order is sorted.</div>
+
+</section>
+
+<hr>
+
+<section class="video-section" id="video-36">
+<h2>Video 36: The Comparable Interface &amp; the Collections Utility Class</h2>
+
+<h3>The Problem: Java Knows How to Order 10 and 20, but Not Two Students</h3>
+<ul>
+<li>Primitives (<code>int</code>, <code>long</code>, <code>short</code>…) have an obvious <strong>natural order</strong>: 10 &lt; 20 &lt; 50 &lt; 70. Strings have one too: <strong>lexicographical order</strong> ("Aditya" &lt; "Rohit").</li>
+<li>A <strong>user-defined class</strong> has no obvious order. Take <code>Student</code> with two fields, <code>int marks</code> and <code>String name</code>, and two objects: <code>s1 = new Student("Aditya", 95)</code> and <code>s2 = new Student("Rohit", 85)</code>. Is s1 "smaller" than s2? By marks? By name? By both? Java can't guess.</li>
+<li>So far our classes could <strong>store</strong> data but couldn't be <strong>compared</strong>. That breaks every collection feature that needs an order:
+<ul>
+<li><code>Collections.sort(list)</code> can't decide which student goes first, so it won't compile.</li>
+<li><code>TreeSet</code> and <code>TreeMap</code> (Video 33) are self-balancing BSTs: smaller keys go left, larger go right. Inserting a student needs a "smaller or larger?" answer at every node.</li>
+</ul></li>
+</ul>
+
+<h3>The Comparable Interface: "I Know How to Compare Myself"</h3>
+<pre><code>public interface Comparable&lt;T&gt; {     // java.lang, so no import needed
+    int compareTo(T o);
+}</code></pre>
+<ul>
+<li>Like every interface, it's a <strong>contract</strong>. A class that implements it promises: <em>"I know how to compare myself with another object of the same type."</em></li>
+<li>It's generic: <code>Student implements Comparable&lt;Student&gt;</code> makes the parameter a <code>Student</code>, so no casting is needed.</li>
+<li>It has a <strong>single abstract method</strong>, so it's a <strong>functional interface</strong> (Video 24). That matters later for lambdas. (Worth knowing: it isn't annotated <code>@FunctionalInterface</code>, and in practice you write lambdas for <code>Comparator</code>, not <code>Comparable</code>.)</li>
+</ul>
+
+<h3>Demo: Sorting Fails Until Student Implements Comparable</h3>
+<pre><code>import java.util.*;
+
+class Student {
+    String name;
+    int marks;
+    public Student(String name, int marks) { this.name = name; this.marks = marks; }
+}
+
+List&lt;Student&gt; list = new ArrayList&lt;&gt;();
+list.add(new Student("Aditya", 95));
+list.add(new Student("Rohit", 85));
+list.add(new Student("Rohan", 56));
+Collections.sort(list);   // ✘ compile error</code></pre>
+<p>The IDE (Eclipse) says <em>"The method sort(List&lt;T&gt;) in the type Collections is not applicable for the arguments (List&lt;Student&gt;)"</em>. Plain <code>javac</code> says <em>"no suitable method found for sort(List&lt;Student&gt;)"</em>. It's a <strong>compile-time</strong> error because the signature is <code>&lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list)</code>, a bounded generic (Video 27), and <code>Student</code> doesn't satisfy the bound.</p>
+<p>The same call on a <code>List&lt;Integer&gt;</code> works: <code>[10, 5, 45]</code> sorts to <code>[5, 10, 45]</code>. That's because <code>Integer</code> (like every wrapper and <code>String</code>) already implements <code>Comparable</code>. (The lecture says the wrappers implement it "indirectly". In fact <code>Integer</code> declares <code>implements Comparable&lt;Integer&gt;</code> directly (Video 18).)</p>
+
+<h4>The Fix</h4>
+<pre><code>class Student implements Comparable&lt;Student&gt; {
+    String name;
+    int marks;
+    public Student(String name, int marks) { this.name = name; this.marks = marks; }
+
+    @Override
+    public int compareTo(Student other) {
+        return this.marks - other.marks;      // ascending by marks (see the overflow warning below)
+    }
+}
+
+Collections.sort(list);
+for (Student s : list) System.out.println(s.name + ", " + s.marks);</code></pre>
+<pre><code>Rohan, 56
+Rohit, 85
+Aditya, 95</code></pre>
+<p>The loop prints the fields because <code>Student</code> doesn't override <code>toString()</code>, so printing the list directly would show <code>Student@1b6d3586</code>-style hashes (Video 22). For <strong>descending</strong> order, flip the subtraction: <code>return other.marks - this.marks;</code> gives Aditya 95, Rohit 85, Rohan 56.</p>
+
+<h3>How Java Reads the compareTo Result</h3>
+<p>Internally, the sort (or the TreeSet) calls <code>s1.compareTo(s2)</code>. Inside that call, <code>this</code> is <code>s1</code> and <code>other</code> is <code>s2</code>. Java cares only about the <strong>sign</strong> of the result:</p>
+<table>
+<tr><th><code>s1.compareTo(s2)</code> returns</th><th>Meaning</th><th>Placement</th></tr>
+<tr><td>negative (&lt; 0)</td><td>s1 is "smaller"</td><td><strong>s1 comes before s2</strong></td></tr>
+<tr><td>positive (&gt; 0)</td><td>s1 is "larger"</td><td><strong>s1 comes after s2</strong></td></tr>
+<tr><td>zero</td><td>s1 and s2 are <strong>equal</strong> in this ordering</td><td>Order between them doesn't matter (but see "Dangers of Returning Zero")</td></tr>
+</table>
+<p>The lecture traces both expressions with s1 = Aditya and s2 = Rohit, swapping their marks to show that the result doesn't depend on which object Java happens to call first:</p>
+<table>
+<tr><th>Expression</th><th>Marks</th><th>Result</th><th>Printed order</th></tr>
+<tr><td rowspan="2"><code>this.marks - other.marks</code></td><td>Aditya 10, Rohit 20</td><td>10 &minus; 20 = &minus;10 → s1 first</td><td>Aditya 10, Rohit 20</td></tr>
+<tr><td>Aditya 20, Rohit 10</td><td>20 &minus; 10 = +10 → s1 after</td><td>Rohit 10, Aditya 20</td></tr>
+<tr><td rowspan="2"><code>other.marks - this.marks</code></td><td>Aditya 10, Rohit 20</td><td>20 &minus; 10 = +10 → s1 after</td><td>Rohit 20, Aditya 10</td></tr>
+<tr><td>Aditya 20, Rohit 10</td><td>10 &minus; 20 = &minus;10 → s1 first</td><td>Aditya 20, Rohit 10</td></tr>
+</table>
+<div class="important"><strong>⭐ The rule to remember</strong><br>
+Java doesn't know about "ascending" or "descending". It only calls <code>s1.compareTo(s2)</code> and looks at the sign.<br>
+• <code>this.x - other.x</code> (this first) → <strong>ascending</strong>.<br>
+• <code>other.x - this.x</code> (other first) → <strong>descending</strong>.</div>
+
+<h4>TreeSet / TreeMap Use compareTo the Same Way</h4>
+<p>When inserting 7 into a tree with root 10, Java calls <code>Integer</code>'s <code>compareTo</code>: 7 is smaller, so it goes left. With a <code>TreeSet&lt;Student&gt;</code>, inserting a new <code>s4</code> calls <strong><code>Student</code>'s</strong> <code>compareTo</code> at each node to decide left or right. What "smaller" means is whatever you wrote in <code>compareTo</code>.</p>
+
+<h3>One Class, One Natural Ordering</h3>
+<ul>
+<li>What Comparable gives a class is called its <strong>natural ordering</strong>.</li>
+<li><em>Anticipated question: "Why not add <code>compareByMarks()</code> and <code>compareByName()</code> methods instead?"</em> You could write them, but <code>Collections.sort</code>, <code>TreeSet</code> and <code>TreeMap</code> wouldn't know which one to call. They call exactly one method: <code>compareTo</code>. So Java's rule is <strong>one class → one natural ordering</strong>.</li>
+</ul>
+
+<h3>Why compareTo Returns int, Not boolean or an Enum</h3>
+<ul>
+<li><strong>Not boolean</strong>: a comparison has <strong>three</strong> outcomes (smaller, larger, equal), and a boolean has only two. That's why <code>equals</code> returns boolean (it answers only "equal or not?") while <code>compareTo</code> returns int.</li>
+<li><strong>Not an enum</strong> (<code>SMALLER</code>, <code>LARGER</code>, <code>EQUAL</code>): the lecture says enums are objects and so "slower" than returning a primitive computed by one subtraction. (Precision: enum constants are pre-built singletons, so returning one allocates nothing. The practical reasons are that an <code>int</code> is cheap, lets you write the result as a simple subtraction or delegation, and follows the long C tradition of <code>strcmp</code>/<code>qsort</code> returning &lt;0, 0, &gt;0.)</li>
+<li>Only the <strong>sign</strong> matters, not the magnitude. Never test <code>compareTo(...) == -1</code>. Test <code>&lt; 0</code>.</li>
+</ul>
+
+<h3>Tie-Breaking: A Multi-Field compareTo</h3>
+<p>Add <code>new Student("Monu", 85)</code>, which ties Rohit. With the marks-only <code>compareTo</code>, the output is Rohan 56, <strong>Rohit 85, Monu 85</strong>, Aditya 95. Rohit comes before Monu simply because he was added first. (The lecture guesses this is "the list's own way". It's guaranteed behaviour: <code>Collections.sort</code> is a <strong>stable</strong> sort (a TimSort-based merge sort), so equal elements keep their original relative order.)</p>
+<p>The requirement: on equal marks, order by name lexicographically. "Monu" &lt; "Rohit" because M comes before R.</p>
+<pre><code>@Override
+public int compareTo(Student other) {
+    if (this.marks != other.marks) {
+        return this.marks - other.marks;       // 1st priority: marks
+    }
+    return this.name.compareTo(other.name);    // 2nd priority: String's own compareTo
+}</code></pre>
+<pre><code>Rohan, 56
+Monu, 85
+Rohit, 85
+Aditya, 95</code></pre>
+<p><code>this.name.compareTo(other.name)</code> calls <strong><code>String</code>'s</strong> <code>compareTo</code>, which String overrides because it implements <code>Comparable&lt;String&gt;</code> (Video 26). Delegating to a field's own <code>compareTo</code> is the standard way to build multi-field comparisons.</p>
+
+<h3>⭐ Dangers of Returning Zero</h3>
+<ul>
+<li>Negative and positive are easy: before and after. But when <code>compareTo</code> returns <strong>0</strong>, the data structure concludes the two objects are <strong>equal</strong>, meaning the <strong>same</strong> element, not merely "similar".</li>
+<li><code>TreeSet</code> and <code>TreeMap</code> don't allow duplicates, and they detect duplicates with <strong><code>compareTo</code>, not <code>equals</code></strong>. So if two different students compare as 0, the second <code>add</code> is silently rejected (in a TreeMap, <code>put</code> would overwrite the value). That's <strong>data loss</strong>.</li>
+<li><em>Why don't they just use <code>equals</code>?</em> Because a tree needs to know left or right. <code>10.equals(20)</code> just says false, which doesn't tell you where 20 goes.</li>
+<li><code>HashSet</code> / <code>HashMap</code> are different (Video 33): they find a bucket with <code>hashCode</code>, then walk the chain calling <code>equals</code> to check "does it already exist?". They never need smaller/larger, so they never call <code>compareTo</code>.</li>
+</ul>
+
+<h4>Demo (Demo2.java)</h4>
+<pre><code>// Student.compareTo is marks-only: return this.marks - other.marks;
+Student s1 = new Student("Aditya", 95);
+Student s2 = new Student("Rohit", 95);   // different person, same marks
+
+Set&lt;Student&gt; set = new TreeSet&lt;&gt;();
+set.add(s1);
+set.add(s2);                             // compareTo → 0, so treated as a duplicate
+System.out.println(set.size());          // 1, not 2!</code></pre>
+<p>Switching to the marks-then-name <code>compareTo</code> prints <strong>2</strong>. If both students are named "Aditya" with 95, it prints 1, which is expected, because now they really are the same by your business logic. It's <strong>your responsibility</strong> to tell Java when two objects count as identical.</p>
+
+<div class="important"><strong>⭐ Rule: compareTo should be consistent with equals</strong><br>
+If <code>a.compareTo(b) == 0</code>, then <code>a.equals(b)</code> should be <code>true</code> (and vice versa). If you override <code>equals</code>, make it use the same fields as <code>compareTo</code>.<br>
+Precision: the lecture calls this "symmetric". The Javadoc term is <strong>"consistent with equals"</strong>, and it's <em>strongly recommended</em>, not enforced. The JDK itself breaks it once: <code>new BigDecimal("1.0")</code> and <code>new BigDecimal("1.00")</code> have <code>compareTo == 0</code> but <code>equals == false</code>, so a <code>TreeSet</code> keeps 1 of them and a <code>HashSet</code> keeps 2. (Verified on JDK 23.)</div>
+
+<h3>When to Use Comparable (and When Comparator)</h3>
+<ul>
+<li>Use <strong>Comparable</strong> when the class has <strong>one obvious natural ordering</strong>, like marks then name for <code>Student</code>. (Someone else might find name-then-marks more natural. That's a design choice, but you can pick only one.)</li>
+<li>When the ordering <strong>isn't obvious</strong> or varies by use case (sometimes by name, sometimes by marks, sometimes both), use <strong><code>Comparator</code></strong> instead. It's an external, use-case-specific comparison, and you can have as many as you like. The lecture covers it <strong>after lambdas</strong>, since comparators are usually written as lambdas.</li>
+</ul>
+<table>
+<tr><th></th><th><code>Comparable&lt;T&gt;</code></th><th><code>Comparator&lt;T&gt;</code> (preview)</th></tr>
+<tr><td>Package</td><td><code>java.lang</code></td><td><code>java.util</code></td></tr>
+<tr><td>Method</td><td><code>int compareTo(T o)</code></td><td><code>int compare(T a, T b)</code></td></tr>
+<tr><td>Where the logic lives</td><td>Inside the class itself</td><td>In a separate object or lambda</td></tr>
+<tr><td>How many per class</td><td>One (the natural ordering)</td><td>Any number</td></tr>
+<tr><td>Can order classes you don't own</td><td>No, you'd have to edit the class</td><td>Yes</td></tr>
+<tr><td>Used by</td><td><code>Collections.sort(list)</code>, <code>new TreeSet&lt;&gt;()</code></td><td><code>Collections.sort(list, cmp)</code>, <code>list.sort(cmp)</code>, <code>new TreeSet&lt;&gt;(cmp)</code></td></tr>
+</table>
+
+<h3>The Collections Utility Class</h3>
+<ul>
+<li>Don't confuse the two (Video 31): <strong><code>Collection</code></strong> is the root <em>interface</em> of the hierarchy (List, Set, Queue…). <strong><code>Collections</code></strong> is a <strong>utility class</strong> in <code>java.util</code>.</li>
+<li>A utility class is a class full of <strong>static methods</strong>. You never create an object. You call <code>Collections.xyz(...)</code> directly. (Its constructor is private.)</li>
+<li>They operate on collections. Most take a <code>List</code>, and some (<code>max</code>, <code>min</code>, <code>frequency</code>) take any <code>Collection</code>. You could write these algorithms yourself, but the built-ins are tested and optimised.</li>
+</ul>
+<table>
+<tr><th>Method</th><th>What it does</th><th>Note</th></tr>
+<tr><td><code>sort(list)</code></td><td>Sorts by natural ordering (Comparable)</td><td>Stable. <code>sort(list, comparator)</code> for a custom order.</td></tr>
+<tr><td><code>max(coll)</code> / <code>min(coll)</code></td><td>Largest / smallest element</td><td>Uses <code>compareTo</code> too, so elements must be Comparable (or pass a Comparator). Throws <code>NoSuchElementException</code> if empty.</td></tr>
+<tr><td><code>fill(list, 0)</code></td><td>Replaces <strong>every existing</strong> element with 0</td><td>Doesn't add elements: filling an empty list leaves it <code>[]</code>.</td></tr>
+<tr><td><code>reverse(list)</code></td><td>Reverses the order in place</td><td>Takes a <code>List</code> (a Set has no positions to reverse).</td></tr>
+<tr><td><code>shuffle(list)</code></td><td>Randomly permutes the positions, like shuffling cards</td><td><code>shuffle(list, new Random(seed))</code> for a repeatable shuffle.</td></tr>
+<tr><td><code>swap(list, i, j)</code></td><td>Swaps the elements at <strong>indices</strong> i and j</td><td>The lecture says it takes "two elements a, b". It takes two <strong>indices</strong>.</td></tr>
+<tr><td><code>binarySearch(list, key)</code></td><td>Finds <code>key</code> in O(log n)</td><td>The list <strong>must already be sorted</strong>. Returns the index, or a <strong>negative</strong> value <code>-(insertionPoint) - 1</code> if absent.</td></tr>
+<tr><td><code>frequency(coll, 5)</code></td><td>Counts how many times 5 appears</td><td>Uses <code>equals</code>.</td></tr>
+</table>
+<p>Check on JDK 23 with <code>nums = [3, 1, 4, 1, 5]</code>: <code>max</code> → 5, <code>min</code> → 1, <code>frequency(nums, 1)</code> → 2. After sorting to <code>[1, 1, 3, 4, 5]</code>: <code>binarySearch(nums, 4)</code> → 3, and <code>binarySearch(nums, 2)</code> → &minus;3 (2 would be inserted at index 2).</p>
+<p>No need to memorise them all. Type <code>Collections.</code> in the IDE and browse: you'll also find <code>checkedMap</code>, <code>emptySortedMap</code>, <code>synchronizedList</code>, <code>nCopies</code>, <code>reverseOrder</code> and more.</p>
+
+<h4>unmodifiableList / Set / Map: Read-Only Wrappers</h4>
+<pre><code>List&lt;Integer&gt; src = new ArrayList&lt;&gt;(List.of(1, 2));
+List&lt;Integer&gt; ro  = Collections.unmodifiableList(src);
+ro.add(4);          // ✘ UnsupportedOperationException (at runtime)
+src.add(3);
+System.out.println(ro);   // [1, 2, 3]  ← the change shows through!</code></pre>
+<p>Variants: <code>unmodifiableSet</code>, <code>unmodifiableMap</code>, and others. Precision: the lecture calls the result "immutable". It's really a <strong>read-only view</strong>. You can't modify it through <code>ro</code>, but anyone holding <code>src</code> can, and <code>ro</code> reflects that (not stated in the lecture). For a true independent immutable copy, use <code>List.copyOf(src)</code> (Java 10+) or <code>List.of(...)</code> (Java 9+).</p>
+
+<h4>emptyList / emptySet / emptyMap: Return Empty, Never Null</h4>
+<ul>
+<li><code>Collections.emptyList()</code> returns an <strong>empty, immutable</strong> list. Adding to it throws <code>UnsupportedOperationException</code>.</li>
+<li><em>Anticipated question: "Why would I want an empty list I can't add to?"</em> Say a method or API call returns a list of results. When there are none, it could return <code>null</code>, but then every caller has to null-check or risk a <code>NullPointerException</code>. Returning an empty list means callers can always loop over the result or call <code>size()</code> safely. The lecture says this will prove very useful in Spring Boot.</li>
+<li>Typical use: <code>return results == null ? Collections.emptyList() : results;</code></li>
+<li>It returns a shared singleton, so it costs no allocation. (Java 9+ <code>List.of()</code> does the same job.)</li>
+</ul>
+
+<div class="important"><strong>⭐ Corrections to traps in the video</strong><br>
+• <strong><code>this.marks - other.marks</code> can overflow.</strong> It's fine for marks from 0 to 100. But with large values of opposite sign, <code>Integer.MIN_VALUE - 1</code> wraps to <code>Integer.MAX_VALUE</code>, a positive number, so the smaller value sorts as larger (verified on JDK 23). The safe, idiomatic form is <code>return Integer.compare(this.marks, other.marks);</code>. For descending, use <code>Integer.compare(other.marks, this.marks)</code>. (Same point as the PriorityQueue comparator tip in Video 35.)<br>
+• <strong>The full compareTo contract</strong> (Javadoc, not covered in the video): <code>sgn(a.compareTo(b)) == -sgn(b.compareTo(a))</code>; it must be <strong>transitive</strong> (a &gt; b and b &gt; c ⇒ a &gt; c); and <code>a.compareTo(null)</code> should throw <code>NullPointerException</code>. A broken contract can make TimSort throw <em>"Comparison method violates its general contract!"</em>.<br>
+• <strong><code>Collections.sort(list)</code> just calls <code>list.sort(null)</code></strong> since Java 8. Arrays use <code>Arrays.sort(array)</code>, which relies on the same Comparable ordering for objects.<br>
+• <strong>Where the sort error comes from:</strong> it's a compile-time generic-bound failure (<code>T extends Comparable&lt;? super T&gt;</code>). A <code>TreeSet</code> of non-Comparable objects, by contrast, compiles and then throws <code>ClassCastException</code> at runtime on the first <code>add</code> (Video 33).<br>
+• <strong>Modern multi-field ordering</strong> (after lambdas): <code>Comparator.comparingInt(Student::getMarks).thenComparing(Student::getName)</code> replaces the hand-written if/else.</div>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• Why do we need Comparable? → Custom classes have no natural order, so <code>Collections.sort</code>, <code>TreeSet</code> and <code>TreeMap</code> can't order them until they implement <code>compareTo</code>.<br>
+• What does <code>compareTo</code> return? → Negative: this comes first. Positive: this comes after. Zero: equal. Only the sign matters.<br>
+• How do you sort ascending vs descending? → <code>this - other</code> vs <code>other - this</code>, or better, <code>Integer.compare</code> with the arguments swapped.<br>
+• Why int and not boolean? → Three outcomes need more than two values. <code>equals</code> is boolean because it has only two.<br>
+• How many natural orderings can a class have? → One. Use Comparators for others.<br>
+• How do you break ties? → Compare the first field. If equal, delegate to the next field's <code>compareTo</code> (e.g. <code>name.compareTo</code>).<br>
+• What's the danger of returning 0? → TreeSet/TreeMap treat it as a duplicate and silently drop the element (data loss).<br>
+• What does "consistent with equals" mean? → <code>compareTo == 0</code> exactly when <code>equals</code> is true. BigDecimal is the famous exception.<br>
+• Do HashSet/HashMap use compareTo? → No, they use <code>hashCode</code> + <code>equals</code>. Tree-based collections use <code>compareTo</code>/<code>compare</code>.<br>
+• Comparable vs Comparator? → Internal single natural order vs external, any number of orders.<br>
+• Collection vs Collections? → The root interface vs the utility class of static methods.<br>
+• What's the precondition for <code>Collections.binarySearch</code>? → A sorted list. It returns a negative value when the key is absent.<br>
+• Is <code>unmodifiableList</code> immutable? → It's a read-only view. Changes to the backing list show through. Use <code>List.copyOf</code> for a real copy.<br>
+• Why return <code>emptyList()</code> instead of null? → It avoids NullPointerExceptions and null checks in callers.</div>
+
+</section>
+
+<hr>
+
+<section class="video-section" id="video-37">
+<h2>Video 37: Comparator, Behaviour Passing, Functional Interfaces &amp; Lambda Expressions</h2>
+
+<h3>The Core Problem: In Java, Behaviour Is a "Second-Class Citizen"</h3>
+<ul>
+<li>Java is object-oriented: <strong>everything revolves around objects</strong>. An object has <strong>characteristics</strong> (variables) and <strong>behaviour</strong> (methods).</li>
+<li>To perform any behaviour or logic, Java makes you: (1) write a class <code>X</code>, (2) put the behaviour inside it as a method <code>m1()</code>, (3) create an object <code>X x = new X();</code>, and only then (4) call <code>x.m1()</code>. The behaviour is always <strong>boxed inside an object</strong>.</li>
+<li>So for Java the object is primary and the behaviour is secondary. That works fine most of the time. It hurts when <strong>all you need is the behaviour itself</strong>.</li>
+<li>What we want is <strong>behaviour passing</strong>: passing a piece of logic (a function) <strong>as an argument to a method</strong>, e.g. <code>m1(doSomething)</code>. Before Java 8 that was impossible. A method argument could only be a <strong>variable</strong>: a primitive (<code>int</code>, <code>float</code>, <code>char</code>…) or a reference (e.g. a <code>Student s1</code>, whose methods <code>m1</code> can then call).</li>
+<li>Other languages already had first-class functions, so Java (8, 2014) added <strong>functional interfaces</strong>, and with them <strong>lambda expressions</strong>. That's a partial shift toward <strong>functional programming</strong>. The lecture's framing: OOP is right about 90&ndash;98% of the time. In the remaining cases, treating everything as an object makes code <strong>verbose</strong> (needlessly long).</li>
+</ul>
+
+<h4>The Lecture's Analogy: Giving a Recipe to a Chef</h4>
+<p>A chef has a method <code>cook(…)</code>. I, the customer, want pasta made my specific way, and I have the exact <strong>recipe</strong>. A recipe is a set of instructions: a behaviour. Java won't let me hand the recipe straight to the chef. Instead I must create a <code>Person p1 = new Person()</code>, put the recipe inside the Person class as a method, pass <code>p1</code> to <code>cook(p1)</code>, and the chef calls <code>p1.recipe()</code>. In real life, needing a middle-man object just to pass instructions is absurd. I'd rather hand the recipe over directly.</p>
+
+<h3>Why We Need Behaviour Passing: Sorting Students Many Ways</h3>
+<ul>
+<li>Take a <code>Student</code> class with <code>String name</code>, <code>int rollNo</code> and <code>int marks</code>, and a <code>List&lt;Student&gt;</code> to sort.</li>
+<li>Option 1 (Video 36): make <code>Student implements Comparable&lt;Student&gt;</code> with <code>compareTo</code> returning <code>this.marks - s1.marks</code>. But that fixes <strong>one natural ordering</strong> forever.</li>
+<li>In a real college application, different actors need different orders. A <strong>teacher</strong> sorts by marks, the <strong>admin office</strong> by name, someone else by roll number. One <code>compareTo</code> can't serve them all.</li>
+</ul>
+
+<h3>The Comparator Interface: Comparison Logic Lives Outside the Class</h3>
+<pre><code>public interface Comparator&lt;T&gt; {      // java.util
+    int compare(T o1, T o2);
+}</code></pre>
+<ul>
+<li>Keep <code>Student</code> <strong>lightweight</strong>: it holds only its own data and methods. The responsibility for comparing students goes to <strong>separate, external objects</strong>. You can have as many as you need.</li>
+<li>Same sign rule as <code>compareTo</code> (Video 36): negative → <code>o1</code> first, positive → <code>o2</code> first, zero → equal.</li>
+<li>Precision: the lecture says Comparator "has only one method". It has one <strong>abstract</strong> method. It also has many <code>default</code>/<code>static</code> helpers (<code>reversed()</code>, <code>thenComparing()</code>, <code>comparing()</code>…), plus a re-declared <code>boolean equals(Object)</code>, which doesn't count because every object already has it from <code>Object</code> (Video 24).</li>
+</ul>
+
+<h4>Demo: Named Comparator Classes</h4>
+<pre><code>import java.util.*;
+
+class Student {
+    String name;
+    int rollNo;
+    int marks;
+    public Student(String name, int rollNo, int marks) {
+        this.name = name; this.rollNo = rollNo; this.marks = marks;
+    }
+}
+
+class SortByName implements Comparator&lt;Student&gt; {
+    @Override
+    public int compare(Student s1, Student s2) { return s1.name.compareTo(s2.name); }   // String's compareTo
+}
+class SortByRollNo implements Comparator&lt;Student&gt; {
+    @Override
+    public int compare(Student s1, Student s2) { return s1.rollNo - s2.rollNo; }
+}
+class SortByMarks implements Comparator&lt;Student&gt; {
+    @Override
+    public int compare(Student s1, Student s2) { return s1.marks - s2.marks; }
+}
+
+List&lt;Student&gt; list = new ArrayList&lt;&gt;();
+list.add(new Student("Aditya", 101, 85));
+list.add(new Student("Rohit", 102, 89));
+list.add(new Student("Rohan", 103, 93));
+list.add(new Student("Sonu", 104, 98));
+
+Comparator&lt;Student&gt; c1 = new SortByName();     // interface type, implementing-class object
+Comparator&lt;Student&gt; c2 = new SortByMarks();
+Comparator&lt;Student&gt; c3 = new SortByRollNo();
+Collections.sort(list, c1);
+for (Student s : list) System.out.println(s.name + "," + s.rollNo + "," + s.marks);</code></pre>
+<ul>
+<li><code>Collections.sort(list)</code> alone won't compile for a plain <code>Student</code> (Video 36). But <code>sort</code> is <strong>overloaded</strong>: <code>sort(List&lt;T&gt; list, Comparator&lt;? super T&gt; c)</code> accepts a comparator.</li>
+<li>You can't instantiate <code>Comparator</code> (it's an interface), so you create objects of its implementing classes.</li>
+<li>Output with <code>c1</code>: Aditya, Rohan, Rohit, Sonu (by name). With <code>c2</code>: 85, 89, 93, 98 (by marks). With <code>c3</code>: 101, 102, 103, 104 (by roll number, which happens to be the same order as marks in this data).</li>
+</ul>
+<div class="important"><strong>Transcript slips to ignore:</strong><br>
+• The roll numbers are spoken as "1001", "102", "1012 103 104". They're read here as 101&ndash;104. The marks for Rohan and Sonu (93, 98) come from the run output.<br>
+• During the demo the lecture calls <code>Collections.sort(list, null)</code> just to jump into the overload's source. A <code>null</code> comparator means "use natural ordering", so for a non-Comparable Student that would fail at runtime with <code>ClassCastException</code>.<br>
+• "Override the sort method" inside the anonymous class means the <code>compare</code> method.</div>
+
+<h4>How sort Uses the Comparator Internally</h4>
+<p>The sort runs some algorithm (merge sort, quicksort… the lecture says it doesn't matter which; in fact it's TimSort). Whenever it has two students <code>s1</code>, <code>s2</code> and must decide which goes first, it calls <strong>the passed comparator's <code>compare(s1, s2)</code></strong>. Pass <code>c3</code> and it's <code>SortByRollNo.compare</code> every time. The algorithm stays the same; only the comparison behaviour you plug in changes. (This is the Strategy pattern, not named in the lecture.)</p>
+
+<h3>The Verbosity Problem: Three Classes to Say One Line</h3>
+<p>My only job as a programmer was to tell <code>sort</code> <em>how</em> to compare. The actual logic is a single return statement: <code>s1.name.compareTo(s2.name)</code>, or <code>s1.rollNo - s2.rollNo</code>, or <code>s1.marks - s2.marks</code>. But Java had no way to pass that line directly. I had to <strong>wrap the logic in a method, the method in a class, create an object of the class, and pass the object</strong>. Everything except the return line is <strong>noise</strong>.</p>
+<div class="important"><strong>One-liner from the lecture:</strong><br>
+"I just need to tell a method <em>how</em> to do something." The <em>how</em> is the behaviour. Java made me put it in a box (an object) and pass the box.</div>
+
+<h3>First Fix: Anonymous Classes</h3>
+<pre><code>Collections.sort(list, new Comparator&lt;Student&gt;() {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return s1.marks - s2.marks;
+    }
+});</code></pre>
+<ul>
+<li>This drops the named classes <code>SortByName</code>, <code>SortByRollNo</code> and <code>SortByMarks</code>. The class is written inline where the <code>Comparator</code> object is expected, and it's <strong>anonymous</strong> because it has no name (Video 19).</li>
+<li>Output: 85, 89, 93, 98. Swap the body for <code>s1.name.compareTo(s2.name)</code> and you get Aditya, Rohan, Rohit, Sonu.</li>
+<li><strong>Why it's still not enough:</strong> it's still a class, and <code>compare</code> is still boxed inside it. Five lines of ceremony still surround one line of logic. (Worth knowing: the compiler still generates a separate class file for it, e.g. <code>Demo$1.class</code>.)</li>
+</ul>
+
+<table>
+<caption>How the same "sort by marks" evolved</caption>
+<tr><th>Step</th><th>What you write</th><th>Remaining problem</th></tr>
+<tr><td>1. Comparable</td><td><code>compareTo</code> inside <code>Student</code></td><td>Only one ordering, tightly coupled to the class</td></tr>
+<tr><td>2. Named Comparator class</td><td><code>class SortByMarks implements Comparator</code> + <code>new SortByMarks()</code></td><td>A whole class plus an object for one line of logic</td></tr>
+<tr><td>3. Anonymous class</td><td><code>new Comparator&lt;Student&gt;() { … }</code> inline</td><td>Still a class wrapping a method, still verbose</td></tr>
+<tr><td>4. Lambda (Java 8)</td><td><code>(s1, s2) -&gt; s1.marks - s2.marks</code></td><td>Just the logic</td></tr>
+</table>
+
+<h3>Functional Interfaces: The Foundation for Lambdas</h3>
+<div class="important"><strong>Definition:</strong><br>
+A <strong>functional interface</strong> is an interface with <strong>exactly one abstract method</strong>. It can have <strong>any number of <code>default</code> and <code>static</code> methods</strong>, since those already have bodies. (The Java spec calls this a "single abstract method" or SAM type. First covered in Video 24.)</div>
+<ul>
+<li><code>Comparable&lt;T&gt;</code>: one abstract method, <code>int compareTo(T o)</code>.</li>
+<li><code>Comparator&lt;T&gt;</code>: one abstract method, <code>int compare(T o1, T o2)</code>.</li>
+<li>Java defined lambdas <strong>on top of</strong> these special interfaces, and that's where functional programming in Java starts: stop focusing <em>only</em> on objects, because sometimes passing functions matters more.</li>
+</ul>
+
+<h3>Lambda Expressions</h3>
+<div class="important"><strong>General form:</strong><br>
+<code>(parameters) -&gt; expression</code><br>
+Read the arrow <code>-&gt;</code> as <strong>"maps to"</strong> (or "gives"): these parameters map to this expression.</div>
+<p>Converting the <code>compare</code> method: its parameters are <code>s1, s2</code>, and its body returns <code>s1.marks - s2.marks</code>. So:</p>
+<pre><code>Collections.sort(list, (s1, s2) -&gt; s1.marks - s2.marks);   // 85, 89, 93, 98</code></pre>
+<p>No class, no object, no <code>@Override</code>, no method name, no <code>return</code> keyword. It compiles and sorts by marks.</p>
+
+<h4>How Java Figures Out What the Lambda Means: Target Typing</h4>
+<ol>
+<li>The second parameter of <code>sort</code> expects a <code>Comparator</code>, so the lambda must be a Comparator.</li>
+<li>The list is a <code>List&lt;Student&gt;</code>, so it must be a <code>Comparator&lt;Student&gt;</code>.</li>
+<li>Comparator is a functional interface with only <strong>one abstract method</strong>, <code>compare(Student, Student)</code>, so the lambda <strong>is the body of <code>compare</code></strong>.</li>
+<li>So <code>s1</code> and <code>s2</code> are <code>Student</code>s, and the expression after the arrow is the <code>int</code> return value.</li>
+</ol>
+<p>This is called <strong>target typing</strong>: Java infers the lambda's type from the <strong>context</strong> it's used in (the "target type"), so you don't have to write it all yourself.</p>
+
+<h4>Anticipated question: "Why must it be a <em>functional</em> interface?"</h4>
+<p>If an interface <code>I</code> had two abstract methods, <code>f1()</code> and <code>f2()</code>, then a lambda <code>() -&gt; …</code> passed where an <code>I</code> is expected would be ambiguous: is it <code>f1</code>'s body or <code>f2</code>'s? With exactly one abstract method, there's nothing to guess. The functional interface is <strong>what makes a lambda possible</strong>. (Verified: assigning a lambda to a two-method interface fails with <em>"incompatible types: Two2 is not a functional interface"</em>.)</p>
+
+<h3>Lambda Syntax Variants</h3>
+<p>A lambda needs a functional-interface target type, so the examples below are assigned to small interfaces (<code>Adder</code>, <code>Square</code>, <code>Greeter</code>, added here so the code compiles). The lecture shows just the lambdas. Java's built-in functional interfaces come next lecture.</p>
+<pre><code>@FunctionalInterface interface Adder   { int add(int a, int b); }
+@FunctionalInterface interface Square  { int apply(int x); }
+@FunctionalInterface interface Greeter { void greet(); }
+
+Adder   sum  = (a, b) -&gt; a + b;                          // 1. multiple parameters
+Square  sq   = x -&gt; x * x;                               // 2. single parameter: () optional
+Greeter g    = () -&gt; System.out.println("hello");        // 3. no parameters: () required
+Adder   sum2 = (a, b) -&gt; {                               // 4. multi-line (block) body
+    int s = a + b;
+    return s;
+};
+
+sum.add(2, 3);    // 5
+sq.apply(7);      // 49
+g.greet();        // hello</code></pre>
+<table>
+<tr><th>Form</th><th>Syntax</th><th>Rules</th></tr>
+<tr><td>Multiple parameters</td><td><code>(a, b) -&gt; a + b</code></td><td>Parentheses required. Equivalent to <code>int sum(int a, int b) { return a + b; }</code>. The types of a and b come from the target interface.</td></tr>
+<tr><td>Single parameter</td><td><code>x -&gt; x * x</code></td><td>Parentheses optional (<code>(x) -&gt; x * x</code> also works).</td></tr>
+<tr><td>No parameters</td><td><code>() -&gt; System.out.println("hello")</code></td><td>Empty <code>()</code> required. Takes no input and returns nothing, because <code>println</code> isn't a value. This fits a <code>void</code> method.</td></tr>
+<tr><td>Multi-line (block)</td><td><code>(a, b) -&gt; { int s = a + b; return s; }</code></td><td><strong>Braces are compulsory</strong>, and so is <code>return</code> if the method returns a value. Like a normal method body.</td></tr>
+</table>
+<ul>
+<li>In the single-expression forms, <strong>no <code>return</code> and no braces</strong>: Java knows the expression's value is the result.</li>
+<li>Worth knowing: parameter types may be written explicitly, <code>(Student s1, Student s2) -&gt; …</code>, or with <code>var</code> (Java 11+). It's all-or-nothing: you can't give a type to only one parameter.</li>
+</ul>
+<div class="important"><strong>Why avoid long multi-line lambdas:</strong><br>
+Lambdas pay off when the logic is <strong>small</strong>, and wrapping it in a class would be needless verbosity. If a lambda grows to many lines of complex logic, it gets hard to read. Put it back in a <strong>proper class</strong> (a named Comparator, say) and pass an object. Then OOP is the better tool.</div>
+
+<h3>Writing Your Own Functional Interface &amp; @FunctionalInterface</h3>
+<pre><code>@FunctionalInterface          // optional, but gives compile-time safety
+interface Demo {
+    void m1();                // exactly one abstract method
+}</code></pre>
+<p>Any interface with one abstract method already <em>is</em> functional. The annotation is <strong>optional</strong>. Its benefit: if someone later adds a second abstract method, the compiler rejects it (<em>"Unexpected @FunctionalInterface annotation … multiple non-overriding abstract methods"</em>), so no existing lambda silently breaks.</p>
+
+<div class="important"><strong>⭐ Corrections &amp; worth knowing</strong><br>
+• <strong>A lambda is not an anonymous class.</strong> It's compiled with <code>invokedynamic</code>, and no <code>Demo$1.class</code> file is generated (verified: the anonymous comparator produced <code>Demo$1.class</code>, but the lambdas produced none; at runtime their class is named like <code>Demo$$Lambda/0x…</code>). Inside a lambda, <code>this</code> means the <strong>enclosing</strong> object, not the lambda. Inside an anonymous class it means the anonymous object.<br>
+• <strong>Captured local variables must be effectively final</strong> (not covered in the lecture). A lambda can read a local variable from the enclosing method only if it's never reassigned. The same rule applies to anonymous classes (before Java 8 they needed an explicit <code>final</code>).<br>
+• <strong>A lambda has no type without a target.</strong> <code>var f = x -&gt; x * x;</code> and <code>Object o = () -&gt; {};</code> don't compile ("cannot infer type for local variable").<br>
+• <strong>Still use <code>Integer.compare</code>.</strong> <code>s1.marks - s2.marks</code> can overflow for extreme values (Video 36). The idiomatic modern version is <code>list.sort(Comparator.comparingInt(s -&gt; s.marks))</code>, with <code>.reversed()</code> or <code>.thenComparing(…)</code> chained on. <code>list.sort(cmp)</code> (Java 8+) is what <code>Collections.sort(list, cmp)</code> delegates to.<br>
+• <strong>"Java is pure OOP"</strong> is a simplification. Primitives aren't objects, which is why Java is usually called not <em>purely</em> object-oriented.<br>
+• <strong>Named design idea:</strong> passing interchangeable comparison logic into <code>sort</code> is the <strong>Strategy pattern</strong>, and a lambda is the lightest way to write a strategy.</div>
+
+<div class="important"><strong>⭐ Quick Revision / Likely Interview Questions</strong><br>
+• Why were lambdas added? → To pass behaviour as an argument without wrapping it in a class and an object (Java 8).<br>
+• Comparable vs Comparator? → <code>compareTo(T)</code> inside the class, one natural order, <code>java.lang</code> vs <code>compare(T, T)</code> outside the class, any number of orders, <code>java.util</code>.<br>
+• How do you sort by a non-natural order? → <code>Collections.sort(list, comparator)</code> or <code>list.sort(comparator)</code>.<br>
+• What is a functional interface? → Exactly one abstract method. Any number of default and static methods is fine.<br>
+• What does <code>@FunctionalInterface</code> do? → It's optional. The compiler errors if the interface doesn't have exactly one abstract method.<br>
+• Why do lambdas need functional interfaces? → With one abstract method, the compiler knows which method the lambda implements.<br>
+• What is target typing? → Inferring a lambda's interface and parameter types from the context where it's used.<br>
+• What's the syntax? → <code>(params) -&gt; expression</code>. One param: parentheses optional. Zero params: <code>()</code>. Block body: braces and <code>return</code> required.<br>
+• Lambda vs anonymous class? → The lambda has no class file (invokedynamic), <code>this</code> refers to the enclosing object, and it only works for functional interfaces. An anonymous class can implement any interface or extend a class.<br>
+• When should you avoid a lambda? → When the logic is long or complex. Use a named class.</div>
 
 </section>
 
