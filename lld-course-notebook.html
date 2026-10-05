@@ -174,6 +174,7 @@
   .accent { color: var(--important-border); }
 
   /* additions for elements the GenAI notes don't use */
+  .video-link { font-family: 'Patrick Hand', cursive; font-size: 1.05rem; white-space: nowrap; margin-left: 8px; }
   .toc .dur { color: var(--muted); font-size: 0.95rem; }
   caption { caption-side: top; text-align: left; font-family: 'Caveat', cursive; font-size: 1.35rem; font-weight: 700; color: var(--muted); padding-bottom: 4px; }
   mark { background: var(--important-bg); color: inherit; padding: 0 3px; border-radius: 2px; }
@@ -193,53 +194,53 @@
 <div class="toc">
 <strong>Contents</strong>
 <ol>
-  <li><a href="#video-1">Introduction to LLD</a> <span class="dur">&mdash; 24m</span></li>
-  <li><a href="#video-2">OOPs: History, Abstraction &amp; Encapsulation</a> <span class="dur">&mdash; 54m</span></li>
-  <li><a href="#video-3">Inheritance &amp; Polymorphism in OOPs</a> <span class="dur">&mdash; 44m</span></li>
-  <li><a href="#video-4">UML Diagrams | Class &amp; Sequence Diagrams</a> <span class="dur">&mdash; 1h12m</span></li>
-  <li><a href="#video-5">SOLID Design Principles &mdash; Part 1 (S, O, L)</a> <span class="dur">&mdash; 1h7m</span></li>
-  <li><a href="#video-6">SOLID Design Principles &mdash; Part 2 (LSP rules, I, D)</a> <span class="dur">&mdash; 1h17m</span></li>
-  <li><a href="#video-7">Build Google Docs (Document Editor LLD)</a> <span class="dur">&mdash; 45m</span></li>
-  <li><a href="#video-8">Strategy Design Pattern</a> <span class="dur">&mdash; 32m</span></li>
-  <li><a href="#video-9">Factory Design Pattern</a> <span class="dur">&mdash; 32m</span></li>
-  <li><a href="#video-10">Singleton Design Pattern</a> <span class="dur">&mdash; 32m</span></li>
-  <li><a href="#video-11">Build Zomato Food Delivery App</a> <span class="dur">&mdash; 1h7m</span></li>
-  <li><a href="#video-12">Observer Design Pattern</a> <span class="dur">&mdash; 28m</span></li>
-  <li><a href="#video-13">Decorator Pattern</a> <span class="dur">&mdash; 29m</span></li>
-  <li><a href="#video-14">Build Notification Engine</a> <span class="dur">&mdash; 42m</span></li>
-  <li><a href="#video-15">Command Design Pattern</a> <span class="dur">&mdash; 29m</span></li>
-  <li><a href="#video-16">Adapter Design Pattern</a> <span class="dur">&mdash; 21m</span></li>
-  <li><a href="#video-17">Facade Design Pattern</a> <span class="dur">&mdash; 18m</span></li>
-  <li><a href="#video-18">Build Spotify Music Player App</a> <span class="dur">&mdash; 1h15m</span></li>
-  <li><a href="#video-19">Composite Design Pattern (File System)</a> <span class="dur">&mdash; 38m</span></li>
-  <li><a href="#video-20">Template Method Pattern</a> <span class="dur">&mdash; 20m</span></li>
-  <li><a href="#video-21">Proxy Design Pattern</a> <span class="dur">&mdash; 37m</span></li>
-  <li><a href="#video-22">Chain of Responsibility (Cash Dispenser)</a> <span class="dur">&mdash; 29m</span></li>
-  <li><a href="#video-23">Build Payment Gateway System</a> <span class="dur">&mdash; 1h</span></li>
-  <li><a href="#video-24">Build Discount Coupon Engine</a> <span class="dur">&mdash; 1h23m</span></li>
-  <li><a href="#video-25">Bridge Pattern</a> <span class="dur">&mdash; 31m</span></li>
-  <li><a href="#video-26">Build Zepto (Quick Commerce / Inventory)</a> <span class="dur">&mdash; 1h36m</span></li>
-  <li><a href="#video-27">Build Tinder (Dating App)</a> <span class="dur">&mdash; 1h21m</span></li>
-  <li><a href="#video-28">Builder Design Pattern</a> <span class="dur">&mdash; 1h49m</span></li>
-  <li><a href="#video-29">Iterator Design Pattern</a> <span class="dur">&mdash; 40m</span></li>
-  <li><a href="#video-30">Flyweight Design Pattern</a> <span class="dur">&mdash; 55m</span></li>
-  <li><a href="#video-31">Build Splitwise Clone</a> <span class="dur">&mdash; 1h36m</span></li>
-  <li><a href="#video-32">State Pattern (Vending Machine)</a> <span class="dur">&mdash; 1h14m</span></li>
-  <li><a href="#video-33">Build Tic Tac Toe Game</a> <span class="dur">&mdash; 52m</span></li>
-  <li><a href="#video-34">Build Snake and Ladder Game</a> <span class="dur">&mdash; 1h8m</span></li>
-  <li><a href="#video-35">Mediator Pattern (Chat Room)</a> <span class="dur">&mdash; 48m</span></li>
-  <li><a href="#video-36">Prototype Design Pattern</a> <span class="dur">&mdash; 31m</span></li>
-  <li><a href="#video-37">Build Chess Game</a> <span class="dur">&mdash; 1h53m</span></li>
-  <li><a href="#video-38">Visitor Design Pattern</a> <span class="dur">&mdash; 40m</span></li>
-  <li><a href="#video-39">Memento Design Pattern</a> <span class="dur">&mdash; 34m</span></li>
-  <li><a href="#video-40">Null Object Pattern (Anti-Patterns)</a> <span class="dur">&mdash; 25m</span></li>
+  <li><a href="#video-1">Introduction to LLD</a> <span class="dur">&mdash; 24m</span> <a class="video-link" href="https://www.youtube.com/watch?v=AK0hu0Zxua4&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-2">OOPs: History, Abstraction &amp; Encapsulation</a> <span class="dur">&mdash; 54m</span> <a class="video-link" href="https://www.youtube.com/watch?v=QbGoqAgP_zg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-3">Inheritance &amp; Polymorphism in OOPs</a> <span class="dur">&mdash; 44m</span> <a class="video-link" href="https://www.youtube.com/watch?v=KGOEK0-XBIg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-4">UML Diagrams | Class &amp; Sequence Diagrams</a> <span class="dur">&mdash; 1h12m</span> <a class="video-link" href="https://www.youtube.com/watch?v=nPJyyO9pb5s&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-5">SOLID Design Principles &mdash; Part 1 (S, O, L)</a> <span class="dur">&mdash; 1h7m</span> <a class="video-link" href="https://www.youtube.com/watch?v=UsNl8kcU4UA&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-6">SOLID Design Principles &mdash; Part 2 (LSP rules, I, D)</a> <span class="dur">&mdash; 1h17m</span> <a class="video-link" href="https://www.youtube.com/watch?v=hU9koy6A2I0&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-7">Build Google Docs (Document Editor LLD)</a> <span class="dur">&mdash; 45m</span> <a class="video-link" href="https://www.youtube.com/watch?v=MT9qZFGQXOU&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-8">Strategy Design Pattern</a> <span class="dur">&mdash; 32m</span> <a class="video-link" href="https://www.youtube.com/watch?v=PpKvPrl_gRg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-9">Factory Design Pattern</a> <span class="dur">&mdash; 32m</span> <a class="video-link" href="https://www.youtube.com/watch?v=dMK4TbG29fk&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-10">Singleton Design Pattern</a> <span class="dur">&mdash; 32m</span> <a class="video-link" href="https://www.youtube.com/watch?v=CD3meit-WDc&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-11">Build Zomato Food Delivery App</a> <span class="dur">&mdash; 1h7m</span> <a class="video-link" href="https://www.youtube.com/watch?v=2SAUqTn3TrU&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-12">Observer Design Pattern</a> <span class="dur">&mdash; 28m</span> <a class="video-link" href="https://www.youtube.com/watch?v=Jpmp4GY8r3Q&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-13">Decorator Pattern</a> <span class="dur">&mdash; 29m</span> <a class="video-link" href="https://www.youtube.com/watch?v=Z9rFlZClYNI&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-14">Build Notification Engine</a> <span class="dur">&mdash; 42m</span> <a class="video-link" href="https://www.youtube.com/watch?v=t-4r2AsJz_Q&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-15">Command Design Pattern</a> <span class="dur">&mdash; 29m</span> <a class="video-link" href="https://www.youtube.com/watch?v=cnQZsN0jxEY&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-16">Adapter Design Pattern</a> <span class="dur">&mdash; 21m</span> <a class="video-link" href="https://www.youtube.com/watch?v=FV3x69rpwm0&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-17">Facade Design Pattern</a> <span class="dur">&mdash; 18m</span> <a class="video-link" href="https://www.youtube.com/watch?v=0KlnSdvsojc&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-18">Build Spotify Music Player App</a> <span class="dur">&mdash; 1h15m</span> <a class="video-link" href="https://www.youtube.com/watch?v=DkLwFqbCsu8&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-19">Composite Design Pattern (File System)</a> <span class="dur">&mdash; 38m</span> <a class="video-link" href="https://www.youtube.com/watch?v=xaaiMGmyDJk&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-20">Template Method Pattern</a> <span class="dur">&mdash; 20m</span> <a class="video-link" href="https://www.youtube.com/watch?v=8-vE_bmEt18&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-21">Proxy Design Pattern</a> <span class="dur">&mdash; 37m</span> <a class="video-link" href="https://www.youtube.com/watch?v=xuT6OOYVJTQ&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-22">Chain of Responsibility (Cash Dispenser)</a> <span class="dur">&mdash; 29m</span> <a class="video-link" href="https://www.youtube.com/watch?v=LXVKB6deQMo&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-23">Build Payment Gateway System</a> <span class="dur">&mdash; 1h</span> <a class="video-link" href="https://www.youtube.com/watch?v=36FDqIRBGRg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-24">Build Discount Coupon Engine</a> <span class="dur">&mdash; 1h23m</span> <a class="video-link" href="https://www.youtube.com/watch?v=jbVevoGN_pM&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-25">Bridge Pattern</a> <span class="dur">&mdash; 31m</span> <a class="video-link" href="https://www.youtube.com/watch?v=KVf8dwgTbiM&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-26">Build Zepto (Quick Commerce / Inventory)</a> <span class="dur">&mdash; 1h36m</span> <a class="video-link" href="https://www.youtube.com/watch?v=FcbsppIX0bg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-27">Build Tinder (Dating App)</a> <span class="dur">&mdash; 1h21m</span> <a class="video-link" href="https://www.youtube.com/watch?v=IcgLSo6--ok&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-28">Builder Design Pattern</a> <span class="dur">&mdash; 1h49m</span> <a class="video-link" href="https://www.youtube.com/watch?v=G4Ntl9KzIxY&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-29">Iterator Design Pattern</a> <span class="dur">&mdash; 40m</span> <a class="video-link" href="https://www.youtube.com/watch?v=30fveBRLqMw&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-30">Flyweight Design Pattern</a> <span class="dur">&mdash; 55m</span> <a class="video-link" href="https://www.youtube.com/watch?v=vNSRcegCO8E&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-31">Build Splitwise Clone</a> <span class="dur">&mdash; 1h36m</span> <a class="video-link" href="https://www.youtube.com/watch?v=cWtBZUAQpcc&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-32">State Pattern (Vending Machine)</a> <span class="dur">&mdash; 1h14m</span> <a class="video-link" href="https://www.youtube.com/watch?v=bJPmvie_p4w&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-33">Build Tic Tac Toe Game</a> <span class="dur">&mdash; 52m</span> <a class="video-link" href="https://www.youtube.com/watch?v=BGFzYjGtRP4&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-34">Build Snake and Ladder Game</a> <span class="dur">&mdash; 1h8m</span> <a class="video-link" href="https://www.youtube.com/watch?v=1NJB54UB8nE&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-35">Mediator Pattern (Chat Room)</a> <span class="dur">&mdash; 48m</span> <a class="video-link" href="https://www.youtube.com/watch?v=3lGIICzgyQQ&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-36">Prototype Design Pattern</a> <span class="dur">&mdash; 31m</span> <a class="video-link" href="https://www.youtube.com/watch?v=KMQFNV8LFec&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-37">Build Chess Game</a> <span class="dur">&mdash; 1h53m</span> <a class="video-link" href="https://www.youtube.com/watch?v=eULHvaMZUks&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-38">Visitor Design Pattern</a> <span class="dur">&mdash; 40m</span> <a class="video-link" href="https://www.youtube.com/watch?v=DnmsxnlCyl0&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-39">Memento Design Pattern</a> <span class="dur">&mdash; 34m</span> <a class="video-link" href="https://www.youtube.com/watch?v=p8-ile_nWnY&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
+  <li><a href="#video-40">Null Object Pattern (Anti-Patterns)</a> <span class="dur">&mdash; 25m</span> <a class="video-link" href="https://www.youtube.com/watch?v=iXHlc_S3Ae4&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
 </ol>
 </div>
 
 <hr>
 
 <section class="video-section" id="video-1">
-    <h2>Lecture 1: Introduction to Low-Level Design</h2>
+    <h2>Lecture 1: Introduction to Low-Level Design <a class="video-link" href="https://www.youtube.com/watch?v=AK0hu0Zxua4&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 1 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Introduction To System Design" &middot; 24 min &middot; Code Army (Aditya)</p>
 
     <h3>The problem this lecture sets up</h3>
@@ -323,7 +324,7 @@ DSA = the brain (isolated problem-solving). LLD = the skeleton (the structure th
 <hr>
 
 <section class="video-section" id="video-2">
-    <h2>Lecture 2: OOPs: History, Abstraction &amp; Encapsulation</h2>
+    <h2>Lecture 2: OOPs: History, Abstraction &amp; Encapsulation <a class="video-link" href="https://www.youtube.com/watch?v=QbGoqAgP_zg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 2 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "OOPs Real-World Examples | OOPs Pillars" &middot; 54 min &middot; Code Army</p>
 
     <h3>Why OOP exists (history, compressed)</h3>
@@ -419,7 +420,7 @@ The lecture's "hiding vs security" split between Abstraction and Encapsulation i
 <hr>
 
 <section class="video-section" id="video-3">
-    <h2>Lecture 3: Inheritance &amp; Polymorphism</h2>
+    <h2>Lecture 3: Inheritance &amp; Polymorphism <a class="video-link" href="https://www.youtube.com/watch?v=KGOEK0-XBIg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 3 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Inheritance &amp; Polymorphism in OOPs" &middot; 44 min &middot; Code Army</p>
 
     <h3>Pillar 3: Inheritance</h3>
@@ -488,7 +489,7 @@ For <code>accelerate()</code>/<code>brake()</code> in <code>Car</code> to actual
 <hr>
 
 <section class="video-section" id="video-4">
-    <h2>Lecture 4: UML Diagrams: Class &amp; Sequence Diagrams</h2>
+    <h2>Lecture 4: UML Diagrams: Class &amp; Sequence Diagrams <a class="video-link" href="https://www.youtube.com/watch?v=nPJyyO9pb5s&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 4 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "UML Diagrams | Class &amp; Sequence Diagrams" &middot; 1h12m &middot; Code Army</p>
 
     <h3>Why UML</h3>
@@ -530,8 +531,8 @@ classDiagram
     -int batteryPercentage
     +chargeBattery() void
   }
-  Car <|-- ManualCar
-  Car <|-- ElectricCar
+  Car <|-- ManualCar : is-a
+  Car <|-- ElectricCar : is-a
       </div>
       <figcaption>Car hierarchy (same running example as Lectures 2&ndash;3), now as an actual class diagram</figcaption>
     </figure>
@@ -561,15 +562,30 @@ classDiagram
   class Armrest
   class Seat
   class Wheel
-  Room o-- Sofa : aggregation
-  Room o-- Bed : aggregation
-  Room o-- Chair : aggregation
-  Chair *-- Armrest : composition
-  Chair *-- Seat : composition
-  Chair *-- Wheel : composition
+  Room o-- Sofa : has-a, aggregation
+  Room o-- Bed : has-a, aggregation
+  Room o-- Chair : has-a, aggregation
+  Chair *-- Armrest : has-a, composition
+  Chair *-- Seat : has-a, composition
+  Chair *-- Wheel : has-a, composition
       </div>
       <figcaption>Aggregation (Room &rarr; furniture) vs. Composition (Chair &rarr; its parts)</figcaption>
     </figure>
+
+    <div class="important"><strong>How to read the arrows in every diagram in these notes:</strong>
+    <table>
+      <thead><tr><th>Arrow</th><th>UML name</th><th>Label used</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>solid line, hollow triangle</td><td>Inheritance</td><td><code>is-a</code></td><td>Child extends parent</td></tr>
+        <tr><td>dashed line, hollow triangle</td><td>Realization</td><td><code>is-a, implements</code></td><td>Class implements an interface</td></tr>
+        <tr><td>solid line, open arrow</td><td>Association</td><td><code>has-a</code></td><td>Holds a reference to the other object as a field</td></tr>
+        <tr><td>solid line, hollow diamond</td><td>Aggregation</td><td><code>has-a</code></td><td>Holds parts that can live on their own</td></tr>
+        <tr><td>solid line, filled diamond</td><td>Composition</td><td><code>has-a, owns</code></td><td>Owns parts whose lifetime ends with the whole</td></tr>
+        <tr><td>dashed line, open arrow</td><td>Dependency</td><td><code>uses</code></td><td>Only uses it briefly: a parameter, a local variable, or an object it creates and returns</td></tr>
+      </tbody>
+    </table>
+    Where a lecture's diagram already had a label (e.g. <code>creates</code>, <code>nextHandler</code>), the label is kept, and <code>has-a, </code> is added before it on has-a arrows.
+    </div>
 
     <div class="important"><strong>Worth adding (standard UML nuance beyond the lecture's heuristic):</strong><br>
 The lecture's test for aggregation vs. composition is "can the part exist independently in real life?" &mdash; a good practical heuristic. The fuller UML definition adds: in composition the part's <strong>lifecycle is bound to the whole</strong> (created/destroyed with it) and it belongs to <strong>only one</strong> whole at a time; in aggregation the part can outlive the whole and can even be shared across multiple containers. Both framings agree in practice for typical LLD interview examples.
@@ -635,7 +651,7 @@ sequenceDiagram
 <hr>
 
 <section class="video-section" id="video-5">
-    <h2>Lecture 5: SOLID Design Principles &mdash; Part 1 (S, O, L)</h2>
+    <h2>Lecture 5: SOLID Design Principles &mdash; Part 1 (S, O, L) <a class="video-link" href="https://www.youtube.com/watch?v=UsNl8kcU4UA&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 5 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "SOLID Design Principles | Complete Guide with Code Examples" &middot; 1h7m &middot; Code Army</p>
 
     <h3>Why design principles are needed</h3>
@@ -669,9 +685,9 @@ classDiagram
   class CartDBStorage {
     +saveToDB() void
   }
-  ShoppingCart "1" o-- "many" Product
-  CartInvoicePrinter --> ShoppingCart
-  CartDBStorage --> ShoppingCart
+  ShoppingCart "1" o-- "many" Product : has-a
+  CartInvoicePrinter --> ShoppingCart : has-a
+  CartDBStorage --> ShoppingCart : has-a
       </div>
       <figcaption>SRP fix: split ShoppingCart into 3 single-purpose classes, connected by composition</figcaption>
     </figure>
@@ -703,9 +719,9 @@ classDiagram
   class FilePersistence {
     +save() void
   }
-  Persistence <|-- SQLPersistence
-  Persistence <|-- MongoPersistence
-  Persistence <|-- FilePersistence
+  Persistence <|-- SQLPersistence : is-a
+  Persistence <|-- MongoPersistence : is-a
+  Persistence <|-- FilePersistence : is-a
       </div>
       <figcaption>OCP fix: an abstract Persistence interface; each storage mechanism is a new subclass</figcaption>
     </figure>
@@ -741,10 +757,10 @@ classDiagram
   class CurrentAccount { +deposit() void
     +withdraw() void }
   class FixedDepositAccount { +deposit() void }
-  DepositOnlyAccount <|-- WithdrawableAccount
-  WithdrawableAccount <|-- SavingsAccount
-  WithdrawableAccount <|-- CurrentAccount
-  DepositOnlyAccount <|-- FixedDepositAccount
+  DepositOnlyAccount <|-- WithdrawableAccount : is-a
+  WithdrawableAccount <|-- SavingsAccount : is-a
+  WithdrawableAccount <|-- CurrentAccount : is-a
+  DepositOnlyAccount <|-- FixedDepositAccount : is-a
       </div>
       <figcaption>LSP fix: split by capability instead of forcing one interface on everything</figcaption>
     </figure>
@@ -764,7 +780,7 @@ Formally, LSP (per Barbara Liskov's original definition) also requires <strong>b
 <hr>
 
 <section class="video-section" id="video-6">
-    <h2>Lecture 6: SOLID Design Principles &mdash; Part 2 (LSP rules, Interface Segregation, Dependency Inversion)</h2>
+    <h2>Lecture 6: SOLID Design Principles &mdash; Part 2 (LSP rules, Interface Segregation, Dependency Inversion) <a class="video-link" href="https://www.youtube.com/watch?v=hU9koy6A2I0&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 6 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "SOLID Design Principles | part 2" &middot; 1h17m &middot; Code Army</p>
 
     <h3>Why revisit LSP</h3>
@@ -832,9 +848,9 @@ classDiagram
   class Rectangle { +area() double }
   class Cube { +area() double
     +volume() double }
-  TwoDShape <|-- Square
-  TwoDShape <|-- Rectangle
-  ThreeDShape <|-- Cube
+  TwoDShape <|-- Square : is-a
+  TwoDShape <|-- Rectangle : is-a
+  ThreeDShape <|-- Cube : is-a
       </div>
       <figcaption>ISP fix: split one bloated interface into capability-specific ones</figcaption>
     </figure>
@@ -859,9 +875,9 @@ classDiagram
   }
   class MySQLDatabase { +save() void }
   class MongoDatabase { +save() void }
-  UserService --> Database
-  Database <|-- MySQLDatabase
-  Database <|-- MongoDatabase
+  UserService --> Database : has-a
+  Database <|-- MySQLDatabase : is-a
+  Database <|-- MongoDatabase : is-a
       </div>
       <figcaption>DIP fix: an abstraction layer between the high-level and low-level modules</figcaption>
     </figure>
@@ -889,7 +905,7 @@ These are guidelines, not hard constraints. Real production code sometimes has t
 <hr>
 
 <section class="video-section" id="video-7">
-    <h2>Lecture 7: Build Google Docs &mdash; Document Editor LLD</h2>
+    <h2>Lecture 7: Build Google Docs &mdash; Document Editor LLD <a class="video-link" href="https://www.youtube.com/watch?v=MT9qZFGQXOU&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 7 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Build Google Docs | A Real-World LLD Project | Document Editor LLD" &middot; 45 min &middot; Code Army</p>
 
     <h3>Problem statement</h3>
@@ -943,13 +959,13 @@ classDiagram
     +renderDocument() string
     +saveDocument() void
   }
-  DocumentElement <|-- TextElement
-  DocumentElement <|-- ImageElement
-  Document "1" o-- "many" DocumentElement
-  Persistence <|-- FileStorage
-  Persistence <|-- DBStorage
-  DocumentEditor --> Document
-  DocumentEditor --> Persistence
+  DocumentElement <|-- TextElement : is-a
+  DocumentElement <|-- ImageElement : is-a
+  Document "1" o-- "many" DocumentElement : has-a
+  Persistence <|-- FileStorage : is-a
+  Persistence <|-- DBStorage : is-a
+  DocumentEditor --> Document : has-a
+  DocumentEditor --> Persistence : has-a
       </div>
       <figcaption>DocumentElement hierarchy (open for extension) + Document (composition) + Persistence hierarchy, tied together by DocumentEditor</figcaption>
     </figure>
@@ -1012,7 +1028,7 @@ Fixing this Law-of-Demeter violation by moving <code>render()</code> logic back 
 <hr>
 
 <section class="video-section" id="video-8">
-    <h2>Lecture 8: Strategy Design Pattern</h2>
+    <h2>Lecture 8: Strategy Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=PpKvPrl_gRg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 8 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Strategy Design Pattern Explained with Real-World Example" &middot; 32 min &middot; Code Army &middot; First lecture of the Design Patterns section</p>
 
     <h3>What design patterns are</h3>
@@ -1044,14 +1060,14 @@ classDiagram
   class NonFlyable
   class FlyWithWings
   class FlyWithJet
-  Robot <|-- Flyable
-  Robot <|-- NonFlyable
-  Flyable <|-- FlyWithWings
-  Flyable <|-- FlyWithJet
-  FlyWithWings <|-- SparrowRobot
-  FlyWithWings <|-- CrowRobot
-  FlyWithJet <|-- JetRobot1
-  FlyWithJet <|-- JetRobot2
+  Robot <|-- Flyable : is-a
+  Robot <|-- NonFlyable : is-a
+  Flyable <|-- FlyWithWings : is-a
+  Flyable <|-- FlyWithJet : is-a
+  FlyWithWings <|-- SparrowRobot : is-a
+  FlyWithWings <|-- CrowRobot : is-a
+  FlyWithJet <|-- JetRobot1 : is-a
+  FlyWithJet <|-- JetRobot2 : is-a
       </div>
       <figcaption>Where the "more inheritance" fix leads &mdash; and it only shows ONE of the three behavior axes</figcaption>
     </figure>
@@ -1097,16 +1113,16 @@ classDiagram
     +fly() void
     +project()* string
   }
-  Walkable <|-- NormalWalk
-  Walkable <|-- NoWalk
-  Talkable <|-- NormalTalk
-  Talkable <|-- NoTalk
-  Flyable <|-- NormalFly
-  Flyable <|-- NoFly
-  Flyable <|-- FlyWithJet
-  Robot --> Walkable
-  Robot --> Talkable
-  Robot --> Flyable
+  Walkable <|-- NormalWalk : is-a
+  Walkable <|-- NoWalk : is-a
+  Talkable <|-- NormalTalk : is-a
+  Talkable <|-- NoTalk : is-a
+  Flyable <|-- NormalFly : is-a
+  Flyable <|-- NoFly : is-a
+  Flyable <|-- FlyWithJet : is-a
+  Robot --> Walkable : has-a
+  Robot --> Talkable : has-a
+  Robot --> Flyable : has-a
       </div>
       <figcaption>Strategy solution: Robot composed of independent, freely-combinable behavior strategies</figcaption>
     </figure>
@@ -1136,10 +1152,10 @@ classDiagram
   class ConcreteStrategyA { +run() void }
   class ConcreteStrategyB { +run() void }
   class ConcreteStrategyC { +run() void }
-  Client --> Strategy
-  Strategy <|-- ConcreteStrategyA
-  Strategy <|-- ConcreteStrategyB
-  Strategy <|-- ConcreteStrategyC
+  Client --> Strategy : uses
+  Strategy <|-- ConcreteStrategyA : is-a
+  Strategy <|-- ConcreteStrategyB : is-a
+  Strategy <|-- ConcreteStrategyC : is-a
       </div>
       <figcaption>Canonical Strategy Pattern structure</figcaption>
     </figure>
@@ -1164,7 +1180,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-9">
-    <h2>Lecture 9: Factory Design Pattern</h2>
+    <h2>Lecture 9: Factory Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=dMK4TbG29fk&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 9 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Factory Design Pattern | Simple, Factory Method &amp; Abstract Factory" &middot; 32 min &middot; Code Army</p>
 
     <h3>Why Factory exists (relation to Strategy)</h3>
@@ -1193,10 +1209,10 @@ classDiagram
   class StandardBurger { +prepare() string }
   class PremiumBurger { +prepare() string }
   class BurgerFactory { +createBurger(type) Burger }
-  Burger <|-- BasicBurger
-  Burger <|-- StandardBurger
-  Burger <|-- PremiumBurger
-  BurgerFactory --> Burger
+  Burger <|-- BasicBurger : is-a
+  Burger <|-- StandardBurger : is-a
+  Burger <|-- PremiumBurger : is-a
+  BurgerFactory --> Burger : uses
       </div>
       <figcaption>Simple Factory: one factory class picks the concrete product via a type string</figcaption>
     </figure>
@@ -1222,20 +1238,20 @@ classDiagram
   class BurgerFactory { &lt;&lt;abstract&gt;&gt; +createBurger(type)* Burger }
   class SingBurgerFactory { +createBurger(type) Burger }
   class KingBurgerFactory { +createBurger(type) Burger }
-  Burger <|-- BasicBurger
-  Burger <|-- StandardBurger
-  Burger <|-- PremiumBurger
-  Burger <|-- BasicWheatBurger
-  Burger <|-- StandardWheatBurger
-  Burger <|-- PremiumWheatBurger
-  BurgerFactory <|-- SingBurgerFactory
-  BurgerFactory <|-- KingBurgerFactory
-  SingBurgerFactory ..> BasicBurger
-  SingBurgerFactory ..> StandardBurger
-  SingBurgerFactory ..> PremiumBurger
-  KingBurgerFactory ..> BasicWheatBurger
-  KingBurgerFactory ..> StandardWheatBurger
-  KingBurgerFactory ..> PremiumWheatBurger
+  Burger <|-- BasicBurger : is-a
+  Burger <|-- StandardBurger : is-a
+  Burger <|-- PremiumBurger : is-a
+  Burger <|-- BasicWheatBurger : is-a
+  Burger <|-- StandardWheatBurger : is-a
+  Burger <|-- PremiumWheatBurger : is-a
+  BurgerFactory <|-- SingBurgerFactory : is-a
+  BurgerFactory <|-- KingBurgerFactory : is-a
+  SingBurgerFactory ..> BasicBurger : uses
+  SingBurgerFactory ..> StandardBurger : uses
+  SingBurgerFactory ..> PremiumBurger : uses
+  KingBurgerFactory ..> BasicWheatBurger : uses
+  KingBurgerFactory ..> StandardWheatBurger : uses
+  KingBurgerFactory ..> PremiumWheatBurger : uses
       </div>
       <figcaption>Factory Method: the factory is now a hierarchy too &mdash; each concrete factory decides its own product family</figcaption>
     </figure>
@@ -1264,12 +1280,12 @@ classDiagram
     +createBurger(type) Burger
     +createGarlicBread(type) GarlicBread
   }
-  MealFactory <|-- SingBurgerFactory
-  MealFactory <|-- KingBurgerFactory
-  SingBurgerFactory ..> Burger
-  SingBurgerFactory ..> GarlicBread
-  KingBurgerFactory ..> Burger
-  KingBurgerFactory ..> GarlicBread
+  MealFactory <|-- SingBurgerFactory : is-a
+  MealFactory <|-- KingBurgerFactory : is-a
+  SingBurgerFactory ..> Burger : uses
+  SingBurgerFactory ..> GarlicBread : uses
+  KingBurgerFactory ..> Burger : uses
+  KingBurgerFactory ..> GarlicBread : uses
       </div>
       <figcaption>Abstract Factory: one factory, multiple related product types, one consistent "family" per concrete factory</figcaption>
     </figure>
@@ -1297,7 +1313,7 @@ Which pattern "better fits" a given problem is often a genuinely subjective call
 <hr>
 
 <section class="video-section" id="video-10">
-    <h2>Lecture 10: Singleton Design Pattern</h2>
+    <h2>Lecture 10: Singleton Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=CD3meit-WDc&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 10 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Singleton Design Pattern | Thread-Safe, Lazy &amp; Eager Initialization + Real Use Cases" &middot; 32 min &middot; Code Army</p>
 
     <h3>Definition</h3>
@@ -1397,7 +1413,7 @@ Eager initialization is fine only when the singleton object is <strong>lightweig
 <hr>
 
 <section class="video-section" id="video-11">
-    <h2>Lecture 11: Build Zomato/Swiggy &mdash; Food Delivery App LLD</h2>
+    <h2>Lecture 11: Build Zomato/Swiggy &mdash; Food Delivery App LLD <a class="video-link" href="https://www.youtube.com/watch?v=2SAUqTn3TrU&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 11 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Build Zomato Food Delivery App | System Design" &middot; 1h7m &middot; Code Army &middot; Run as a full mock LLD interview</p>
 
     <h3>Interview process this lecture models (reusable for any "build X" question)</h3>
@@ -1489,28 +1505,28 @@ classDiagram
     +payForOrder(user, order) bool
   }
 
-  Restaurant "1" *-- "many" MenuItem
-  RestaurantManager "1" o-- "many" Restaurant
-  User "1" *-- "1" Cart
-  Cart "1" o-- "0..1" Restaurant
-  Cart "1" o-- "many" MenuItem
-  PaymentStrategy <|-- UPIPayment
-  PaymentStrategy <|-- CreditCardPayment
-  Order <|-- DeliveryOrder
-  Order <|-- PickupOrder
-  Order --> PaymentStrategy
-  Order --> User
-  Order --> Restaurant
-  OrderFactory <|-- NowOrderFactory
-  OrderFactory <|-- ScheduledOrderFactory
-  NowOrderFactory ..> Order
-  ScheduledOrderFactory ..> Order
-  OrderManager "1" o-- "many" Order
-  NotificationService --> Order
-  Tomato --> RestaurantManager
-  Tomato --> OrderManager
-  Tomato --> OrderFactory
-  Tomato --> NotificationService
+  Restaurant "1" *-- "many" MenuItem : has-a, owns
+  RestaurantManager "1" o-- "many" Restaurant : has-a
+  User "1" *-- "1" Cart : has-a, owns
+  Cart "1" o-- "0..1" Restaurant : has-a
+  Cart "1" o-- "many" MenuItem : has-a
+  PaymentStrategy <|-- UPIPayment : is-a
+  PaymentStrategy <|-- CreditCardPayment : is-a
+  Order <|-- DeliveryOrder : is-a
+  Order <|-- PickupOrder : is-a
+  Order --> PaymentStrategy : has-a
+  Order --> User : has-a
+  Order --> Restaurant : has-a
+  OrderFactory <|-- NowOrderFactory : is-a
+  OrderFactory <|-- ScheduledOrderFactory : is-a
+  NowOrderFactory ..> Order : uses
+  ScheduledOrderFactory ..> Order : uses
+  OrderManager "1" o-- "many" Order : has-a
+  NotificationService --> Order : has-a
+  Tomato --> RestaurantManager : has-a
+  Tomato --> OrderManager : has-a
+  Tomato --> OrderFactory : has-a
+  Tomato --> NotificationService : has-a
       </div>
       <figcaption>Full Zomato/Tomato LLD &mdash; built bottom-up: MenuItem &rarr; Restaurant &rarr; Manager, User &rarr; Cart, Order hierarchy + Factory, tied together by an orchestrator</figcaption>
     </figure>
@@ -1560,7 +1576,7 @@ Modern frameworks (Spring Boot, Django) avoid a single orchestrator "God object"
 <hr>
 
 <section class="video-section" id="video-12">
-    <h2>Lecture 12: Observer Design Pattern</h2>
+    <h2>Lecture 12: Observer Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=Jpmp4GY8r3Q&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 12 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Observer Design Pattern Explained | Real-Life Use Case + Code Example" &middot; 28 min &middot; Code Army</p>
 
     <h3>The problem</h3>
@@ -1610,10 +1626,10 @@ classDiagram
     -observable: ConcreteObservable
     +update() void
   }
-  IObservable <|-- ConcreteObservable
-  IObserver <|-- ConcreteObserver
-  ConcreteObservable "1" o-- "many" IObserver
-  ConcreteObserver --> ConcreteObservable
+  IObservable <|-- ConcreteObservable : is-a
+  IObserver <|-- ConcreteObserver : is-a
+  ConcreteObservable "1" o-- "many" IObserver : has-a
+  ConcreteObserver --> ConcreteObservable : has-a
       </div>
       <figcaption>Generic Observer Pattern structure</figcaption>
     </figure>
@@ -1661,10 +1677,10 @@ classDiagram
     -channel: ConcreteChannel
     +update() void
   }
-  IChannel <|-- ConcreteChannel
-  ISubscriber <|-- ConcreteSubscriber
-  ConcreteChannel "1" o-- "many" ISubscriber
-  ConcreteSubscriber --> ConcreteChannel
+  IChannel <|-- ConcreteChannel : is-a
+  ISubscriber <|-- ConcreteSubscriber : is-a
+  ConcreteChannel "1" o-- "many" ISubscriber : has-a
+  ConcreteSubscriber --> ConcreteChannel : has-a
       </div>
       <figcaption>Observer Pattern applied: YouTube channel &amp; subscribers</figcaption>
     </figure>
@@ -1690,7 +1706,7 @@ The Observer-mechanics half of this class is <strong>never going to change</stro
 <hr>
 
 <section class="video-section" id="video-13">
-    <h2>Lecture 13: Decorator Pattern</h2>
+    <h2>Lecture 13: Decorator Pattern <a class="video-link" href="https://www.youtube.com/watch?v=Z9rFlZClYNI&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 13 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Decorator Pattern Explained | Real-world use case + Code" &middot; 29 min &middot; Code Army</p>
 
     <h3>The problem</h3>
@@ -1725,11 +1741,11 @@ classDiagram
   }
   class ConcreteDecoratorA { +operation() string }
   class ConcreteDecoratorB { +operation() string }
-  IComponent <|-- ConcreteComponent
-  IComponent <|-- Decorator
-  Decorator o-- IComponent
-  Decorator <|-- ConcreteDecoratorA
-  Decorator <|-- ConcreteDecoratorB
+  IComponent <|-- ConcreteComponent : is-a
+  IComponent <|-- Decorator : is-a
+  Decorator o-- IComponent : has-a
+  Decorator <|-- ConcreteDecoratorA : is-a
+  Decorator <|-- ConcreteDecoratorB : is-a
       </div>
       <figcaption>Generic Decorator Pattern structure</figcaption>
     </figure>
@@ -1747,12 +1763,12 @@ classDiagram
   class HeightUpDecorator { +getAbilities() string }
   class GunPowerDecorator { +getAbilities() string }
   class StarPowerDecorator { +getAbilities() string }
-  ICharacter <|-- MarioCharacter
-  ICharacter <|-- CharacterDecorator
-  CharacterDecorator o-- ICharacter
-  CharacterDecorator <|-- HeightUpDecorator
-  CharacterDecorator <|-- GunPowerDecorator
-  CharacterDecorator <|-- StarPowerDecorator
+  ICharacter <|-- MarioCharacter : is-a
+  ICharacter <|-- CharacterDecorator : is-a
+  CharacterDecorator o-- ICharacter : has-a
+  CharacterDecorator <|-- HeightUpDecorator : is-a
+  CharacterDecorator <|-- GunPowerDecorator : is-a
+  CharacterDecorator <|-- StarPowerDecorator : is-a
       </div>
       <figcaption>Applied to Mario: ICharacter + CharacterDecorator, stackable power-ups</figcaption>
     </figure>
@@ -1779,7 +1795,7 @@ Each decorator's method calling the wrapped object's same method, then appending
 <hr>
 
 <section class="video-section" id="video-14">
-    <h2>Lecture 14: Build a Notification Engine (Observer + Strategy + Decorator + Singleton)</h2>
+    <h2>Lecture 14: Build a Notification Engine (Observer + Strategy + Decorator + Singleton) <a class="video-link" href="https://www.youtube.com/watch?v=t-4r2AsJz_Q&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 14 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Build Your Own Notification Engine | System Design" &middot; 42 min &middot; Code Army</p>
 
     <h3>Requirements</h3>
@@ -1806,11 +1822,11 @@ classDiagram
   }
   class TimeStampDecorator { +getContent() string }
   class SignatureDecorator { +getContent() string }
-  INotification <|-- SimpleNotification
-  INotification <|-- NotificationDecorator
-  NotificationDecorator o-- INotification
-  NotificationDecorator <|-- TimeStampDecorator
-  NotificationDecorator <|-- SignatureDecorator
+  INotification <|-- SimpleNotification : is-a
+  INotification <|-- NotificationDecorator : is-a
+  NotificationDecorator o-- INotification : has-a
+  NotificationDecorator <|-- TimeStampDecorator : is-a
+  NotificationDecorator <|-- SignatureDecorator : is-a
       </div>
       <figcaption>Notification hierarchy (Decorator Pattern)</figcaption>
     </figure>
@@ -1861,18 +1877,18 @@ classDiagram
     +getObservable() NotificationObservable
     +sendNotification(n) void
   }
-  IObservable <|-- NotificationObservable
-  IObserver <|-- Logger
-  IObserver <|-- NotificationEngine
-  NotificationObservable "1" o-- "many" IObserver
-  Logger --> NotificationObservable
-  NotificationEngine --> NotificationObservable
-  NotificationEngine "1" o-- "many" INotificationStrategy
-  INotificationStrategy <|-- EmailStrategy
-  INotificationStrategy <|-- SMSStrategy
-  INotificationStrategy <|-- PopupStrategy
-  NotificationService --> NotificationObservable
-  NotificationService "1" o-- "many" INotification
+  IObservable <|-- NotificationObservable : is-a
+  IObserver <|-- Logger : is-a
+  IObserver <|-- NotificationEngine : is-a
+  NotificationObservable "1" o-- "many" IObserver : has-a
+  Logger --> NotificationObservable : has-a
+  NotificationEngine --> NotificationObservable : has-a
+  NotificationEngine "1" o-- "many" INotificationStrategy : has-a
+  INotificationStrategy <|-- EmailStrategy : is-a
+  INotificationStrategy <|-- SMSStrategy : is-a
+  INotificationStrategy <|-- PopupStrategy : is-a
+  NotificationService --> NotificationObservable : has-a
+  NotificationService "1" o-- "many" INotification : has-a
       </div>
       <figcaption>Delivery system: Observer (who gets notified) + Strategy (how each one actually sends), coordinated by a singleton NotificationService</figcaption>
     </figure>
@@ -1906,7 +1922,7 @@ Recognizing which pattern fits which piece of a system is a skill built through 
 <hr>
 
 <section class="video-section" id="video-15">
-    <h2>Lecture 15: Command Design Pattern</h2>
+    <h2>Lecture 15: Command Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=cnQZsN0jxEY&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 15 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Command Design Pattern | Real-world use case + Code" &middot; 29 min &middot; Code Army</p>
 
     <h3>The problem</h3>
@@ -1946,11 +1962,11 @@ classDiagram
     +setCommand(index, cmd) void
     +pressButton(index) void
   }
-  ICommand <|-- LightCommand
-  ICommand <|-- FanCommand
-  LightCommand --> Light
-  FanCommand --> Fan
-  RemoteControl "1" o-- "many" ICommand
+  ICommand <|-- LightCommand : is-a
+  ICommand <|-- FanCommand : is-a
+  LightCommand --> Light : has-a
+  FanCommand --> Fan : has-a
+  RemoteControl "1" o-- "many" ICommand : has-a
       </div>
       <figcaption>Command Pattern applied to a smart home remote, with undo support</figcaption>
     </figure>
@@ -1987,7 +2003,7 @@ Any time a feature needs an undo/redo capability, or a button/trigger needs to b
 <hr>
 
 <section class="video-section" id="video-16">
-    <h2>Lecture 16: Adapter Design Pattern</h2>
+    <h2>Lecture 16: Adapter Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=FV3x69rpwm0&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 16 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Adapter Design Pattern | Real-world use case + Code" &middot; 21 min &middot; Code Army</p>
 
     <h3>Real-world analogy</h3>
@@ -2008,8 +2024,8 @@ classDiagram
     -provider: XMLDataProvider
     +getJsonData(rawData) string
   }
-  IReport <|-- XMLDataProviderAdapter
-  XMLDataProviderAdapter --> XMLDataProvider
+  IReport <|-- XMLDataProviderAdapter : is-a
+  XMLDataProviderAdapter --> XMLDataProvider : has-a
       </div>
       <figcaption>Adapter applied: bridging an XML-returning library to a JSON-expecting client</figcaption>
     </figure>
@@ -2026,8 +2042,8 @@ classDiagram
     -adaptee: Adaptee
     +request() void
   }
-  ITarget <|-- Adapter
-  Adapter --> Adaptee
+  ITarget <|-- Adapter : is-a
+  Adapter --> Adaptee : has-a
       </div>
       <figcaption>Generic Adapter Pattern (Object Adapter &mdash; composition-based)</figcaption>
     </figure>
@@ -2045,8 +2061,8 @@ classDiagram
   class ITarget { &lt;&lt;abstract&gt;&gt; +request()* void }
   class Adaptee { +specificRequest() void }
   class ClassAdapter { +request() void }
-  ITarget <|-- ClassAdapter
-  Adaptee <|-- ClassAdapter
+  ITarget <|-- ClassAdapter : is-a
+  Adaptee <|-- ClassAdapter : is-a
       </div>
       <figcaption>Class Adapter (inheritance-based variant)</figcaption>
     </figure>
@@ -2070,7 +2086,7 @@ Same "favor composition over inheritance" reasoning that's recurred throughout t
 <hr>
 
 <section class="video-section" id="video-17">
-    <h2>Lecture 17: Facade Design Pattern</h2>
+    <h2>Lecture 17: Facade Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=0KlnSdvsojc&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 17 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Facade Design Pattern | Real-world use case + Code" &middot; 18 min &middot; Code Army</p>
 
     <h3>The problem</h3>
@@ -2110,16 +2126,16 @@ classDiagram
     +startComputer() void
   }
   class Client
-  BIOS --> CPU
-  BIOS --> Memory
-  ComputerFacade --> PowerSupply
-  ComputerFacade --> CoolingSystem
-  ComputerFacade --> CPU
-  ComputerFacade --> Memory
-  ComputerFacade --> HardDrive
-  ComputerFacade --> BIOS
-  ComputerFacade --> OperatingSystem
-  Client --> ComputerFacade
+  BIOS --> CPU : has-a
+  BIOS --> Memory : has-a
+  ComputerFacade --> PowerSupply : has-a
+  ComputerFacade --> CoolingSystem : has-a
+  ComputerFacade --> CPU : has-a
+  ComputerFacade --> Memory : has-a
+  ComputerFacade --> HardDrive : has-a
+  ComputerFacade --> BIOS : has-a
+  ComputerFacade --> OperatingSystem : has-a
+  Client --> ComputerFacade : uses
       </div>
       <figcaption>Facade Pattern: one simple entry point over a genuinely complex subsystem</figcaption>
     </figure>
@@ -2169,7 +2185,7 @@ Fewer inter-class dependencies = looser coupling. If every class can freely reac
 <hr>
 
 <section class="video-section" id="video-18">
-    <h2>Lecture 18: Build Spotify &mdash; Music Player App (Strategy + Singleton + Adapter + Factory + Facade)</h2>
+    <h2>Lecture 18: Build Spotify &mdash; Music Player App (Strategy + Singleton + Adapter + Factory + Facade) <a class="video-link" href="https://www.youtube.com/watch?v=DkLwFqbCsu8&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 18 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Build Spotify, Music Player App | System Design" &middot; 1h15m &middot; Code Army</p>
 
     <h3>Requirements</h3>
@@ -2208,18 +2224,18 @@ classDiagram
     +connect(type) void
     +getDevice() IAudioOutputDevice
   }
-  IAudioOutputDevice <|-- BluetoothSpeakerAdapter
-  IAudioOutputDevice <|-- WiredSpeakerAdapter
-  IAudioOutputDevice <|-- HeadphonesAdapter
-  BluetoothSpeakerAdapter --> BluetoothSpeakerAPI
-  WiredSpeakerAdapter --> WiredSpeakerAPI
-  HeadphonesAdapter --> HeadphonesAPI
-  AudioEngine --> IAudioOutputDevice
-  DeviceManager --> DeviceFactory
-  DeviceManager --> IAudioOutputDevice
-  DeviceFactory ..> BluetoothSpeakerAdapter
-  DeviceFactory ..> WiredSpeakerAdapter
-  DeviceFactory ..> HeadphonesAdapter
+  IAudioOutputDevice <|-- BluetoothSpeakerAdapter : is-a
+  IAudioOutputDevice <|-- WiredSpeakerAdapter : is-a
+  IAudioOutputDevice <|-- HeadphonesAdapter : is-a
+  BluetoothSpeakerAdapter --> BluetoothSpeakerAPI : has-a
+  WiredSpeakerAdapter --> WiredSpeakerAPI : has-a
+  HeadphonesAdapter --> HeadphonesAPI : has-a
+  AudioEngine --> IAudioOutputDevice : has-a
+  DeviceManager --> DeviceFactory : has-a
+  DeviceManager --> IAudioOutputDevice : has-a
+  DeviceFactory ..> BluetoothSpeakerAdapter : uses
+  DeviceFactory ..> WiredSpeakerAdapter : uses
+  DeviceFactory ..> HeadphonesAdapter : uses
       </div>
       <figcaption>Output device subsystem: Adapter Pattern wraps each third-party API, Factory Pattern builds them</figcaption>
     </figure>
@@ -2264,12 +2280,12 @@ classDiagram
     &lt;&lt;singleton&gt;&gt;
     +getStrategy(type) PlayingStrategy
   }
-  Playlist "1" o-- "many" Song
-  PlaylistManager "1" o-- "many" Playlist
-  PlayingStrategy <|-- SequentialPlayingStrategy
-  PlayingStrategy <|-- RandomPlayingStrategy
-  PlayingStrategy <|-- CustomQueueStrategy
-  PlayingStrategyManager --> PlayingStrategy
+  Playlist "1" o-- "many" Song : has-a
+  PlaylistManager "1" o-- "many" Playlist : has-a
+  PlayingStrategy <|-- SequentialPlayingStrategy : is-a
+  PlayingStrategy <|-- RandomPlayingStrategy : is-a
+  PlayingStrategy <|-- CustomQueueStrategy : is-a
+  PlayingStrategyManager --> PlayingStrategy : has-a
       </div>
       <figcaption>Playlist subsystem + playback-order Strategy hierarchy</figcaption>
     </figure>
@@ -2310,12 +2326,12 @@ classDiagram
   class PlaylistManager
   class PlayingStrategyManager
   class AudioEngine
-  MusicPlayerFacade --> DeviceManager
-  MusicPlayerFacade --> PlaylistManager
-  MusicPlayerFacade --> PlayingStrategyManager
-  MusicPlayerFacade --> AudioEngine
-  MusicPlayerApp --> MusicPlayerFacade
-  MusicPlayerApp --> PlaylistManager
+  MusicPlayerFacade --> DeviceManager : has-a
+  MusicPlayerFacade --> PlaylistManager : has-a
+  MusicPlayerFacade --> PlayingStrategyManager : has-a
+  MusicPlayerFacade --> AudioEngine : has-a
+  MusicPlayerApp --> MusicPlayerFacade : has-a
+  MusicPlayerApp --> PlaylistManager : has-a
       </div>
       <figcaption>Facade simplifies the whole subsystem; the top-level app is the client's single entry point</figcaption>
     </figure>
@@ -2347,7 +2363,7 @@ The same skeleton (device abstraction via Adapter, playback-order via Strategy, 
 <hr>
 
 <section class="video-section" id="video-19">
-    <h2>Lecture 19: Composite Design Pattern (File System)</h2>
+    <h2>Lecture 19: Composite Design Pattern (File System) <a class="video-link" href="https://www.youtube.com/watch?v=xaaiMGmyDJk&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 19 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Composite Design Pattern | Build File System (UML &amp; Code)" &middot; 38 min &middot; Code Army</p>
 
     <h3>A shift in kind: "foundational" vs. "specialized" patterns</h3>
@@ -2383,9 +2399,9 @@ classDiagram
     +operation() void
     +add(c) void
   }
-  Component <|-- Leaf
-  Component <|-- Composite
-  Composite o-- Component
+  Component <|-- Leaf : is-a
+  Component <|-- Composite : is-a
+  Composite o-- Component : has-a
       </div>
       <figcaption>Generic Composite Pattern structure</figcaption>
     </figure>
@@ -2421,9 +2437,9 @@ classDiagram
     +cd(target) FileSystemItem
     +isFolder() bool
   }
-  FileSystemItem <|-- File
-  FileSystemItem <|-- Folder
-  Folder "1" o-- "many" FileSystemItem
+  FileSystemItem <|-- File : is-a
+  FileSystemItem <|-- Folder : is-a
+  Folder "1" o-- "many" FileSystemItem : has-a
       </div>
       <figcaption>Applied to a file system: File (leaf) and Folder (composite) share one interface</figcaption>
     </figure>
@@ -2458,7 +2474,7 @@ Any LLD problem where the underlying data is genuinely tree-shaped, with some no
 <hr>
 
 <section class="video-section" id="video-20">
-    <h2>Lecture 20: Template Method Pattern</h2>
+    <h2>Lecture 20: Template Method Pattern <a class="video-link" href="https://www.youtube.com/watch?v=8-vE_bmEt18&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 20 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Template Method Pattern"</p>
 
     <h3>Why this pattern is "specialized," not core</h3>
@@ -2513,9 +2529,9 @@ classDiagram
     -trainer: AbstractClass
     +run()
   }
-  AbstractClass <|-- ConcreteClassA
-  AbstractClass <|-- ConcreteClassB
-  Client o-- AbstractClass
+  AbstractClass <|-- ConcreteClassA : is-a
+  AbstractClass <|-- ConcreteClassB : is-a
+  Client o-- AbstractClass : has-a
       </div>
       <figcaption>Template Method &mdash; abstract class owns the fixed skeleton; concrete classes fill in steps</figcaption>
     </figure>
@@ -2543,7 +2559,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-21">
-    <h2>Lecture 21: Proxy Design Pattern</h2>
+    <h2>Lecture 21: Proxy Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=xuT6OOYVJTQ&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 21 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Proxy Design Pattern"</p>
 
     <h3>Core idea: a stand-in object sits between client and resource</h3>
@@ -2593,10 +2609,10 @@ classDiagram
   class Client {
     -subject: ISubject
   }
-  ISubject <|.. RealSubject
-  ISubject <|.. ProxySubject
-  ProxySubject o-- RealSubject
-  Client --> ISubject
+  ISubject <|.. RealSubject : is-a, implements
+  ISubject <|.. ProxySubject : is-a, implements
+  ProxySubject o-- RealSubject : has-a
+  Client --> ISubject : uses
       </div>
       <figcaption>Proxy Pattern &mdash; ISubject / RealSubject / ProxySubject</figcaption>
     </figure>
@@ -2619,7 +2635,7 @@ The shape above never changes. Only what <code>ProxySubject.operation()</code> d
 <hr>
 
 <section class="video-section" id="video-22">
-    <h2>Lecture 22: Chain of Responsibility Pattern (ATM Cash Dispenser)</h2>
+    <h2>Lecture 22: Chain of Responsibility Pattern (ATM Cash Dispenser) <a class="video-link" href="https://www.youtube.com/watch?v=LXVKB6deQMo&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 22 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Chain of Responsibility Design Pattern"</p>
 
     <h3>Core idea: a request travels down a chain of handler objects</h3>
@@ -2660,10 +2676,10 @@ classDiagram
   class Client {
     -handler: Handler
   }
-  Handler <|-- ConcreteHandlerA
-  Handler <|-- ConcreteHandlerB
-  Handler o-- Handler : nextHandler
-  Client --> Handler
+  Handler <|-- ConcreteHandlerA : is-a
+  Handler <|-- ConcreteHandlerB : is-a
+  Handler o-- Handler : has-a, nextHandler
+  Client --> Handler : uses
       </div>
       <figcaption>Chain of Responsibility &mdash; abstract Handler holds a self-typed "next" reference</figcaption>
     </figure>
@@ -2696,7 +2712,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-23">
-    <h2>Lecture 23: Build a Payment Gateway System</h2>
+    <h2>Lecture 23: Build a Payment Gateway System <a class="video-link" href="https://www.youtube.com/watch?v=36FDqIRBGRg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 23 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Payment Gateway System LLD"</p>
 
     <h3>Scope: a plug-and-play gateway, not a bank's internals</h3>
@@ -2759,12 +2775,12 @@ classDiagram
     +initiate(request)
     +confirm(request)
   }
-  IBankingSystem <|.. PaytmBankingSystem
-  IBankingSystem <|.. RazorpayBankingSystem
-  PaymentGateway <|-- PaytmGateway
-  PaymentGateway <|-- RazorpayGateway
-  PaytmGateway *-- PaytmBankingSystem
-  RazorpayGateway *-- RazorpayBankingSystem
+  IBankingSystem <|.. PaytmBankingSystem : is-a, implements
+  IBankingSystem <|.. RazorpayBankingSystem : is-a, implements
+  PaymentGateway <|-- PaytmGateway : is-a
+  PaymentGateway <|-- RazorpayGateway : is-a
+  PaytmGateway *-- PaytmBankingSystem : has-a, owns
+  RazorpayGateway *-- RazorpayBankingSystem : has-a, owns
       </div>
       <figcaption>Payment Gateway &mdash; Template Method over validate/initiate/confirm, banking system reached through a proxy</figcaption>
     </figure>
@@ -2808,7 +2824,7 @@ Client &rarr; <code>PaymentController.handlePayment(PAYTM, request)</code> &rarr
 <hr>
 
 <section class="video-section" id="video-24">
-    <h2>Lecture 24: Build a Discount Coupon Engine</h2>
+    <h2>Lecture 24: Build a Discount Coupon Engine <a class="video-link" href="https://www.youtube.com/watch?v=jbVevoGN_pM&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 24 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design a Discount Coupon Application"</p>
 
     <h3>Scope: a plug-and-play coupon engine for any checkout</h3>
@@ -2962,21 +2978,21 @@ classDiagram
     +getApplicable(cart) List
     +applyAll(cart) double
   }
-  CartItem o-- Product
-  Cart *-- CartItem
-  Coupon <|-- SeasonalOffer
-  Coupon <|-- LoyaltyDiscount
-  Coupon <|-- BulkPurchaseDiscount
-  Coupon <|-- BankingCoupon
-  Coupon o-- Coupon : next
-  Coupon --> DiscountStrategy
-  Coupon ..> Cart
-  DiscountStrategy <|-- FlatStrategy
-  DiscountStrategy <|-- PercentageStrategy
-  DiscountStrategy <|-- PercentageWithCapStrategy
+  CartItem o-- Product : has-a
+  Cart *-- CartItem : has-a, owns
+  Coupon <|-- SeasonalOffer : is-a
+  Coupon <|-- LoyaltyDiscount : is-a
+  Coupon <|-- BulkPurchaseDiscount : is-a
+  Coupon <|-- BankingCoupon : is-a
+  Coupon o-- Coupon : has-a, next
+  Coupon --> DiscountStrategy : has-a
+  Coupon ..> Cart : uses
+  DiscountStrategy <|-- FlatStrategy : is-a
+  DiscountStrategy <|-- PercentageStrategy : is-a
+  DiscountStrategy <|-- PercentageWithCapStrategy : is-a
   DiscountStrategyManager ..> DiscountStrategy : creates
-  DiscountStrategyManager ..> StrategyType
-  CouponManager *-- Coupon : head
+  DiscountStrategyManager ..> StrategyType : uses
+  CouponManager *-- Coupon : has-a, head
       </div>
       <figcaption>Coupon Engine &mdash; CoR chain of coupons, each using a Strategy; Template Method in Coupon.applyDiscount</figcaption>
     </figure>
@@ -3019,7 +3035,7 @@ The auto-captions read "₹2,865" for the final total and "₹500 minimum cap" f
 <hr>
 
 <section class="video-section" id="video-25">
-    <h2>Lecture 25: Bridge Design Pattern</h2>
+    <h2>Lecture 25: Bridge Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=KVf8dwgTbiM&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 25 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Bridge Design Pattern"</p>
 
     <h3>The problem: class explosion from two independent dimensions</h3>
@@ -3068,12 +3084,12 @@ classDiagram
   class ElectricEngine {
     +start()
   }
-  Car <|-- Sedan
-  Car <|-- SUV
-  Engine <|-- PetrolEngine
-  Engine <|-- DieselEngine
-  Engine <|-- ElectricEngine
-  Car o-- Engine : bridge
+  Car <|-- Sedan : is-a
+  Car <|-- SUV : is-a
+  Engine <|-- PetrolEngine : is-a
+  Engine <|-- DieselEngine : is-a
+  Engine <|-- ElectricEngine : is-a
+  Car o-- Engine : has-a, bridge
       </div>
       <figcaption>Two hierarchies, m + n classes, joined by Car's engine reference (the bridge)</figcaption>
     </figure>
@@ -3101,10 +3117,10 @@ classDiagram
   class ConcreteImplementorB {
     +implement()
   }
-  Abstraction <|-- ConcreteAbstraction
-  Implementor <|-- ConcreteImplementorA
-  Implementor <|-- ConcreteImplementorB
-  Abstraction o-- Implementor : imp
+  Abstraction <|-- ConcreteAbstraction : is-a
+  Implementor <|-- ConcreteImplementorA : is-a
+  Implementor <|-- ConcreteImplementorB : is-a
+  Abstraction o-- Implementor : has-a, imp
       </div>
       <figcaption>Bridge &mdash; GoF names in brackets</figcaption>
     </figure>
@@ -3156,7 +3172,7 @@ Bridge doesn't <em>forbid</em> changing the implementor at runtime (GoF notes th
 <hr>
 
 <section class="video-section" id="video-26">
-    <h2>Lecture 26: Build Zepto (Quick Commerce / Inventory Management)</h2>
+    <h2>Lecture 26: Build Zepto (Quick Commerce / Inventory Management) <a class="video-link" href="https://www.youtube.com/watch?v=FcbsppIX0bg&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 26 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design Zepto / Blinkit &mdash; 10-minute delivery LLD"</p>
 
     <h3>What makes 10-minute delivery different</h3>
@@ -3334,23 +3350,23 @@ classDiagram
     +showAllItems(user)$
   }
   ProductFactory ..> Product : creates
-  InventoryStore <|-- DbInventoryStore
-  InventoryStore o-- Product
-  InventoryManager --> InventoryStore
-  InventoryManager ..> ProductFactory
-  ReplenishStrategy <|-- ThresholdReplenishStrategy
-  ReplenishStrategy <|-- WeeklyReplenishStrategy
-  ReplenishStrategy ..> InventoryManager
-  DarkStore *-- InventoryManager
-  DarkStore --> ReplenishStrategy
-  DarkStoreManager --> DarkStore
-  User *-- Cart
-  Order --> User
-  Order --> DeliveryPartner
-  OrderManager --> Order
-  OrderManager ..> DarkStoreManager
-  Zepto ..> DarkStoreManager
-  Zepto ..> OrderManager
+  InventoryStore <|-- DbInventoryStore : is-a
+  InventoryStore o-- Product : has-a
+  InventoryManager --> InventoryStore : has-a
+  InventoryManager ..> ProductFactory : uses
+  ReplenishStrategy <|-- ThresholdReplenishStrategy : is-a
+  ReplenishStrategy <|-- WeeklyReplenishStrategy : is-a
+  ReplenishStrategy ..> InventoryManager : uses
+  DarkStore *-- InventoryManager : has-a, owns
+  DarkStore --> ReplenishStrategy : has-a
+  DarkStoreManager --> DarkStore : has-a
+  User *-- Cart : has-a, owns
+  Order --> User : has-a
+  Order --> DeliveryPartner : has-a
+  OrderManager --> Order : has-a
+  OrderManager ..> DarkStoreManager : uses
+  Zepto ..> DarkStoreManager : uses
+  Zepto ..> OrderManager : uses
       </div>
       <figcaption>Zepto &mdash; DarkStore owns an InventoryManager over an abstract InventoryStore; OrderManager splits orders across nearby stores</figcaption>
     </figure>
@@ -3385,7 +3401,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-27">
-    <h2>Lecture 27: Build Tinder (Dating App LLD)</h2>
+    <h2>Lecture 27: Build Tinder (Dating App LLD) <a class="video-link" href="https://www.youtube.com/watch?v=IcgLSo6--ok&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 27 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design a Dating App &mdash; Tinder / Hinge / Bumble clone LLD"</p>
 
     <h3>Why this question shows up in interviews</h3>
@@ -3593,32 +3609,32 @@ classDiagram
     +swipe(userId, targetId, action)
     +sendMessage(from, to, content)
   }
-  NotificationService --> NotificationObserver
-  NotificationObserver <|-- UserNotificationObserver
-  User *-- UserProfile
-  User *-- Preference
-  User *-- NotificationObserver
-  User --> SwipeAction
-  UserProfile --> Gender
-  UserProfile --> Interest
-  UserProfile --> Location
-  Preference --> Gender
-  LocationService --> LocationStrategy
-  LocationStrategy <|-- BasicLocationStrategy
-  LocationStrategy ..> User
-  Matcher <|-- BasicMatcher
-  Matcher <|-- InterestBasedMatcher
-  Matcher <|-- LocationBasedMatcher
+  NotificationService --> NotificationObserver : has-a
+  NotificationObserver <|-- UserNotificationObserver : is-a
+  User *-- UserProfile : has-a, owns
+  User *-- Preference : has-a, owns
+  User *-- NotificationObserver : has-a, owns
+  User --> SwipeAction : has-a
+  UserProfile --> Gender : has-a
+  UserProfile --> Interest : has-a
+  UserProfile --> Location : has-a
+  Preference --> Gender : has-a
+  LocationService --> LocationStrategy : has-a
+  LocationStrategy <|-- BasicLocationStrategy : is-a
+  LocationStrategy ..> User : uses
+  Matcher <|-- BasicMatcher : is-a
+  Matcher <|-- InterestBasedMatcher : is-a
+  Matcher <|-- LocationBasedMatcher : is-a
   LocationBasedMatcher ..> InterestBasedMatcher : wraps
   InterestBasedMatcher ..> BasicMatcher : wraps
   MatcherFactory ..> Matcher : creates
-  MatcherFactory --> MatcherType
-  ChatRoom --> Message
-  DatingApp --> User
-  DatingApp --> ChatRoom
-  DatingApp --> Matcher
-  DatingApp ..> LocationService
-  DatingApp ..> NotificationService
+  MatcherFactory --> MatcherType : uses
+  ChatRoom --> Message : has-a
+  DatingApp --> User : has-a
+  DatingApp --> ChatRoom : has-a
+  DatingApp --> Matcher : has-a
+  DatingApp ..> LocationService : uses
+  DatingApp ..> NotificationService : uses
       </div>
       <figcaption>Dating app &mdash; User owns Profile &amp; Preference; Observer for notifications, Strategy for nearby users, chained matchers for scoring</figcaption>
     </figure>
@@ -3654,7 +3670,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-28">
-    <h2>Lecture 28: Builder Design Pattern (Simple, Director &amp; Step Builder)</h2>
+    <h2>Lecture 28: Builder Design Pattern (Simple, Director &amp; Step Builder) <a class="video-link" href="https://www.youtube.com/watch?v=G4Ntl9KzIxY&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 28 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Builder Design Pattern &mdash; simple builder, builder with director, step builder"</p>
 
     <h3>The problem: building a complex object</h3>
@@ -3729,8 +3745,8 @@ classDiagram
     -HttpRequest()
     +execute()
   }
-  Client --> HttpRequestBuilder
-  HttpRequestBuilder --> HttpRequest : builds
+  Client --> HttpRequestBuilder : uses
+  HttpRequestBuilder --> HttpRequest : has-a, builds
       </div>
       <figcaption>Simple Builder &mdash; the client never calls the target's constructor</figcaption>
     </figure>
@@ -3805,11 +3821,11 @@ classDiagram
   MethodStep ..> HeaderStep : returns
   HeaderStep ..> OptionalStep : returns
   OptionalStep ..> HttpRequest : build
-  UrlStep <|.. HttpRequestStepBuilder
-  MethodStep <|.. HttpRequestStepBuilder
-  HeaderStep <|.. HttpRequestStepBuilder
-  OptionalStep <|.. HttpRequestStepBuilder
-  HttpRequestStepBuilder --> HttpRequest
+  UrlStep <|.. HttpRequestStepBuilder : is-a, implements
+  MethodStep <|.. HttpRequestStepBuilder : is-a, implements
+  HeaderStep <|.. HttpRequestStepBuilder : is-a, implements
+  OptionalStep <|.. HttpRequestStepBuilder : is-a, implements
+  HttpRequestStepBuilder --> HttpRequest : has-a
       </div>
       <figcaption>Step Builder &mdash; each step interface exposes one method and returns the next step</figcaption>
     </figure>
@@ -3839,7 +3855,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-29">
-    <h2>Lecture 29: Iterator Design Pattern</h2>
+    <h2>Lecture 29: Iterator Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=30fveBRLqMw&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 29 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Iterator Design Pattern &mdash; design your own iterator"</p>
 
     <h3>Every collection is traversed differently</h3>
@@ -3928,17 +3944,17 @@ classDiagram
     -songs: List~Song~
     -index: int
   }
-  Iterable <|.. LinkedList
-  Iterable <|.. BinaryTree
-  Iterable <|.. Playlist
-  Iterator <|.. LinkedListIterator
-  Iterator <|.. BinaryTreeInorderIterator
-  Iterator <|.. PlaylistIterator
+  Iterable <|.. LinkedList : is-a, implements
+  Iterable <|.. BinaryTree : is-a, implements
+  Iterable <|.. Playlist : is-a, implements
+  Iterator <|.. LinkedListIterator : is-a, implements
+  Iterator <|.. BinaryTreeInorderIterator : is-a, implements
+  Iterator <|.. PlaylistIterator : is-a, implements
   Iterable ..> Iterator : creates
-  Playlist --> Song
-  LinkedListIterator --> LinkedList
-  BinaryTreeInorderIterator --> BinaryTree
-  PlaylistIterator --> Song
+  Playlist --> Song : has-a
+  LinkedListIterator --> LinkedList : has-a
+  BinaryTreeInorderIterator --> BinaryTree : has-a
+  PlaylistIterator --> Song : has-a
       </div>
       <figcaption>Iterator pattern &mdash; each iterable hands out an iterator that knows how to walk it</figcaption>
     </figure>
@@ -3968,7 +3984,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-30">
-    <h2>Lecture 30: Flyweight Design Pattern</h2>
+    <h2>Lecture 30: Flyweight Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=vNSRcegCO8E&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 30 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Flyweight Design Pattern &mdash; saving RAM by sharing objects"</p>
 
     <h3>Millions of small objects eat RAM</h3>
@@ -4044,10 +4060,10 @@ classDiagram
     +spawnAsteroids(count)
     +renderAll()
   }
-  AsteroidContext --> AsteroidFlyweight : shares
-  AsteroidFactory o-- AsteroidFlyweight : pool
-  SpaceGame --> AsteroidContext
-  SpaceGame ..> AsteroidFactory
+  AsteroidContext --> AsteroidFlyweight : has-a, shares
+  AsteroidFactory o-- AsteroidFlyweight : has-a, pool
+  SpaceGame --> AsteroidContext : has-a
+  SpaceGame ..> AsteroidFactory : uses
       </div>
       <figcaption>Flyweight &mdash; many contexts share a few flyweights handed out by the factory</figcaption>
     </figure>
@@ -4090,7 +4106,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-31">
-    <h2>Lecture 31: Build Splitwise Clone (Expense Sharing)</h2>
+    <h2>Lecture 31: Build Splitwise Clone (Expense Sharing) <a class="video-link" href="https://www.youtube.com/watch?v=cWtBZUAQpcc&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 31 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design Splitwise &mdash; groups, split strategies, settlements, debt simplification"</p>
 
     <h3>Why it's a popular interview question</h3>
@@ -4234,21 +4250,21 @@ classDiagram
     +addIndividualExpense(...)
     +settleIndividualPayment(...)
   }
-  Observer <|-- User
-  Group --> User : notifies
-  Group --> Expense
-  Expense --> Split
-  SplitStrategy <|-- EqualSplit
-  SplitStrategy <|-- ExactSplit
-  SplitStrategy <|-- PercentageSplit
+  Observer <|-- User : is-a
+  Group --> User : has-a, notifies
+  Group --> Expense : has-a
+  Expense --> Split : has-a
+  SplitStrategy <|-- EqualSplit : is-a
+  SplitStrategy <|-- ExactSplit : is-a
+  SplitStrategy <|-- PercentageSplit : is-a
   SplitStrategy ..> Split : returns
   SplitFactory ..> SplitStrategy : creates
-  SplitFactory --> SplitType
-  Group ..> SplitFactory
-  Group *-- DebtSimplifier
-  Splitwise --> User
-  Splitwise --> Group
-  Splitwise --> Expense
+  SplitFactory --> SplitType : uses
+  Group ..> SplitFactory : uses
+  Group *-- DebtSimplifier : has-a, owns
+  Splitwise --> User : has-a
+  Splitwise --> Group : has-a
+  Splitwise --> Expense : has-a
       </div>
       <figcaption>Splitwise &mdash; Group observes-notifies Users, Strategy+Factory build splits, DebtSimplifier cleans up balances</figcaption>
     </figure>
@@ -4301,7 +4317,7 @@ The narration says Saurabh owes Rohit ₹40, but with a ₹40 <em>equal</em> spl
 <hr>
 
 <section class="video-section" id="video-32">
-    <h2>Lecture 32: State Design Pattern (Vending Machine)</h2>
+    <h2>Lecture 32: State Design Pattern (Vending Machine) <a class="video-link" href="https://www.youtube.com/watch?v=bJPmvie_p4w&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 32 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "State Design Pattern &mdash; vending machine with a state machine diagram"</p>
 
     <h3>Objects that behave differently depending on their state</h3>
@@ -4386,11 +4402,11 @@ classDiagram
   class HasCoinState
   class DispenseState
   class SoldOutState
-  VendingMachine --> VendingState : currentState
-  VendingState <|-- NoCoinState
-  VendingState <|-- HasCoinState
-  VendingState <|-- DispenseState
-  VendingState <|-- SoldOutState
+  VendingMachine --> VendingState : has-a, currentState
+  VendingState <|-- NoCoinState : is-a
+  VendingState <|-- HasCoinState : is-a
+  VendingState <|-- DispenseState : is-a
+  VendingState <|-- SoldOutState : is-a
   NoCoinState ..> HasCoinState : insertCoin
   HasCoinState ..> DispenseState : selectItem
   HasCoinState ..> NoCoinState : returnCoin
@@ -4440,7 +4456,7 @@ Without the pattern, every method of <code>VendingMachine</code> becomes a big <
 <hr>
 
 <section class="video-section" id="video-33">
-    <h2>Lecture 33: Build Tic Tac Toe Game</h2>
+    <h2>Lecture 33: Build Tic Tac Toe Game <a class="video-link" href="https://www.youtube.com/watch?v=BGFzYjGtRP4&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 33 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design Tic Tac Toe &mdash; low level design"</p>
 
     <h3>Requirements</h3>
@@ -4553,16 +4569,16 @@ classDiagram
   class TicTacToeGameFactory {
     +createGame(type, boardSize)$ TicTacToeGame
   }
-  TicTacToeGame --> Board
-  Board --> Symbol
-  TicTacToeGame --> Player
-  Player --> Symbol
-  TicTacToeGame *-- Rule
-  Rule <|-- StandardRules
-  TicTacToeGame --> IObserver
-  IObserver <|-- ConsoleNotifier
+  TicTacToeGame --> Board : has-a
+  Board --> Symbol : has-a
+  TicTacToeGame --> Player : has-a
+  Player --> Symbol : has-a
+  TicTacToeGame *-- Rule : has-a, owns
+  Rule <|-- StandardRules : is-a
+  TicTacToeGame --> IObserver : has-a
+  IObserver <|-- ConsoleNotifier : is-a
   TicTacToeGameFactory ..> TicTacToeGame : creates
-  TicTacToeGameFactory --> GameType
+  TicTacToeGameFactory --> GameType : uses
       </div>
       <figcaption>Tic Tac Toe &mdash; Game orchestrates Board, a deque of Players, pluggable Rules and in-app observers</figcaption>
     </figure>
@@ -4596,7 +4612,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-34">
-    <h2>Lecture 34: Build Snake and Ladder Game</h2>
+    <h2>Lecture 34: Build Snake and Ladder Game <a class="video-link" href="https://www.youtube.com/watch?v=1NJB54UB8nE&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 34 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design Snake &amp; Ladder &mdash; low level design"</p>
 
     <h3>Requirements</h3>
@@ -4761,21 +4777,21 @@ classDiagram
     +createRandomGame(size, difficulty)$
     +createCustomGame(size, strategy)$
   }
-  SnakeAndLadderGame --> Board
-  SnakeAndLadderGame --> Dice
-  SnakeAndLadderGame --> Player
-  SnakeAndLadderGame *-- SnakeAndLadderRules
-  SnakeAndLadderGame --> IObserver
-  Board *-- BoardEntity
-  BoardEntity <|-- Snake
-  BoardEntity <|-- Ladder
-  Board ..> BoardSetupStrategy
-  BoardSetupStrategy <|-- StandardBoardSetupStrategy
-  BoardSetupStrategy <|-- RandomBoardSetupStrategy
-  BoardSetupStrategy <|-- CustomCountBoardSetupStrategy
-  RandomBoardSetupStrategy --> Difficulty
-  SnakeAndLadderRules <|-- StandardSnakeAndLadderRules
-  IObserver <|-- SnakeAndLadderConsoleNotifier
+  SnakeAndLadderGame --> Board : has-a
+  SnakeAndLadderGame --> Dice : has-a
+  SnakeAndLadderGame --> Player : has-a
+  SnakeAndLadderGame *-- SnakeAndLadderRules : has-a, owns
+  SnakeAndLadderGame --> IObserver : has-a
+  Board *-- BoardEntity : has-a, owns
+  BoardEntity <|-- Snake : is-a
+  BoardEntity <|-- Ladder : is-a
+  Board ..> BoardSetupStrategy : uses
+  BoardSetupStrategy <|-- StandardBoardSetupStrategy : is-a
+  BoardSetupStrategy <|-- RandomBoardSetupStrategy : is-a
+  BoardSetupStrategy <|-- CustomCountBoardSetupStrategy : is-a
+  RandomBoardSetupStrategy --> Difficulty : has-a
+  SnakeAndLadderRules <|-- StandardSnakeAndLadderRules : is-a
+  IObserver <|-- SnakeAndLadderConsoleNotifier : is-a
   SnakeAndLadderGameFactory ..> SnakeAndLadderGame : creates
       </div>
       <figcaption>Snake &amp; Ladder &mdash; Board owns snakes/ladders (keyed by start cell), setup and rules are Strategies</figcaption>
@@ -4806,7 +4822,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-35">
-    <h2>Lecture 35: Mediator Design Pattern (Chat Room)</h2>
+    <h2>Lecture 35: Mediator Design Pattern (Chat Room) <a class="video-link" href="https://www.youtube.com/watch?v=3lGIICzgyQQ&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 35 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Mediator Design Pattern &mdash; chat room example, Mediator vs Observer"</p>
 
     <h3>Everyone talking to everyone</h3>
@@ -4868,10 +4884,10 @@ classDiagram
   class User {
     -name
   }
-  IMediator <|-- ChatMediator
-  Colleague <|-- User
-  Colleague --> IMediator : talks through
-  ChatMediator --> Colleague : knows all
+  IMediator <|-- ChatMediator : is-a
+  Colleague <|-- User : is-a
+  Colleague --> IMediator : has-a, talks through
+  ChatMediator --> Colleague : has-a, knows all
       </div>
       <figcaption>Mediator &mdash; colleagues only know the mediator; the mediator knows every colleague</figcaption>
     </figure>
@@ -4907,7 +4923,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-36">
-    <h2>Lecture 36: Prototype Design Pattern</h2>
+    <h2>Lecture 36: Prototype Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=KMQFNV8LFec&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 36 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Prototype Design Pattern &mdash; cloning objects, shallow vs deep copy"</p>
 
     <h3>When creating an object is expensive</h3>
@@ -4968,8 +4984,8 @@ classDiagram
     +setHealth(h)
     +describe()
   }
-  Client --> Cloneable
-  Cloneable <|.. NPC
+  Client --> Cloneable : uses
+  Cloneable <|.. NPC : is-a, implements
       </div>
       <figcaption>Prototype &mdash; the client clones through the interface; the concrete class copies itself via its copy constructor</figcaption>
     </figure>
@@ -5001,7 +5017,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-37">
-    <h2>Lecture 37: Build Chess Game (chess.com Clone)</h2>
+    <h2>Lecture 37: Build Chess Game (chess.com Clone) <a class="video-link" href="https://www.youtube.com/watch?v=eULHvaMZUks&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 37 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design chess.com &mdash; matchmaking, chess rules, in-match chat"</p>
 
     <h3>Requirements</h3>
@@ -5180,29 +5196,29 @@ classDiagram
     +wouldMoveCauseCheck(move, board, c)* bool
   }
   class StandardChessRules
-  GameManager --> Match
-  GameManager --> User
-  GameManager *-- MatchingStrategy
-  MatchingStrategy <|-- ScoreBasedMatching
-  ChatMediator <|-- Match
-  Colleague <|-- User
-  Colleague --> ChatMediator
-  Match --> User
-  Match --> Board
-  Match --> ChessRules
-  Match --> Move
-  Match --> Message
-  Board --> Piece
-  Board --> Position
-  Piece <|-- King
-  Piece <|-- Queen
-  Piece <|-- Rook
-  Piece <|-- Bishop
-  Piece <|-- Knight
-  Piece <|-- Pawn
+  GameManager --> Match : has-a
+  GameManager --> User : has-a
+  GameManager *-- MatchingStrategy : has-a, owns
+  MatchingStrategy <|-- ScoreBasedMatching : is-a
+  ChatMediator <|-- Match : is-a
+  Colleague <|-- User : is-a
+  Colleague --> ChatMediator : has-a
+  Match --> User : has-a
+  Match --> Board : has-a
+  Match --> ChessRules : has-a
+  Match --> Move : has-a
+  Match --> Message : has-a
+  Board --> Piece : has-a
+  Board --> Position : has-a
+  Piece <|-- King : is-a
+  Piece <|-- Queen : is-a
+  Piece <|-- Rook : is-a
+  Piece <|-- Bishop : is-a
+  Piece <|-- Knight : is-a
+  Piece <|-- Pawn : is-a
   PieceFactory ..> Piece : creates
-  ChessRules <|-- StandardChessRules
-  ChessRules ..> Move
+  ChessRules <|-- StandardChessRules : is-a
+  ChessRules ..> Move : uses
       </div>
       <figcaption>Chess &mdash; GameManager orchestrates matches; Match is the chat mediator; rules and matchmaking are Strategies</figcaption>
     </figure>
@@ -5249,7 +5265,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-38">
-    <h2>Lecture 38: Visitor Design Pattern</h2>
+    <h2>Lecture 38: Visitor Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=DnmsxnlCyl0&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 38 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Visitor Design Pattern &mdash; double dispatch, Visitor vs Strategy"</p>
 
     <h3>A class that keeps growing new operations</h3>
@@ -5314,12 +5330,12 @@ classDiagram
   class SizeCalculationVisitor
   class CompressionVisitor
   class VirusScanningVisitor
-  FileSystemItem <|-- TextFile
-  FileSystemItem <|-- ImageFile
-  FileSystemItem <|-- VideoFile
-  FileSystemVisitor <|-- SizeCalculationVisitor
-  FileSystemVisitor <|-- CompressionVisitor
-  FileSystemVisitor <|-- VirusScanningVisitor
+  FileSystemItem <|-- TextFile : is-a
+  FileSystemItem <|-- ImageFile : is-a
+  FileSystemItem <|-- VideoFile : is-a
+  FileSystemVisitor <|-- SizeCalculationVisitor : is-a
+  FileSystemVisitor <|-- CompressionVisitor : is-a
+  FileSystemVisitor <|-- VirusScanningVisitor : is-a
   FileSystemItem ..> FileSystemVisitor : accept calls visit
       </div>
       <figcaption>Visitor &mdash; elements only accept; each operation is a visitor with one visit per element type</figcaption>
@@ -5377,7 +5393,7 @@ In the robot example the lecturer writes <code>accept(v) { v.accept(this); }</co
 <hr>
 
 <section class="video-section" id="video-39">
-    <h2>Lecture 39: Memento Design Pattern</h2>
+    <h2>Lecture 39: Memento Design Pattern <a class="video-link" href="https://www.youtube.com/watch?v=p8-ile_nWnY&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 39 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Memento Design Pattern &mdash; snapshots, undo, DB transaction rollback"</p>
 
     <h3>Saving snapshots so you can roll back</h3>
@@ -5440,7 +5456,7 @@ classDiagram
     +rollback(db)
   }
   Database ..> DatabaseMemento : creates / restores from
-  TransactionManager --> DatabaseMemento : keeps
+  TransactionManager --> DatabaseMemento : has-a, keeps
   TransactionManager ..> Database : uses
       </div>
       <figcaption>Memento &mdash; the originator creates and restores snapshots; the caretaker just holds them</figcaption>
@@ -5479,7 +5495,7 @@ classDiagram
 <hr>
 
 <section class="video-section" id="video-40">
-    <h2>Lecture 40: Anti-Patterns &amp; the Null Object Pattern</h2>
+    <h2>Lecture 40: Anti-Patterns &amp; the Null Object Pattern <a class="video-link" href="https://www.youtube.com/watch?v=iXHlc_S3Ae4&amp;list=PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT" target="_blank" rel="noopener" title="Watch Lecture 40 on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: Code Army LLD playlist &middot; "Design anti-patterns and the Null Object pattern &mdash; series finale"</p>
 
     <h3>Part 1 &mdash; Anti-patterns</h3>
@@ -5542,9 +5558,9 @@ classDiagram
     -ac: AbstractClass
     +fun()
   }
-  AbstractClass <|-- ConcreteClass
-  AbstractClass <|-- NullObject
-  Client --> AbstractClass
+  AbstractClass <|-- ConcreteClass : is-a
+  AbstractClass <|-- NullObject : is-a
+  Client --> AbstractClass : uses
       </div>
       <figcaption>Null Object &mdash; a do-nothing implementation stands in for "no object"</figcaption>
     </figure>

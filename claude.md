@@ -12,7 +12,8 @@ The user pastes a **video transcript** (usually Hindi / Hinglish, auto-generated
 2. Write **English study notes** for it as one new HTML section.
 3. Insert that section into the right notes file (e.g. `spring-boot-notes.html`, `lld-course-notebook.html`) in lecture order.
 4. Update the Contents list and the progress line.
-5. Verify the HTML (see §9) and report briefly.
+5. Add the lecture's **YouTube link** next to its heading and its Contents entry (see §6.7).
+6. Verify the HTML (see §9) and report briefly.
 
 The transcript is source material, not text to translate. The notes must read as if a strong engineer attended the lecture and wrote clean notes afterwards: **everything technical the lecturer taught, in the order they taught it, plus corrections and the interview-relevant things they missed.**
 
@@ -124,7 +125,7 @@ Copy these exactly. Four-space indentation inside a section.
 
 ```html
 <section class="video-section" id="video-N">
-    <h2>Lecture N: Title</h2>
+    <h2>Lecture N: Title <a class="video-link" href="https://www.youtube.com/watch?v=VIDEO_ID&amp;list=PLAYLIST_ID" target="_blank" rel="noopener" title="Watch Lecture N on YouTube">&#9654; Watch</a></h2>
     <p class="subtitle">Source: "Exact video title" &middot; 32 min &middot; Code Army</p>
 
     <h3>The problem</h3>
@@ -214,6 +215,15 @@ classDiagram
   - `*--` is composition.
   - `o--` is aggregation.
   - `..>` is dependency.
+- **Every relationship in a class diagram gets a label** saying what kind it is:
+  - `<|--` → `: is-a`
+  - `<|..` → `: is-a, implements`
+  - `-->` and `o--` → `: has-a`
+  - `*--` → `: has-a, owns`
+  - `..>` → `: uses`
+  - For a `Client` that only calls something, use `-->` with the label `: uses`.
+  - If an arrow needs a specific label, put `has-a, ` in front of it on has-a arrows, e.g. `Handler o-- Handler : has-a, nextHandler`. Dependency labels like `creates` or `returns` stay as they are.
+  - The legend explaining these labels is in Lecture 4 of `lld-course-notebook.html`.
 
 ### 6.5 Code
 
@@ -235,6 +245,25 @@ classDiagram
       </li>
     </ul>
 ```
+
+### 6.7 YouTube video links
+
+Every lecture links to its video in **two places**, both opening in a new tab:
+
+- **The `<h2>`**: `Lecture N: Title <a class="video-link" … title="Watch Lecture N on YouTube">&#9654; Watch</a>` (exact markup in §6.1).
+- **The Contents entry**: a bare `&#9654;` link after the duration `<span>` (exact markup in §8.2).
+
+Rules:
+
+- URL format: `https://www.youtube.com/watch?v=VIDEO_ID&amp;list=PLAYLIST_ID`. Write `&amp;`, not `&`, inside `href`. Always add `target="_blank" rel="noopener"`.
+- **Where the ID comes from:**
+  - If the user pastes the video link, use it.
+  - Otherwise, find the video in the course playlist and **check that its title matches** the lecture's `Source:` title.
+  - If you can't confirm the right video, leave the link out and say so in the report. **Never guess a video ID.**
+- Known playlists:
+  - LLD (Code Army / Coder Army, "System Design Full Course"): `PLQEaRBV9gAFvzp6XhcNFpk1WdOcyVo9qT`
+- The `.video-link` CSS lives in the `<style>` block of `lld-course-notebook.html`: `.video-link { font-family: 'Patrick Hand', cursive; font-size: 1.05rem; white-space: nowrap; margin-left: 8px; }`. If an older notes file is missing it, add it.
+- VS Code's built-in browser can't play YouTube. If the user reports a playback error there, tell them to open the notes in Chrome or Edge. The link itself is not broken.
 
 ---
 
@@ -270,7 +299,7 @@ The **final lecture of a course** also gets a wrap-up: a cheat-sheet table of ev
 - Copy the whole `<head>` of `lld-course-notebook.html` **verbatim**, including:
   - the Google Fonts link (Caveat + Patrick Hand);
   - the Mermaid 10.9.1 script from cdnjs;
-  - the full `<style>` block (lined paper, `.important`, `.toc`, `.dur`, `caption`, `figure.diagram`, dark mode).
+  - the full `<style>` block (lined paper, `.important`, `.toc`, `.dur`, `.video-link`, `caption`, `figure.diagram`, dark mode).
 - Change only the `<title>`.
 - Copy the Mermaid theme `<script>` from the end of that file, just before `</body>`.
 
@@ -284,7 +313,7 @@ The **final lecture of a course** also gets a wrap-up: a cheat-sheet table of ev
 <div class="toc">
 <strong>Contents</strong>
 <ol>
-  <li><a href="#video-1">Introduction to Spring Framework</a> <span class="dur">&mdash; 43m</span></li>
+  <li><a href="#video-1">Introduction to Spring Framework</a> <span class="dur">&mdash; 43m</span> <a class="video-link" href="https://www.youtube.com/watch?v=VIDEO_ID&amp;list=PLAYLIST_ID" target="_blank" rel="noopener" title="Watch on YouTube">&#9654;</a></li>
 </ol>
 </div>
 
@@ -308,8 +337,9 @@ The **final lecture of a course** also gets a wrap-up: a cheat-sheet table of ev
 
 1. Insert the section in numeric order, before the footer `<hr>`, with an `<hr>` between sections.
 2. Add the Contents entry with its duration. Take the duration from the last transcript timestamp.
-3. Update the progress line (`N / total lectures noted`) and the footer.
-4. Never rewrite or reformat existing lectures unless asked.
+3. Add the YouTube link to both the `<h2>` and the Contents entry (§6.7).
+4. Update the progress line (`N / total lectures noted`) and the footer.
+5. Never rewrite or reformat existing lectures unless asked.
 
 For long sections, write the section to a scratch file first, then insert it with a small script. Avoid shell heredocs with quotes, and `sed` replacements containing `&`.
 
@@ -331,6 +361,7 @@ For long sections, write the section to a scratch file first, then insert it wit
 - [ ] Code compiles. Run it if a JDK or compiler is available. HTML-escaped.
 - [ ] `X vs Y` table, `Anticipated question`, `Gaps worth raising` / `Corrections &amp; worth knowing` where relevant.
 - [ ] Contents entry, duration, progress line and footer updated.
+- [ ] YouTube link on the `<h2>` (`&#9654; Watch`) and the Contents entry (`&#9654;`), with a video ID checked against the playlist title.
 - [ ] HTML validity: count open vs close tags for `section`, `div`, `table`, `ul`, `ol`, `li`, `figure`, `pre`, `h3`, `h4`; each pair must match.
 - [ ] Report to the user in a few lines:
   - [ ] What was added.
