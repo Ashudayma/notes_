@@ -34,7 +34,9 @@ If the user gives no transcript (only a link), ask them to paste it; do not inve
 - Trade-offs, "when to use / when not to use", comparisons the lecturer draws.
 - Interview tips the lecturer gives.
 
-**Never shorten technical content just to be concise.** Remove noise, not knowledge. A 1h30m lecture should produce a long section.
+**Remove noise, not knowledge.** Never drop a technical point to save space, but write every point in as few words as possible (see §5.1). A long lecture still produces a long section; it's long because of content, not phrasing.
+
+**Drop story wrappers, keep the technical example.** If the lecturer frames an example as a story ("two friends Anurag and Maurya join QuickRide…"), keep the example and its technical contrast ("Example: ride-hailing app (QuickRide)", tables "DSA-first approach" / "LLD-first approach") and drop the characters. Class, method and variable names and sample data used in code always stay.
 
 ---
 
@@ -98,6 +100,8 @@ The notes follow the **lecture's own teaching flow**, not a fixed template. Head
 - `Homework / suggested extensions`
 - `Gaps worth raising in an interview`
 - `Corrections &amp; worth knowing` (or `Worth knowing` when nothing needed correcting)
+- `Caveats`
+- `Problem &amp; solution`, `Example: …` (short forms used in condensed sections)
 
 Use `h4` only for sub-parts inside a long `h3` part.
 
@@ -105,7 +109,7 @@ Use `h4` only for sub-parts inside a long `h3` part.
 
 ## 5. Writing style
 
-- **Tight, concrete prose.** Short paragraphs of 1–4 sentences. Bullets for facts and lists, numbered lists for processes and demo steps, tables for comparisons and step-by-step "fix → new problem" evolutions.
+- **Tight, concrete prose.** Short paragraphs of 1–2 sentences (§5.1). Bullets for facts and lists, numbered lists for processes and demo steps, tables for comparisons and step-by-step "fix → new problem" evolutions.
 - Explain **why** and **when**, not just **what**. Almost every design choice gets a "why" callout.
 - **Bold** the key term or the key claim in a sentence, not whole sentences.
 - `<code>` for every class, method, field, keyword, file and command.
@@ -114,6 +118,34 @@ Use `h4` only for sub-parts inside a long `h3` part.
 - Cross-reference earlier lectures by number: "the Builder pattern (Lecture 28)".
 - End callouts that summarise a philosophy with the lecture's quote: `<strong>One-liner from the lecture:</strong><br>"The solution to inheritance is not more inheritance."`
 - English only. Typographic entities: `&mdash;`, `&rarr;`, `&hellip;`, `&ne;`, `&amp;`, `&lt;`, `&gt;`.
+
+### 5.1 Density: write it condensed from the start
+
+All notes files (`lld-course-notebook.html`, `genai-notes.html`, `java-notes.html`, `spring-boot-notes.html`) were put through a condensing pass (originals kept as `*.backup.html`). New sections must be written at that density directly, not condensed later. Compare `lld-course-notebook.backup.html` (before) with `lld-course-notebook.html` (after) when unsure.
+
+- **No narration.** Cut "In this lecture we…", "The video says…", "As you can see…", "it's worth noting that", "basically", "Whenever you design X, you are optimizing for…".
+- **Paragraphs: 1–2 short sentences.** If a paragraph lists things, make it a `<ul>`.
+- **Short headings.** No parentheticals or long subtitles: "Caveats" not "Edge cases / things worth double-checking"; "LLD vs HLD" not "LLD vs HLD (a common confusion)"; "The Command fix" not "The Command Pattern fix"; "Doubt 1: why does the CONCRETE command hold the receiver?" not "…, not the abstract ICommand?".
+- **Compact callouts.** For short callouts put the text on the same line as the label: `<div class="important"><strong>Why DSA-first fails:</strong> …</div>` (no `<br>`). Two adjacent callouts on the same point become one, with the second label after a `<br>`.
+- **Terse table cells.** "System-architecture diagrams &mdash; almost no code", not "Drawing system-architecture boxes/diagrams &mdash; almost no code is written".
+- **Untouched by density rules:** code in `<pre>`, Mermaid/SVG diagrams, lecturer quotes, textbook definitions, `<h2>` titles and subtitle lines.
+
+Before/after example:
+
+```html
+<!-- too wordy -->
+<h3>Doubt 2: why does LightCommand hold a concrete Light, not a generic Appliance interface?</h3>
+<div class="important"><strong>Tempting alternative, rejected:</strong><br>
+You could imagine one <code>Appliance</code> interface (<code>on()</code>/<code>off()</code>) that <code>Light</code>, <code>Fan</code>, <code>AC</code>, etc. all implement, and a single generic <code>Command</code> holding an <code>Appliance</code> reference &mdash; avoiding a concrete command class per appliance type.
+</div>
+<div class="important"><strong>Why it's rejected: it breaks LSP:</strong><br> …long paragraph… </div>
+
+<!-- target -->
+<h3>Doubt 2: why concrete Light, not a generic Appliance interface?</h3>
+<div class="important"><strong>Rejected alternative:</strong> one <code>Appliance</code> interface (<code>on()</code>/<code>off()</code>) + a single generic <code>Command</code> &mdash; fewer command classes.<br>
+<strong>Why rejected &mdash; breaks LSP:</strong> appliances don't all reduce to on/off (AC: timers, temperature). Forcing a common contract is the over-generalization LSP warns against (Lecture 5/6). Accept one concrete command per receiver type.
+</div>
+```
 
 ---
 
@@ -348,6 +380,7 @@ For long sections, write the section to a scratch file first, then insert it wit
 ## 9. Before you finish: checklist
 
 - [ ] All noise removed; **all** technical content kept, in the lecture's order.
+- [ ] Written at the condensed density of §5.1 (short headings, 1–2 sentence paragraphs, compact callouts, no narration).
 - [ ] The problem → naive approach → why it breaks → solution arc is clear.
 - [ ] Lecture names, examples, demo steps and quotes preserved.
 - [ ] Mistakes corrected. Lecture vs added content is clearly attributed. Versions stated where relevant.
